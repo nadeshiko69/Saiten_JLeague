@@ -1,11 +1,15 @@
 /// main.dart
 /// メインページを管理
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -32,6 +36,7 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
+  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('Nagoya _Schedule').snapshots();
   @override
   Widget build(BuildContext context) {
     // 表示用のListを作成
@@ -65,7 +70,34 @@ class MainPageState extends State<MainPage> {
                 height: _deviceHeight*0.7,
                 width: _deviceWidth,
                 color: Colors.red, // FOR DEBUG
-                child: Text(GetTodayDate()),
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: _usersStream,
+                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Text("Loading");
+                    }
+
+                    return ListView(
+                      children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                        return ListTile(
+                          title: Row(
+                            children: [
+                              Text('MATCH ' + data['matchNo'].toString() + '      '),
+                              Text(data['opponent']),
+                            ],
+                          ),
+                          subtitle: Row(
+                            children: [
+                              Text(data['homeOrAway']+'  :  '),
+                              Text(data['day']),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  },
+                ),
               ),
             ],
           ),

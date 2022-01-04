@@ -1,6 +1,8 @@
 /// mainFactory.dart
 /// main.dartで使用する関数定義
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:judge/mainData.dart';
