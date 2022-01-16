@@ -17,6 +17,7 @@ String GetTodayDate() {
   DateTime _now = DateTime.now();
   DateFormat outputFormat = DateFormat('yyyy-MM-dd HHmm', "ja_JP");
   String _todayDate = outputFormat.format(_now); // 今日の年月日を取得
+  //print(_todayDate);
   return _todayDate;
 }
 
@@ -26,26 +27,47 @@ Name : GetNextMatch()
 Arg  : None
 Func : 実行した年月日以降直近で実施される試合のスケジュールを取得
 * */
-void GetNextMatch() {
+void GetNextMatch() async{
+
   DateTime _todayDate = DateTime.parse(GetTodayDate());
   bool _decidedNextMatch = false;
 
-  sampleList.forEach((v) {
-    DateTime databaseTime = DateTime.parse(v[3].toString());
+  final _userCollection = FirebaseFirestore.instance.collection('Nagoya _Schedule');
+  final QuerySnapshot snapshot = await _userCollection.get();
+
+  final matchData = snapshot.docs.map((DocumentSnapshot document){
+    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    final String opponent = data['opponent'];
+    final String day = data['day'].toString();
+    final int matchNo = data['matchNo'];
+    return cMatchData(opponent, day, matchNo);
+  }).toList();
+
+  lAllMatch = matchData;
+  lAllMatch.sort((a, b) => a.matchNo.compareTo(b.matchNo));
+
+  lAllMatch.forEach((v) {
+    //print(v.day);
+    DateTime databaseTime = DateTime.parse(v.day);
     if (_todayDate.difference(databaseTime).inDays == 0 &&
         _todayDate.day == databaseTime.day) {
       // 今日試合がある場合
-      lNextMatch = [...v]; // vの内容をコピー ※dart2.3.0以降
-      lNextMatch.add("TODAY'S MATCH");
+      lNextMatch[0].opponent = v.opponent;
+      lNextMatch[0].matchNo  = v.matchNo;
+      lNextMatch[0].day      = v.day;
+      lNextMatch[0].nextOrToday = "TODAY'S MATCH";
       _decidedNextMatch = true;
     }
     else if (databaseTime.isAfter(_todayDate)) {
       // 今日以降の日付だった場合
       if (!_decidedNextMatch) {
-        lNextMatch = [...v];
-        lNextMatch.add('NEXT MATCH');
+        lNextMatch[0].opponent = v.opponent;
+        lNextMatch[0].matchNo  = v.matchNo;
+        lNextMatch[0].day      = v.day;
+        lNextMatch[0].nextOrToday = "NEXT MATCH";
         _decidedNextMatch = true;
       } else {
+        // AllMatch出力する方が良さそうなので、今後も必要なさそうなら削除
         lMatchFromToday.add(v);
       }
     }
@@ -53,9 +75,9 @@ void GetNextMatch() {
       // 今日より前の日付だった場合
       // No Action
     }
-  });
+  }
+  );
 }
-
 
 /*
 ONLY TEST USE

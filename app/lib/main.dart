@@ -36,14 +36,18 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
-  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('Nagoya _Schedule').snapshots();
+  //final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('Nagoya _Schedule').snapshots();
   @override
   Widget build(BuildContext context) {
-    // 表示用のListを作成
-    GetNextMatch();
 
+    GetNextMatch(); // 表示用のListを作成
+    print("**********");
+    print(lAllMatch.length);
+
+    // 端末の縦横サイズを取得
     final double _deviceHeight = MediaQuery.of(context).size.height;
-    final double _deviceWidth  = MediaQuery.of(context).size.width; //Expandで管理しているため不要
+    final double _deviceWidth  = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -60,9 +64,9 @@ class MainPageState extends State<MainPage> {
                 color: Colors.blue, // FOR DEBUG
                 child: Column(
                   children: [
-                    Text(lNextMatch[4],style: NextMatchTextStyle,),
-                    Text(lNextMatch[3],style: ScheduleTextStyle,),
-                    Text('vs' + lNextMatch[1], style: OpponentNameTextStyle,),
+                    Text(lNextMatch[0].nextOrToday!,style: NextMatchTextStyle,),
+                    Text(lNextMatch[0].day,style: ScheduleTextStyle,),
+                    Text('vs' + lNextMatch[0].opponent, style: OpponentNameTextStyle,),
                   ],
                 ),
               ),
@@ -70,34 +74,54 @@ class MainPageState extends State<MainPage> {
                 height: _deviceHeight*0.7,
                 width: _deviceWidth,
                 color: Colors.red, // FOR DEBUG
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: _usersStream,
-                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Text("Loading");
-                    }
-
-                    return ListView(
-                      children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                        return ListTile(
-                          title: Row(
-                            children: [
-                              Text('MATCH ' + data['matchNo'].toString() + '      '),
-                              Text(data['opponent']),
-                            ],
+                child:ListView.builder(
+                  itemCount: lAllMatch.length,
+                  itemBuilder: (context, index){
+                    return InkWell(
+                      onTap: () async{
+                        // タップしたときの処理
+                        print(lAllMatch[index].opponent);
+                      },
+                      child: Card(
+                          child: ListTile(
+                            title : Text("MATCH " + lAllMatch[index].matchNo.toString() + "  " + lAllMatch[index].opponent),
+                            subtitle : Text(lAllMatch[index].day + " "),
                           ),
-                          subtitle: Row(
-                            children: [
-                              Text(data['homeOrAway']+'  :  '),
-                              Text(data['day']),
-                            ],
-                          ),
-                        );
-                      }).toList(),
+                      ),
                     );
                   },
+
                 ),
+
+
+                // StreamBuilder<QuerySnapshot>(
+                //   stream: _usersStream,
+                //   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                //     if (snapshot.connectionState == ConnectionState.waiting) {
+                //       return Text("Loading");
+                //     }
+                //
+                //     return ListView(
+                //       children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                //         Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                //         return ListTile(
+                //           title: Row(
+                //             children: [
+                //               Text('MATCH ' + data['matchNo'].toString() + '      '),
+                //               Text(data['opponent']),
+                //             ],
+                //           ),
+                //           subtitle: Row(
+                //             children: [
+                //               Text(data['homeOrAway']+'  :  '),
+                //               Text(data['day']),
+                //             ],
+                //           ),
+                //         );
+                //       }).toList(),
+                //     );
+                //   },
+                // ),
               ),
             ],
           ),
