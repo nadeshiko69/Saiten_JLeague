@@ -6,15 +6,19 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
 import 'package:flutter/material.dart';
+import 'package:judge/myPage/myPage.dart';
+
+import 'matchDataView/matchDataView.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(const cMyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class cMyApp extends StatelessWidget {
+  const cMyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,23 +27,24 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MainPage(title: 'Judge'),
+      home: const cMainPage(title: 'Judge'),
     );
   }
 }
 
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key, required this.title}) : super(key: key);
+class cMainPage extends StatefulWidget {
+  const cMainPage({Key? key, required this.title}) : super(key: key);
   final String title;
   @override
-  State<MainPage> createState() => MainPageState();
+  State<cMainPage> createState() => cMainPageState();
 }
 
-class MainPageState extends State<MainPage> {
+class cMainPageState extends State<cMainPage> {
   //final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('Nagoya _Schedule').snapshots();
   @override
   Widget build(BuildContext context) {
 
+    // あとで同期処理うまいこと書く。GetNextMatchで配列の値を格納する前にprint()が動いてNULL Error出る
     GetNextMatch(); // 表示用のListを作成
     print("**********");
     print(lAllMatch.length);
@@ -58,16 +63,21 @@ class MainPageState extends State<MainPage> {
         child: Center(
           child: Column(
             children: [
-              Container(
-                height: _deviceHeight*0.15,
-                width: _deviceWidth,
-                color: Colors.blue, // FOR DEBUG
-                child: Column(
-                  children: [
-                    Text(lNextMatch[0].nextOrToday!,style: NextMatchTextStyle,),
-                    Text(lNextMatch[0].day,style: ScheduleTextStyle,),
-                    Text('vs' + lNextMatch[0].opponent, style: OpponentNameTextStyle,),
-                  ],
+              InkWell(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => cMatchDetailView(lNextMatch[0].matchNo),));
+                },
+                child: Container(
+                  height: _deviceHeight*0.15,
+                  width: _deviceWidth,
+                  color: Colors.blue, // FOR DEBUG
+                  child: Column(
+                    children: [
+                      Text(lNextMatch[0].nextOrToday!,style: NextMatchTextStyle,),
+                      Text(lNextMatch[0].day,style: ScheduleTextStyle,),
+                      Text('vs' + lNextMatch[0].opponent, style: OpponentNameTextStyle,),
+                    ],
+                  ),
                 ),
               ),
               Container(
@@ -80,7 +90,8 @@ class MainPageState extends State<MainPage> {
                     return InkWell(
                       onTap: () async{
                         // タップしたときの処理
-                        print(lAllMatch[index].opponent);
+                        //print(lAllMatch[index].opponent);
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => cMatchDetailView(lAllMatch[index].matchNo),));
                       },
                       child: Card(
                           child: ListTile(
@@ -92,36 +103,6 @@ class MainPageState extends State<MainPage> {
                   },
 
                 ),
-
-
-                // StreamBuilder<QuerySnapshot>(
-                //   stream: _usersStream,
-                //   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                //     if (snapshot.connectionState == ConnectionState.waiting) {
-                //       return Text("Loading");
-                //     }
-                //
-                //     return ListView(
-                //       children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                //         Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                //         return ListTile(
-                //           title: Row(
-                //             children: [
-                //               Text('MATCH ' + data['matchNo'].toString() + '      '),
-                //               Text(data['opponent']),
-                //             ],
-                //           ),
-                //           subtitle: Row(
-                //             children: [
-                //               Text(data['homeOrAway']+'  :  '),
-                //               Text(data['day']),
-                //             ],
-                //           ),
-                //         );
-                //       }).toList(),
-                //     );
-                //   },
-                // ),
               ),
             ],
           ),
@@ -139,15 +120,21 @@ class MainPageState extends State<MainPage> {
               child: Text('Drawer Header'),
             ),
             ListTile(
-              title: const Text('Item 1'),
+              title: const Text('名古屋グランパス'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: const Text('Item 2'),
+              title: const Text('川崎フロンターレ'),
               onTap: () {
                 Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('My Page'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => cMyPageView()));
               },
             ),
           ],
