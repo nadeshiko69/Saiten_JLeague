@@ -32,13 +32,17 @@ void GetNextMatch() async{
   DateTime _todayDate = DateTime.parse(GetTodayDate());
   bool _decidedNextMatch = false;
 
-  final _userCollection = FirebaseFirestore.instance.collection('Nagoya _Schedule');
+  //final _userCollection = FirebaseFirestore.instance.collection('Nagoya _Schedule');
+  final _userCollection = FirebaseFirestore.instance
+      .collection('Data')
+      .doc('Nagoya')
+      .collection('Match');
   final QuerySnapshot snapshot = await _userCollection.get();
 
   final matchData = snapshot.docs.map((DocumentSnapshot document){
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
     final String opponent = data['opponent'];
-    final String day = data['day'].toString();
+    final String day = data['date'].toString();
     final int matchNo = data['matchNo'];
     return cMatchData(opponent, day, matchNo);
   }).toList();
@@ -79,18 +83,13 @@ void GetNextMatch() async{
   );
 }
 
-/*
-ONLY TEST USE
-* */
-List sampleList = [
-  [1, '福岡', 'A', '2021-02-28 1300'],
-  [2, '札幌', 'H', '2021-03-06 1600'],
-  [3, '柏', 'A', '2021-03-10 1800'],
-  [4, '神戸', 'A', '2021-03-13 1800'],
-  [5, '横浜FC', 'H', '2022-01-02 1900'],
-  [6, '鹿島', 'A', '2022-04-03 1400'],
-  [7, 'FC東京', 'H', '2022-04-07 1900'],
-  [8, '湘南', 'A', '2022-04-11 1500'],
-  [9, '大分', 'A', '2022-04-14 1930'],
-  [10, '広島', 'H', '2022-04-18 1500']
-];
+
+void test() async{
+  final _userCollection = FirebaseFirestore.instance
+      .collection('Data')
+      .doc('Nagoya')
+      .collection('Match');
+  final QuerySnapshot snapshot = await _userCollection.get();
+  
+  
+}
