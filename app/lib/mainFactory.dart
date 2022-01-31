@@ -24,10 +24,10 @@ String GetTodayDate() {
 
 /*
 Name : GetNextMatch()
-Arg  : None
+Arg  : String teamName : firebaseに登録してあるチーム名
 Func : 実行した年月日以降直近で実施される試合のスケジュールを取得
 * */
-void GetNextMatch() async{
+void GetNextMatch(String teamName) async{
 
   DateTime _todayDate = DateTime.parse(GetTodayDate());
   bool _decidedNextMatch = false;
@@ -35,7 +35,7 @@ void GetNextMatch() async{
   //final _userCollection = FirebaseFirestore.instance.collection('Nagoya _Schedule');
   final _userCollection = FirebaseFirestore.instance
       .collection('Data')
-      .doc('Nagoya')
+      .doc(teamName)
       .collection('Match');
   final QuerySnapshot snapshot = await _userCollection.get();
 
@@ -81,15 +81,4 @@ void GetNextMatch() async{
     }
   }
   );
-}
-
-
-void test() async{
-  final _userCollection = FirebaseFirestore.instance
-      .collection('Data')
-      .doc('Nagoya')
-      .collection('Match');
-  final QuerySnapshot snapshot = await _userCollection.get();
-  
-  
 }

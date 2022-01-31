@@ -41,14 +41,16 @@ class cMainPage extends StatefulWidget {
 
 class cMainPageState extends State<cMainPage> {
   //final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('Nagoya _Schedule').snapshots();
+  String _teamName = '';
   @override
+
+  void initState(){
+    super.initState();
+    _teamName = 'Nagoya';
+    GetNextMatch(_teamName); // 表示用のListを作成
+  }
+
   Widget build(BuildContext context) {
-
-    // あとで同期処理うまいこと書く。GetNextMatchで配列の値を格納する前にprint()が動いてNULL Error出る
-    GetNextMatch(); // 表示用のListを作成
-    print("**********");
-    print(lAllMatch.length);
-
     // 端末の縦横サイズを取得
     final double _deviceHeight = MediaQuery.of(context).size.height;
     final double _deviceWidth  = MediaQuery.of(context).size.width;
@@ -65,7 +67,7 @@ class cMainPageState extends State<cMainPage> {
             children: [
               InkWell(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => cMatchDetailView(lNextMatch[0].matchNo),));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => cMatchDetailView(lNextMatch[0].matchNo, _teamName, lNextMatch[0].opponent),));
                 },
                 child: Container(
                   height: _deviceHeight*0.15,
@@ -91,7 +93,7 @@ class cMainPageState extends State<cMainPage> {
                       onTap: () async{
                         // タップしたときの処理
                         //print(lAllMatch[index].opponent);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => cMatchDetailView(lAllMatch[index].matchNo),));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => cMatchDetailView(lAllMatch[index].matchNo, _teamName, lNextMatch[index].opponent),));
                       },
                       child: Card(
                           child: ListTile(
