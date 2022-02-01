@@ -93,7 +93,7 @@ class cMainPageState extends State<cMainPage> {
                       onTap: () async{
                         // タップしたときの処理
                         //print(lAllMatch[index].opponent);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => cMatchDetailView(lAllMatch[index].matchNo, _teamName, lNextMatch[index].opponent),));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => cMatchDetailView(lAllMatch[index].matchNo, _teamName, lAllMatch[index].opponent),));
                       },
                       child: Card(
                           child: ListTile(
