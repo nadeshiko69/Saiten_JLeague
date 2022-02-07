@@ -67,7 +67,7 @@ class cMainPageState extends State<cMainPage> {
             children: [
               InkWell(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => cMatchDetailView(lNextMatch[0].matchNo, _teamName, lNextMatch[0].opponent),));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => cMatchDetailView(_deviceHeight, _deviceWidth, lNextMatch[0].matchNo, _teamName, lNextMatch[0].opponent),));
                 },
                 child: Container(
                   height: _deviceHeight*0.15,
@@ -93,7 +93,7 @@ class cMainPageState extends State<cMainPage> {
                       onTap: () async{
                         // タップしたときの処理
                         //print(lAllMatch[index].opponent);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => cMatchDetailView(lAllMatch[index].matchNo, _teamName, lAllMatch[index].opponent),));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => cMatchDetailView(_deviceHeight, _deviceWidth, lAllMatch[index].matchNo, _teamName, lAllMatch[index].opponent),));
                       },
                       child: Card(
                           child: ListTile(
@@ -103,7 +103,6 @@ class cMainPageState extends State<cMainPage> {
                       ),
                     );
                   },
-
                 ),
               ),
             ],
@@ -127,12 +126,12 @@ class cMainPageState extends State<cMainPage> {
                 Navigator.pop(context);
               },
             ),
-            ListTile(
-              title: const Text('川崎フロンターレ'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
+            // ListTile(
+            //   title: const Text('川崎フロンターレ'),
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //   },
+            // ),
             ListTile(
               title: const Text('My Page'),
               onTap: () {

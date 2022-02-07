@@ -5,7 +5,10 @@ import 'package:judge/matchDataView/matchDataViewData.dart';
 import 'package:judge/matchDataView/matchDataViewFactory.dart';
 
 class cMatchDetailView extends StatelessWidget {
-  cMatchDetailView(this.matchNo, this.teamName, this.opponent);
+  cMatchDetailView(this.deviceHeight, this.deviceWidth, this.matchNo,
+      this.teamName, this.opponent);
+  double deviceHeight;
+  double deviceWidth;
   int matchNo;
   String teamName;
   String opponent;
@@ -13,10 +16,10 @@ class cMatchDetailView extends StatelessWidget {
   // 該当の試合情報を読み込み
   // TODO : あとでFactory.dartにきれいに実装する
   @override
-  void GetMatchMember() async {
-    int STARTING   = 1; // スタメン
+  Future<int> GetMatchMember() async {
+    int STARTING = 1; // スタメン
     int SUBSTITUTE = 0; // サブ
-    int NONMEMBER  = -1;// ベンチ外
+    //int NONMEMBER  = -1;// ベンチ外
     String matchNoIdx = "match" + matchNo.toString();
 
     // 初期化
@@ -30,9 +33,11 @@ class cMatchDetailView extends StatelessWidget {
         .collection('Member')
         .where(matchNoIdx, isEqualTo: STARTING);
 
-    final QuerySnapshot<Map<String, dynamic>> startingSnapshot = await _startingData.get();
+    final QuerySnapshot<Map<String, dynamic>> startingSnapshot =
+        await _startingData.get();
 
-    lStartingMemberData = startingSnapshot.docs.map((DocumentSnapshot document){
+    lStartingMemberData =
+        startingSnapshot.docs.map((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
       final String name = data['name'];
       final int number = data['number'];
@@ -46,20 +51,23 @@ class cMatchDetailView extends StatelessWidget {
         .collection('Member')
         .where(matchNoIdx, isEqualTo: SUBSTITUTE);
 
-    final QuerySnapshot<Map<String, dynamic>> subSnapshot = await _subData.get();
+    final QuerySnapshot<Map<String, dynamic>> subSnapshot =
+        await _subData.get();
 
-    lSubMemberData = subSnapshot.docs.map((DocumentSnapshot document){
+    lSubMemberData = subSnapshot.docs.map((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
       final String name = data['name'];
       final int number = data['number'];
       return cPlayerData(name, number);
     }).toList();
 
-    print(lStartingMemberData.length);
-    print(lSubMemberData.length);
+    // print(lStartingMemberData.length);
+    // print(lSubMemberData.length);
+
+    return 0;
   }
 
-  void GetMatchInfo() async {
+  Future<void> GetMatchInfo() async {
     final _matchData = FirebaseFirestore.instance
         .collection('Data')
         .doc(teamName)
@@ -68,7 +76,7 @@ class cMatchDetailView extends StatelessWidget {
 
     final QuerySnapshot<Map<String, dynamic>> snapshot = await _matchData.get();
 
-    final lMatchData = snapshot.docs.map((DocumentSnapshot document){
+    final lMatchData = snapshot.docs.map((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
       final String opponent = data['opponent'];
       final String day = data['date'].toString();
@@ -76,22 +84,68 @@ class cMatchDetailView extends StatelessWidget {
       return cMatchData(opponent, day, matchNo);
     }).toList();
 
-    print(lMatchData[0].matchNo);
-    print(lMatchData[0].day);
-    print(lMatchData[0].opponent);
+    //print(lMatchData[0].matchNo);
+    //print(lMatchData[0].day);
+    //print(lMatchData[0].opponent);
   }
 
   @override
   Widget build(BuildContext context) {
+
+    // スタメン情報を取得
+    // 非同期なのでWidgetはFutureBuilderで作成する
+    // https://qiita.com/ysknsn/items/76c6326c74dc9059ff20
     GetMatchMember();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(matchNo.toString()),
+        title: Text("Match " + matchNo.toString()),
       ),
       body: Container(
-        height: double.infinity,
-        color: Colors.red,
+        child: FutureBuilder(
+          future: GetMatchMember(),
+          builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+            return Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: Center(
+                child: Column(
+                  children: [
+                    Container(
+                      height: deviceHeight * 0.15,
+                      width: deviceWidth,
+                      color: Colors.blue, // FOR DEBUG
+                      child: Center(child: Text('vs' + lNextMatch[0].opponent,
+                        style: OpponentNameTextStyle,)),
+                    ),
+
+                    Container(
+                      height: deviceHeight * 0.7,
+                      width: deviceWidth,
+                      //color: Colors.red, // FOR DEBUG
+                      child:
+                      Container(
+                        child: ListView.builder(
+                          itemCount: lAllMatch.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              child: Card(
+                                child: ListTile(
+                                  title: Text(lStartingMemberData[index].name),
+                                  subtitle: Text(
+                                      lStartingMemberData[index].number.toString()),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
