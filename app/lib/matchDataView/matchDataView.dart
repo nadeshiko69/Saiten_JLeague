@@ -125,14 +125,14 @@ class cMatchDetailView extends StatelessWidget {
                       child:
                       Container(
                         child: ListView.builder(
-                          itemCount: lAllMatch.length,
+                          itemCount: lStartingMemberData.length,
                           itemBuilder: (context, index) {
                             return InkWell(
                               child: Card(
                                 child: ListTile(
                                   title: Text(lStartingMemberData[index].name),
-                                  subtitle: Text(
-                                      lStartingMemberData[index].number.toString()),
+                                  subtitle: Text(lStartingMemberData[index].number.toString()),
+                                  // TODO : Cardの中にDropDownButton実装する https://stackoverflow.com/questions/63782274/flutter-card-widget-with-dropdown
                                 ),
                               ),
                             );
@@ -147,6 +147,7 @@ class cMatchDetailView extends StatelessWidget {
           },
         ),
       ),
+      // TODO : FloatingActionButtonでSubmit実装する
     );
   }
 }

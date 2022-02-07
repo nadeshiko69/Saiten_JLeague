@@ -12,30 +12,10 @@ class cPlayerData {
 }
 
 // スタメン
-List<cPlayerData> lStartingMemberData = [
-  cPlayerData("NULL", 0),
-  cPlayerData("NULL", 0),
-  cPlayerData("NULL", 0),
-  cPlayerData("NULL", 0),
-  cPlayerData("NULL", 0),
-  cPlayerData("NULL", 0),
-  cPlayerData("NULL", 0),
-  cPlayerData("NULL", 0),
-  cPlayerData("NULL", 0),
-  cPlayerData("NULL", 0),
-  cPlayerData("NULL", 0),
-];
+List<cPlayerData> lStartingMemberData = [];
 
 // サブ
-List<cPlayerData> lSubMemberData = [
-  cPlayerData("NULL", 0),
-  cPlayerData("NULL", 0),
-  cPlayerData("NULL", 0),
-  cPlayerData("NULL", 0),
-  cPlayerData("NULL", 0),
-  cPlayerData("NULL", 0),
-  cPlayerData("NULL", 0),
-];
+List<cPlayerData> lSubMemberData = [];
 
 
 
