@@ -114,14 +114,14 @@ class cMatchDetailView extends StatelessWidget {
                       height: deviceHeight * 0.15,
                       width: deviceWidth,
                       color: Colors.blue, // FOR DEBUG
-                      child: Center(child: Text('vs' + lNextMatch[0].opponent,
+                      child: Center(child: Text('vs' + lAllMatch[matchNo-1].opponent,
                         style: OpponentNameTextStyle,)),
                     ),
 
                     Container(
-                      height: deviceHeight * 0.7,
+                      height: deviceHeight * 0.6,
                       width: deviceWidth,
-                      //color: Colors.red, // FOR DEBUG
+                      color: Colors.red, // FOR DEBUG
                       child:
                       Container(
                         child: ListView.builder(
@@ -147,7 +147,33 @@ class cMatchDetailView extends StatelessWidget {
           },
         ),
       ),
+      bottomNavigationBar: Footer(),
       // TODO : FloatingActionButtonでSubmit実装する
+    );
+  }
+}
+
+class Footer extends StatefulWidget {
+  const Footer();
+
+  @override
+  _Footer createState() => _Footer();
+}
+
+class _Footer extends State {
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.directions_run),
+          label:'Starting Member',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.switch_left),
+          label: 'Substitute',
+        ),
+      ],
     );
   }
 }
