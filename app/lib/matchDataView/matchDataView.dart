@@ -4,7 +4,7 @@ import 'package:judge/mainData.dart';
 import 'package:judge/matchDataView/matchDataViewData.dart';
 import 'package:judge/matchDataView/matchDataViewFactory.dart';
 
-class cMatchDetailView extends StatelessWidget {
+class cMatchDetailView extends StatefulWidget {
   cMatchDetailView(this.deviceHeight, this.deviceWidth, this.matchNo,
       this.teamName, this.opponent);
   double deviceHeight;
@@ -13,83 +13,79 @@ class cMatchDetailView extends StatelessWidget {
   String teamName;
   String opponent;
 
-  // 該当の試合情報を読み込み
-  // TODO : あとでFactory.dartにきれいに実装する
   @override
+  State<cMatchDetailView> createState() => _cMatchDetailViewState();
+}
 
-  // 表示する Widget の一覧
-  static List<Widget> _pageList = [
-    // CustomPage(pannelColor: Colors.cyan, title: 'Home'),
-    // CustomPage(pannelColor: Colors.green, title: 'Settings'),
-    // CustomPage(pannelColor: Colors.pink, title: 'Search')
-  ];
+class _cMatchDetailViewState extends State<cMatchDetailView> {
+  int _selectedIndex = 0;
+  void _onTapItem(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    // スタメン情報を取得
-    // 非同期なのでWidgetはFutureBuilderで作成する
-    // https://qiita.com/ysknsn/items/76c6326c74dc9059ff20
+    // 表示する Widget の一覧
+    List<Widget> _pageList = [
+      BodyDisp(widget.deviceHeight, widget.deviceWidth, widget.teamName, widget.matchNo, true),
+      BodyDisp(widget.deviceHeight, widget.deviceWidth, widget.teamName, widget.matchNo, false),
+    ];
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Match " + matchNo.toString()),
+        title: Text("Match " + widget.matchNo.toString()),
       ),
-      body: BodyDisp(deviceHeight, deviceWidth, teamName, matchNo, lSubMemberData),
-      bottomNavigationBar: FooterDisp(),
+      body: _pageList[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.directions_run),
+            label: 'Starting Member',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.switch_left),
+            label: 'Substitute',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onTapItem,
+      ),
       // TODO : FloatingActionButtonでSubmit実装する
     );
   }
 }
 
-Future<int> GetMatchMember(String teamName, int matchNo) async {
-  int STARTING = 1; // スタメン
-  int SUBSTITUTE = 0; // サブ
-  //int NONMEMBER  = -1;// ベンチ外
+Future<List<cPlayerData>> GetMatchMember(String teamName, int matchNo, bool isStarting) async {
   String matchNoIdx = "match" + matchNo.toString();
+  int memberCond = -1;
+  List<cPlayerData> lMemberData;
 
   // 初期化
   lStartingMemberData.clear();
   lSubMemberData.clear();
+  if(isStarting) {memberCond = 1;}
+  else           {memberCond = 0;}
 
-  // スタメンを取得
-  final _startingData = FirebaseFirestore.instance
+  final _memberData = FirebaseFirestore.instance
       .collection('Data')
       .doc(teamName)
       .collection('Member')
-      .where(matchNoIdx, isEqualTo: STARTING);
+      .where(matchNoIdx, isEqualTo: memberCond);
 
-  final QuerySnapshot<Map<String, dynamic>> startingSnapshot =
-  await _startingData.get();
+  final QuerySnapshot<Map<String, dynamic>> memberSnapshot =
+  await _memberData.get();
 
-  lStartingMemberData =
-      startingSnapshot.docs.map((DocumentSnapshot document) {
+  lMemberData =
+      memberSnapshot.docs.map((DocumentSnapshot document) {
         Map<String, dynamic> data = document.data() as Map<String, dynamic>;
         final String name = data['name'];
         final int number = data['number'];
         return cPlayerData(name, number);
       }).toList();
 
-  // サブを取得
-  final _subData = FirebaseFirestore.instance
-      .collection('Data')
-      .doc(teamName)
-      .collection('Member')
-      .where(matchNoIdx, isEqualTo: SUBSTITUTE);
-
-  final QuerySnapshot<Map<String, dynamic>> subSnapshot =
-  await _subData.get();
-
-  lSubMemberData = subSnapshot.docs.map((DocumentSnapshot document) {
-    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-    final String name = data['name'];
-    final int number = data['number'];
-    return cPlayerData(name, number);
-  }).toList();
-
-  // print(lStartingMemberData.length);
-  // print(lSubMemberData.length);
-
-  return 0;
+  return lMemberData;
 }
 
 Future<void> GetMatchInfo(String teamName, int matchNo) async {
@@ -112,18 +108,18 @@ Future<void> GetMatchInfo(String teamName, int matchNo) async {
 
 // Scaffold内のBodyを定義Footerでスタメンとベンチ切り替え
 class BodyDisp extends StatelessWidget {
-  BodyDisp(this.deviceHeight, this.deviceWidth, this.teamName, this.matchNo, this.lPlayerData);
+  BodyDisp(this.deviceHeight, this.deviceWidth, this.teamName, this.matchNo, this.isStarting);
   double deviceHeight;
   double deviceWidth;
   String teamName;
   int matchNo;
-  List<cPlayerData> lPlayerData;
+  bool isStarting;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: GetMatchMember(teamName, matchNo),
-      builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+      future: GetMatchMember(teamName, matchNo, isStarting),
+      builder: (BuildContext context, AsyncSnapshot<List<cPlayerData>> snapshot) {
         if(snapshot.connectionState == ConnectionState.waiting){ // 通信中
           return const Center(
             child: CircularProgressIndicator(),
@@ -134,7 +130,8 @@ class BodyDisp extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-
+        List<cPlayerData>? lMemberData = snapshot.data;
+        print(lMemberData?.length);
         return Padding(
           padding: const EdgeInsets.all(0.0),
           child: Column(
@@ -155,14 +152,14 @@ class BodyDisp extends StatelessWidget {
                 color: Colors.red, // FOR DEBUG
                 child: Container(
                   child: ListView.builder(
-                    itemCount: lPlayerData.length,
+                    itemCount: lMemberData?.length,
                     itemBuilder: (context, index) {
                       return InkWell(
                         child: Card(
                           child: ListTile(
-                            title: Text(lPlayerData[index].name),
+                            title: Text(lMemberData![index].name),
                             subtitle:
-                                Text(lPlayerData[index].number.toString()),
+                                Text(lMemberData![index].number.toString()),
                             // TODO : Cardの中にDropDownButton実装する https://stackoverflow.com/questions/63782274/flutter-card-widget-with-dropdown
                           ),
                         ),
@@ -204,3 +201,5 @@ class _Footer extends State {
     );
   }
 }
+
+
