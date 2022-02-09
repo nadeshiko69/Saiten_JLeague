@@ -52,7 +52,11 @@ class _cMatchDetailViewState extends State<cMatchDetailView> {
         currentIndex: _selectedIndex,
         onTap: _onTapItem,
       ),
-      // TODO : FloatingActionButtonでSubmit実装する
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // TODO : あとでSubmit実装
+        },
+      ),
     );
   }
 }
@@ -87,7 +91,7 @@ Future<List<cPlayerData>> GetMatchMember(String teamName, int matchNo, bool isSt
 
   return lMemberData;
 }
-
+/*
 Future<void> GetMatchInfo(String teamName, int matchNo) async {
   final _matchData = FirebaseFirestore.instance
       .collection('Data')
@@ -105,6 +109,7 @@ Future<void> GetMatchInfo(String teamName, int matchNo) async {
     return cMatchData(opponent, day, matchNo);
   }).toList();
 }
+*/
 
 // Scaffold内のBodyを定義Footerでスタメンとベンチ切り替え
 class BodyDisp extends StatelessWidget {
