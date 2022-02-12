@@ -121,8 +121,6 @@ class _BodyDispState extends State<BodyDisp> {
           );
         }
 
-        if(widget.isStarting == true) {}
-        else {}
 
         List<CPlayerData>? lMemberData = snapshot.data;
         return Padding(
@@ -150,6 +148,9 @@ class _BodyDispState extends State<BodyDisp> {
                       shrinkWrap: true,
                       itemCount: lMemberData?.length,
                       itemBuilder: (context, index) {
+                        final int _selectedPointsIndex;
+                        if(widget.isStarting == true){_selectedPointsIndex = index;}
+                        else                         {_selectedPointsIndex = index+11;}
                         return InkWell(
                           child: Card(
                             child: ListTile(
@@ -159,10 +160,10 @@ class _BodyDispState extends State<BodyDisp> {
                               trailing: DropdownButton(
                                 isExpanded: false,
                                 items: _candidatePoints,
-                                value: _selectedPoints[index],
+                                value: _selectedPoints[_selectedPointsIndex],
                                 onChanged: (double? value) {
                                   setState(() {
-                                    _selectedPoints[index] = value!;
+                                    _selectedPoints[_selectedPointsIndex] = value!;
                                   });
                                 },
                                 //   hint: Align(
