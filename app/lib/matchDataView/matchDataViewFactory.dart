@@ -42,7 +42,56 @@ TODO : https://ichi.pro/flutter-de-cloudfirestore-o-shiyosuru-hoho-1744444852659
 
 /*
 Name : GetMatchMember()
-Arg  : None
+Arg  : teamName, matchNo : 対象チーム、節
+     : isStarting : スタメン or ベンチ / trueならスタメン, falseならベンチ
 Func : 該当する試合の登録メンバーを取得
 * */
-// TODO : factoryに実装してきれいにしたかったけどうまく行かなかったからとりあえずクラス内に作成済。あとでうまいことする
+Future<List<cPlayerData>> GetMatchMember(String teamName, int matchNo, bool isStarting) async {
+  String matchNoIdx = "match" + matchNo.toString();
+  int memberCond = -1;
+  List<cPlayerData> lMemberData;
+
+  // 初期化
+  if(isStarting) {memberCond = 1;}
+  else           {memberCond = 0;}
+
+  final _memberData = FirebaseFirestore.instance
+      .collection('Data')
+      .doc(teamName)
+      .collection('Member')
+      .where(matchNoIdx, isEqualTo: memberCond);
+
+  final QuerySnapshot<Map<String, dynamic>> memberSnapshot =
+  await _memberData.get();
+
+  lMemberData =
+      memberSnapshot.docs.map((DocumentSnapshot document) {
+        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+        final String name = data['name'];
+        final int number = data['number'];
+        return cPlayerData(name, number);
+      }).toList();
+
+  return lMemberData;
+}
+
+// 使用しないので一旦コメントアウト
+/*
+Future<void> GetMatchInfo(String teamName, int matchNo) async {
+  final _matchData = FirebaseFirestore.instance
+      .collection('Data')
+      .doc(teamName)
+      .collection('Match')
+      .where("matchNo", isEqualTo: matchNo);
+
+  final QuerySnapshot<Map<String, dynamic>> snapshot = await _matchData.get();
+
+  final lMatchData = snapshot.docs.map((DocumentSnapshot document) {
+    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    final String opponent = data['opponent'];
+    final String day = data['date'].toString();
+    final int matchNo = data['matchNo'];
+    return cMatchData(opponent, day, matchNo);
+  }).toList();
+}
+*/

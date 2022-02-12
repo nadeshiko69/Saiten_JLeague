@@ -11,11 +11,3 @@ class cPlayerData {
   int    number;
 }
 
-// スタメン
-List<cPlayerData> lStartingMemberData = [];
-
-// サブ
-List<cPlayerData> lSubMemberData = [];
-
-
-

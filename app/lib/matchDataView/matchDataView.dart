@@ -61,55 +61,6 @@ class _cMatchDetailViewState extends State<cMatchDetailView> {
   }
 }
 
-Future<List<cPlayerData>> GetMatchMember(String teamName, int matchNo, bool isStarting) async {
-  String matchNoIdx = "match" + matchNo.toString();
-  int memberCond = -1;
-  List<cPlayerData> lMemberData;
-
-  // 初期化
-  lStartingMemberData.clear();
-  lSubMemberData.clear();
-  if(isStarting) {memberCond = 1;}
-  else           {memberCond = 0;}
-
-  final _memberData = FirebaseFirestore.instance
-      .collection('Data')
-      .doc(teamName)
-      .collection('Member')
-      .where(matchNoIdx, isEqualTo: memberCond);
-
-  final QuerySnapshot<Map<String, dynamic>> memberSnapshot =
-  await _memberData.get();
-
-  lMemberData =
-      memberSnapshot.docs.map((DocumentSnapshot document) {
-        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-        final String name = data['name'];
-        final int number = data['number'];
-        return cPlayerData(name, number);
-      }).toList();
-
-  return lMemberData;
-}
-/*
-Future<void> GetMatchInfo(String teamName, int matchNo) async {
-  final _matchData = FirebaseFirestore.instance
-      .collection('Data')
-      .doc(teamName)
-      .collection('Match')
-      .where("matchNo", isEqualTo: matchNo);
-
-  final QuerySnapshot<Map<String, dynamic>> snapshot = await _matchData.get();
-
-  final lMatchData = snapshot.docs.map((DocumentSnapshot document) {
-    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-    final String opponent = data['opponent'];
-    final String day = data['date'].toString();
-    final int matchNo = data['matchNo'];
-    return cMatchData(opponent, day, matchNo);
-  }).toList();
-}
-*/
 
 // Scaffold内のBodyを定義Footerでスタメンとベンチ切り替え
 class BodyDisp extends StatelessWidget {
@@ -136,7 +87,7 @@ class BodyDisp extends StatelessWidget {
           );
         }
         List<cPlayerData>? lMemberData = snapshot.data;
-        print(lMemberData?.length);
+        //print(lMemberData?.length);
         return Padding(
           padding: const EdgeInsets.all(0.0),
           child: Column(
@@ -151,27 +102,29 @@ class BodyDisp extends StatelessWidget {
                   style: OpponentNameTextStyle,
                 )),
               ),
-              Container(
-                height: deviceHeight * 0.6,
-                width: deviceWidth,
-                color: Colors.red, // FOR DEBUG
-                child: Container(
-                  child: ListView.builder(
-                    itemCount: lMemberData?.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        child: Card(
-                          child: ListTile(
-                            title: Text(lMemberData![index].name),
-                            subtitle:
-                                Text(lMemberData![index].number.toString()),
-                            // TODO : Cardの中にDropDownButton実装する https://stackoverflow.com/questions/63782274/flutter-card-widget-with-dropdown
+              Row(
+                children: [
+                  Container(
+                    height: deviceHeight * 0.6,
+                    width: deviceWidth,
+                    color: Colors.red, // FOR DEBUG
+                    child: ListView.builder(
+                      itemCount: lMemberData?.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          child: Card(
+                            child: ListTile(
+                              title: Text(lMemberData![index].name),
+                              subtitle:
+                                  Text(lMemberData![index].number.toString()),
+                              // TODO : Cardの中にDropDownButton実装する https://stackoverflow.com/questions/63782274/flutter-card-widget-with-dropdown
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
