@@ -1,7 +1,7 @@
 /// main.dart
 /// メインページを管理
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
@@ -14,11 +14,11 @@ import 'matchDataView/matchDataView.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const cMyApp());
+  runApp(const CMyApp());
 }
 
-class cMyApp extends StatelessWidget {
-  const cMyApp({Key? key}) : super(key: key);
+class CMyApp extends StatelessWidget {
+  const CMyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,19 +27,19 @@ class cMyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const cMainPage(title: 'Judge'),
+      home: const CMainPage(title: 'Judge'),
     );
   }
 }
 
-class cMainPage extends StatefulWidget {
-  const cMainPage({Key? key, required this.title}) : super(key: key);
+class CMainPage extends StatefulWidget {
+  const CMainPage({Key? key, required this.title}) : super(key: key);
   final String title;
   @override
-  State<cMainPage> createState() => cMainPageState();
+  State<CMainPage> createState() => CMainPageState();
 }
 
-class cMainPageState extends State<cMainPage> {
+class CMainPageState extends State<CMainPage> {
   //final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('Nagoya _Schedule').snapshots();
   String _teamName = '';
   @override
@@ -47,9 +47,10 @@ class cMainPageState extends State<cMainPage> {
   void initState(){
     super.initState();
     _teamName = 'Nagoya';
-    GetNextMatch(_teamName); // 表示用のListを作成
+    fGetNextMatch(_teamName); // 表示用のListを作成
   }
 
+  @override
   Widget build(BuildContext context) {
     // 端末の縦横サイズを取得
     final double _deviceHeight = MediaQuery.of(context).size.height;
@@ -67,7 +68,7 @@ class cMainPageState extends State<cMainPage> {
             children: [
               InkWell(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => cMatchDetailView(_deviceHeight, _deviceWidth, lNextMatch[0].matchNo, _teamName, lNextMatch[0].opponent),));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => CMatchDetailView(_deviceHeight, _deviceWidth, lNextMatch[0].matchNo, _teamName, lNextMatch[0].opponent),));
                 },
                 child: Container(
                   height: _deviceHeight*0.15,
@@ -75,9 +76,9 @@ class cMainPageState extends State<cMainPage> {
                   color: Colors.blue, // FOR DEBUG
                   child: Column(
                     children: [
-                      Text(lNextMatch[0].nextOrToday!,style: NextMatchTextStyle,),
-                      Text(lNextMatch[0].day,style: ScheduleTextStyle,),
-                      Text('vs' + lNextMatch[0].opponent, style: OpponentNameTextStyle,),
+                      Text(lNextMatch[0].nextOrToday!,style: tsNextMatchTextStyle,),
+                      Text(lNextMatch[0].day,style: tsScheduleTextStyle,),
+                      Text('vs' + lNextMatch[0].opponent, style: tsOpponentNameTextStyle,),
                     ],
                   ),
                 ),
@@ -93,7 +94,7 @@ class cMainPageState extends State<cMainPage> {
                       onTap: () async{
                         // タップしたときの処理
                         //print(lAllMatch[index].opponent);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => cMatchDetailView(_deviceHeight, _deviceWidth, lAllMatch[index].matchNo, _teamName, lAllMatch[index].opponent),));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => CMatchDetailView(_deviceHeight, _deviceWidth, lAllMatch[index].matchNo, _teamName, lAllMatch[index].opponent),));
                       },
                       child: Card(
                           child: ListTile(
@@ -135,7 +136,7 @@ class cMainPageState extends State<cMainPage> {
             ListTile(
               title: const Text('My Page'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => cMyPageView()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const CMyPageView()));
               },
             ),
           ],

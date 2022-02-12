@@ -1,12 +1,12 @@
 
-import 'package:judge/mainData.dart';
+//import 'package:judge/mainData.dart';
 
 // 試合情報を格納
-List<cMatchData> lMatchData = [];
+//List<cMatchData> lMatchData = [];
 
 // 選手情報を格納
-class cPlayerData {
-  cPlayerData(this.name, this.number);
+class CPlayerData {
+  CPlayerData(this.name, this.number);
   String name;
   int    number;
 }

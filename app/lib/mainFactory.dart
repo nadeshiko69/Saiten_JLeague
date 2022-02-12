@@ -2,7 +2,7 @@
 /// main.dartで使用する関数定義
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+//import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:judge/mainData.dart';
@@ -12,7 +12,7 @@ Name : GetTodayDate()
 Arg  : None
 Func : 実行した年月日をyyyy-MM-ddとして取得
 * */
-String GetTodayDate() {
+String fGetTodayDate() {
   initializeDateFormatting("ja_JP");
   DateTime _now = DateTime.now();
   DateFormat outputFormat = DateFormat('yyyy-MM-dd HHmm', "ja_JP");
@@ -27,9 +27,9 @@ Name : GetNextMatch()
 Arg  : String teamName : firebaseに登録してあるチーム名
 Func : 実行した年月日以降直近で実施される試合のスケジュールを取得
 * */
-void GetNextMatch(String teamName) async{
+void fGetNextMatch(String teamName) async{
 
-  DateTime _todayDate = DateTime.parse(GetTodayDate());
+  DateTime _todayDate = DateTime.parse(fGetTodayDate());
   bool _decidedNextMatch = false;
 
   //final _userCollection = FirebaseFirestore.instance.collection('Nagoya _Schedule');
@@ -44,13 +44,13 @@ void GetNextMatch(String teamName) async{
     final String opponent = data['opponent'];
     final String day = data['date'].toString();
     final int matchNo = data['matchNo'];
-    return cMatchData(opponent, day, matchNo);
+    return CMatchData(opponent, day, matchNo);
   }).toList();
 
   lAllMatch = matchData;
   lAllMatch.sort((a, b) => a.matchNo.compareTo(b.matchNo));
 
-  lAllMatch.forEach((v) {
+  for (var v in lAllMatch) {
     //print(v.day);
     DateTime databaseTime = DateTime.parse(v.day);
     if (_todayDate.difference(databaseTime).inDays == 0 &&
@@ -80,5 +80,4 @@ void GetNextMatch(String teamName) async{
       // No Action
     }
   }
-  );
 }

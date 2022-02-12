@@ -2,8 +2,8 @@
 /// matchDataView.dartで使用する関数定義
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:judge/mainData.dart';
+//import 'package:flutter/material.dart';
+//import 'package:judge/mainData.dart';
 import 'package:judge/matchDataView/matchDataViewData.dart';
 
 /*
@@ -46,10 +46,10 @@ Arg  : teamName, matchNo : 対象チーム、節
      : isStarting : スタメン or ベンチ / trueならスタメン, falseならベンチ
 Func : 該当する試合の登録メンバーを取得
 * */
-Future<List<cPlayerData>> GetMatchMember(String teamName, int matchNo, bool isStarting) async {
+Future<List<CPlayerData>> fGetMatchMember(String teamName, int matchNo, bool isStarting) async {
   String matchNoIdx = "match" + matchNo.toString();
   int memberCond = -1;
-  List<cPlayerData> lMemberData;
+  List<CPlayerData> lMemberData;
 
   // 初期化
   if(isStarting) {memberCond = 1;}
@@ -69,7 +69,7 @@ Future<List<cPlayerData>> GetMatchMember(String teamName, int matchNo, bool isSt
         Map<String, dynamic> data = document.data() as Map<String, dynamic>;
         final String name = data['name'];
         final int number = data['number'];
-        return cPlayerData(name, number);
+        return CPlayerData(name, number);
       }).toList();
 
   return lMemberData;
