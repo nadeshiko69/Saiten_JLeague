@@ -2,8 +2,7 @@
 /// matchDataView.dartで使用する関数定義
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:flutter/material.dart';
-//import 'package:judge/mainData.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:judge/matchDataView/matchDataViewData.dart';
 
 /*
@@ -95,3 +94,18 @@ Future<void> GetMatchInfo(String teamName, int matchNo) async {
   }).toList();
 }
 */
+
+
+void fSubmit() async {
+  // ドキュメント作成
+  // await FirebaseFirestore.instance
+  //     .collection('test_collection1') // コレクションID
+  //     .doc() // ここは空欄だと自動でIDが付く
+  //     .set({
+  //   'name': 'sato',
+  //   'age': 20,
+  //   'sex': 'male',
+  //   'type': ['A', 'B']
+  // }); // データ
+}
+

@@ -1,4 +1,4 @@
-//import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/matchDataView/matchDataViewData.dart';
@@ -6,7 +6,9 @@ import 'package:judge/matchDataView/matchDataViewFactory.dart';
 
 class CMatchDetailView extends StatefulWidget {
   CMatchDetailView(this.deviceHeight, this.deviceWidth, this.matchNo,
-      this.teamName, this.opponent, {Key? key}) : super(key: key);
+      this.teamName, this.opponent,
+      {Key? key})
+      : super(key: key);
   double deviceHeight;
   double deviceWidth;
   int matchNo;
@@ -55,8 +57,27 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
         onTap: _onTapItem,
       ),
       floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.done),
         onPressed: () {
-          // TODO : あとでSubmit実装
+          // 提出
+          fSubmit();
+
+          // ログインしていなかった場合警告を出す
+          showDialog(
+            context: context,
+            builder: (context) {
+              return CupertinoAlertDialog(
+                title: const Text("ログインしてください"),
+                content: const Text("採点の提出にはログインが必要です。"),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    child: const Text("OK"),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              );
+            },
+          );
         },
       ),
     );
@@ -66,7 +87,9 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
 // Scaffold内のBodyを定義Footerでスタメンとベンチ切り替え
 class BodyDisp extends StatefulWidget {
   BodyDisp(this.deviceHeight, this.deviceWidth, this.teamName, this.matchNo,
-      this.isStarting, {Key? key}) : super(key: key);
+      this.isStarting,
+      {Key? key})
+      : super(key: key);
   double deviceHeight;
   double deviceWidth;
   String teamName;
@@ -81,7 +104,7 @@ class _BodyDispState extends State<BodyDisp> {
   // 採点用リスト、0.5~10.0
   final List<DropdownMenuItem<double>> _candidatePoints = [];
 
-  final List<double> _selectedPoints = List.generate(11+7, (i)=> 6.0);
+  final List<double> _selectedPoints = List.generate(11 + 7, (i) => 6.0);
 
   @override
   void initState() {
@@ -121,7 +144,6 @@ class _BodyDispState extends State<BodyDisp> {
           );
         }
 
-
         List<CPlayerData>? lMemberData = snapshot.data;
         return Padding(
           padding: const EdgeInsets.all(0.0),
@@ -149,34 +171,28 @@ class _BodyDispState extends State<BodyDisp> {
                       itemCount: lMemberData?.length,
                       itemBuilder: (context, index) {
                         final int _selectedPointsIndex;
-                        if(widget.isStarting == true){_selectedPointsIndex = index;}
-                        else                         {_selectedPointsIndex = index+11;}
+                        if (widget.isStarting == true) {
+                          _selectedPointsIndex = index;
+                        } else {
+                          _selectedPointsIndex = index + 11;
+                        }
                         return InkWell(
                           child: Card(
                             child: ListTile(
                               title: Text(lMemberData![index].name),
-                              subtitle: Text(
-                                  lMemberData[index].number.toString()),
+                              subtitle:
+                                  Text(lMemberData[index].number.toString()),
                               trailing: DropdownButton(
                                 isExpanded: false,
                                 items: _candidatePoints,
                                 value: _selectedPoints[_selectedPointsIndex],
                                 onChanged: (double? value) {
                                   setState(() {
-                                    _selectedPoints[_selectedPointsIndex] = value!;
+                                    _selectedPoints[_selectedPointsIndex] =
+                                        value!;
                                   });
                                 },
-                                //   hint: Align(
-                                //     alignment: Alignment.centerRight,
-                                //     child: Text(
-                                //       "Select Item Type",
-                                //       style: TextStyle(color: Colors.grey),
-                                //     ),
-                                //   ),
-                                //   style:
-                                //   TextStyle(color: Colors.black, decorationColor: Colors.red),
                               ),
-                              // TODO : Cardの中にDropDownButton実装する https://stackoverflow.com/questions/63782274/flutter-card-widget-with-dropdown
                             ),
                           ),
                         );
