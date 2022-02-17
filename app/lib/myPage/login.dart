@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../main.dart';
+
 class MyAuthPage extends StatefulWidget {
   const MyAuthPage({Key? key}) : super(key: key);
 
@@ -107,6 +109,7 @@ class _MyAuthPageState extends State<MyAuthPage> {
                     );
                     // ログインに成功した場合
                     final User user = result.user!;
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CMainPage(userID: user.uid, isAlreadyLogin: true,),));
                     setState(() {
                       infoText = "ログインOK：${user.email}";
                     });
@@ -128,3 +131,4 @@ class _MyAuthPageState extends State<MyAuthPage> {
     );
   }
 }
+

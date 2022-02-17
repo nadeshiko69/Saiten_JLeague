@@ -2,6 +2,14 @@
 /// main.dartで使用するdata定義
 import 'package:flutter/material.dart';
 
+// ログイン情報
+class CMyData {
+  CMyData(this.userID, this.isAlreadyLogin);
+  String userID;        // Authで登録したuserID
+  bool isAlreadyLogin;  // 現在ログインしているか
+}
+CMyData myData = CMyData('', false);
+
 // Firebaseから全試合情報を取得
 class CMatchData {
   CMatchData(this.opponent, this.day, this.matchNo);

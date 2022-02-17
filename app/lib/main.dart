@@ -27,21 +27,29 @@ class CMyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const CMainPage(title: 'Judge'),
+      home: const CMainPage(userID: '', isAlreadyLogin: false,),
     );
   }
 }
 
 class CMainPage extends StatefulWidget {
-  const CMainPage({Key? key, required this.title}) : super(key: key);
-  final String title;
+  const CMainPage({Key? key, required this.userID, required this.isAlreadyLogin}) : super(key: key);
+  final String userID;
+  final bool isAlreadyLogin;
+
   @override
   State<CMainPage> createState() => CMainPageState();
+
+  void initState(){
+    myData = CMyData(userID, isAlreadyLogin); //未ログインとして初期化
+    print(userID);
+  }
 }
 
 class CMainPageState extends State<CMainPage> {
   //final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('Nagoya _Schedule').snapshots();
   String _teamName = '';
+
   @override
 
   void initState(){
@@ -58,7 +66,7 @@ class CMainPageState extends State<CMainPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Judge'),
       ),
 
       body: Padding(
