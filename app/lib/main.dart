@@ -27,22 +27,24 @@ class CMyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const CMainPage(userID: '', isAlreadyLogin: false,),
+      home: const CMainPage(userID: '', userName: '', isAlreadyLogin: false,),
     );
   }
 }
 
 class CMainPage extends StatefulWidget {
-  const CMainPage({Key? key, required this.userID, required this.isAlreadyLogin}) : super(key: key);
+  const CMainPage({Key? key, required this.userID, required this.userName, required this.isAlreadyLogin}) : super(key: key);
   final String userID;
+  final String userName;
   final bool isAlreadyLogin;
 
   @override
   State<CMainPage> createState() => CMainPageState();
 
   void initState(){
-    myData = CMyData(userID, isAlreadyLogin); //未ログインとして初期化
-    print(userID);
+    myData.userID = userID;
+    myData.userName = userName;
+    myData.isAlreadyLogin = true;
   }
 }
 
@@ -66,7 +68,7 @@ class CMainPageState extends State<CMainPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Judge'),
+        title: const Text('Judge'),
       ),
 
       body: Padding(
@@ -123,11 +125,11 @@ class CMainPageState extends State<CMainPage> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
+            DrawerHeader(
+              decoration: const BoxDecoration(
                 color: Colors.blue,
               ),
-              child: Text('Drawer Header'),
+              child: Text(myData.userName),
             ),
             ListTile(
               title: const Text('名古屋グランパス'),
@@ -135,12 +137,6 @@ class CMainPageState extends State<CMainPage> {
                 Navigator.pop(context);
               },
             ),
-            // ListTile(
-            //   title: const Text('川崎フロンターレ'),
-            //   onTap: () {
-            //     Navigator.pop(context);
-            //   },
-            // ),
             ListTile(
               title: const Text('My Page'),
               onTap: () {
