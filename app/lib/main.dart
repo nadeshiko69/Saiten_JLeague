@@ -59,6 +59,9 @@ class CMainPageState extends State<CMainPage> {
     // 端末の縦横サイズを取得
     final double _deviceHeight = MediaQuery.of(context).size.height;
     final double _deviceWidth  = MediaQuery.of(context).size.width;
+    final String _myPageText;
+    if(myData.isAlreadyLogin) {_myPageText = 'MyPage';}
+    else                      {_myPageText = 'Log in';}
 
     return Scaffold(
       appBar: AppBar(
@@ -132,9 +135,15 @@ class CMainPageState extends State<CMainPage> {
               },
             ),
             ListTile(
-              title: const Text('My Page'),
+              title: Text(_myPageText),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const CMyPageView()));
+                if(myData.isAlreadyLogin) { // 既にログインしていたらマイページ
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => const CMyPageView()));
+                }
+                else{ // まだならログイン画面
+
+                }
               },
             ),
           ],
