@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:judge/mainData.dart';
 
 import '../main.dart';
 
@@ -60,9 +61,12 @@ class _MyAuthPageState extends State<MyAuthPage> {
                     );
                     // ログインに成功した場合
                     final User user = result.user!;
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => CMainPage(userID: user.uid, userName: 'ASDF', isAlreadyLogin: true,),));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CMainPage(userID: user.uid, email: user.email.toString(), isAlreadyLogin: true,),));
                     setState(() {
                       infoText = "ログインOK：${user.email}";
+                      myData.userID = user.uid;
+                      myData.email = user.email.toString();
+                      myData.isAlreadyLogin = true;
                     });
                   } catch (e) {
                     // ログインに失敗した場合

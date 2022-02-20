@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 // ログイン情報
 class CMyData {
-  CMyData(this.userID, this.userName, this.isAlreadyLogin);
+  CMyData(this.userID, this.email, this.isAlreadyLogin);
   String userID;        // Authで登録したuserID
-  String userName;
+  String email;         // Authで登録したメアド
   bool isAlreadyLogin;  // 現在ログインしているか
 }
-CMyData myData = CMyData('','', false);
+CMyData myData = CMyData('','NOT LOGIN', false);
 
 // Firebaseから全試合情報を取得
 class CMatchData {

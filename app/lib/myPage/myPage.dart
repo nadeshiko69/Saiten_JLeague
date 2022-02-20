@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:judge/myPage/login.dart';
-import 'package:judge/myPage/userFactory.dart';
 import 'package:provider/provider.dart';
 
 // Auth機能 https://www.flutter-study.dev/firebase/authentication

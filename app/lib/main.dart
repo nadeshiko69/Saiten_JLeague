@@ -27,25 +27,19 @@ class CMyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const CMainPage(userID: '', userName: '', isAlreadyLogin: false,),
+      home: CMainPage(userID: '', email: 'NOT LOGIN',isAlreadyLogin: false, ),
     );
   }
 }
 
 class CMainPage extends StatefulWidget {
-  const CMainPage({Key? key, required this.userID, required this.userName, required this.isAlreadyLogin}) : super(key: key);
+  const CMainPage({Key? key, required this.userID,required this.email, required this.isAlreadyLogin}) : super(key: key);
   final String userID;
-  final String userName;
+  final String email;
   final bool isAlreadyLogin;
 
   @override
   State<CMainPage> createState() => CMainPageState();
-
-  void initState(){
-    myData.userID = userID;
-    myData.userName = userName;
-    myData.isAlreadyLogin = true;
-  }
 }
 
 class CMainPageState extends State<CMainPage> {
@@ -129,7 +123,7 @@ class CMainPageState extends State<CMainPage> {
               decoration: const BoxDecoration(
                 color: Colors.blue,
               ),
-              child: Text(myData.userName),
+              child: Text(myData.email),
             ),
             ListTile(
               title: const Text('名古屋グランパス'),

@@ -1,0 +1,14 @@
+
+
+
+* Winで作業後MacでPullしてBUildでエラー発生
+エラーメッセージ
+    error running pod install Error launching application on iPhone 13.
+解決方法
+    Podfile.lockを削除して再インストール、クリーン
+    詳細は　https://dolphinetech.com/flutter/error-running-pod-install/
+
+
+* エミュレータにキーボード入力ができなくなる
+解決方法
+    エミュレータを閉じて再起動
