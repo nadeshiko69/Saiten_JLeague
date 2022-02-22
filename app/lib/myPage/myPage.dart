@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:judge/myPage/login.dart';
-import 'package:provider/provider.dart';
+import 'package:judge/main.dart';
+import 'package:judge/matchDataView/matchDataView.dart';
+import 'package:judge/mainData.dart';
 
-// Auth機能 https://www.flutter-study.dev/firebase/authentication
+class CMyPage extends StatelessWidget {
+  const CMyPage({Key? key}) : super(key: key);
 
-class CMyPageView extends StatelessWidget {
-  const CMyPageView({Key? key}) : super(key: key);
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("My Page"),
+    return Container(
+      // ログアウトボタン作る
+      child: ElevatedButton(
+        onPressed: () {
+          myData.isAlreadyLogin = false;
+          myData.email = 'NOT LOGIN';
+          myData.userID = '';
+          Navigator.push(context, MaterialPageRoute(builder: (context) => CMainPage(userID: myData.userID, email: myData.email, isAlreadyLogin: myData.isAlreadyLogin,),));
+        },
+        child: null,
       ),
-      body: const MyAuthPage(),
     );
   }
 }

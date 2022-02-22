@@ -6,7 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
 import 'package:flutter/material.dart';
-import 'package:judge/myPage/myPage.dart';
+import 'package:judge/myPage/myPageViewer.dart';
 
 import 'matchDataView/matchDataView.dart';
 
@@ -142,7 +142,8 @@ class CMainPageState extends State<CMainPage> {
                       builder: (context) => const CMyPageView()));
                 }
                 else{ // まだならログイン画面
-
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => const CAuthPageView()));
                 }
               },
             ),
