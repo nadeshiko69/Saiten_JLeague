@@ -3,6 +3,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:judge/mainData.dart';
 import 'package:judge/matchDataView/matchDataViewData.dart';
 
 /*
@@ -40,7 +41,7 @@ TODO : https://ichi.pro/flutter-de-cloudfirestore-o-shiyosuru-hoho-1744444852659
 * */
 
 /*
-Name : GetMatchMember()
+Name : fGetMatchMember()
 Arg  : teamName, matchNo : 対象チーム、節
      : isStarting : スタメン or ベンチ / trueならスタメン, falseならベンチ
 Func : 該当する試合の登録メンバーを取得
@@ -96,16 +97,30 @@ Future<void> GetMatchInfo(String teamName, int matchNo) async {
 */
 
 
+/*
+Name : fSubmit()
+Arg  : void
+Func : 採点結果をfirebaseに格納
+* */
 void fSubmit() async {
   // ドキュメント作成
-  // await FirebaseFirestore.instance
-  //     .collection('test_collection1') // コレクションID
-  //     .doc() // ここは空欄だと自動でIDが付く
-  //     .set({
-  //   'name': 'sato',
-  //   'age': 20,
-  //   'sex': 'male',
-  //   'type': ['A', 'B']
-  // }); // データ
+  await FirebaseFirestore.instance
+      .collection('Data')
+      .doc('Nagoya')
+      .collection('Match')
+      .doc(myData.email) // ここは空欄だと自動でIDが付く
+      .set({
+    'name': 'sato',
+    'age': 20,
+    'sex': 'male',
+    'type': ['A', 'B']
+  }); // データ
 }
 
+/*
+final _userCollection = FirebaseFirestore.instance
+      .collection('Data')
+      .doc(teamName)
+      .collection('Match');
+  final QuerySnapshot snapshot = await _userCollection.get();
+* */

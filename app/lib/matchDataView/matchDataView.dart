@@ -15,6 +15,7 @@ class CMatchDetailView extends StatefulWidget {
   String teamName;
   String opponent;
 
+
   @override
   State<CMatchDetailView> createState() => _CMatchDetailViewState();
 }
@@ -36,6 +37,12 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
       BodyDisp(widget.deviceHeight, widget.deviceWidth, widget.teamName,
           widget.matchNo, false),
     ];
+    String submitMainMsg = "ログインしてください";
+    String submitSubMsg  = "採点の提出にはログインが必要です。";
+    if(myData.isAlreadyLogin){
+      submitMainMsg = "提出が完了しました";
+      submitSubMsg  = "結果発表をお待ちください！";
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -57,18 +64,19 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
         onTap: _onTapItem,
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.done),
+        child: const Icon(Icons.done),
         onPressed: () {
           // 提出
-          fSubmit();
+          if(myData.isAlreadyLogin){fSubmit();}
+          else{ /* No Action */ }
 
           // ログインしていなかった場合警告を出す
           showDialog(
             context: context,
             builder: (context) {
               return CupertinoAlertDialog(
-                title: const Text("ログインしてください"),
-                content: const Text("採点の提出にはログインが必要です。"),
+                title: Text(submitMainMsg),
+                content: Text(submitSubMsg),
                 actions: <Widget>[
                   CupertinoDialogAction(
                     child: const Text("OK"),
@@ -83,6 +91,7 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
     );
   }
 }
+
 
 // Scaffold内のBodyを定義Footerでスタメンとベンチ切り替え
 class BodyDisp extends StatefulWidget {
