@@ -83,7 +83,7 @@ class CMainPageState extends State<CMainPage> {
                   color: Colors.blue, // FOR DEBUG
                   child: Column(
                     children: [
-                      Text(lNextMatch[0].nextOrToday!,style: tsNextMatchTextStyle,),
+                      Text(lNextMatch[0].nextOrToday.toString(),style: tsNextMatchTextStyle,),
                       Text(lNextMatch[0].day,style: tsScheduleTextStyle,),
                       Text('vs' + lNextMatch[0].opponent, style: tsOpponentNameTextStyle,),
                     ],
