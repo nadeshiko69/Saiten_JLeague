@@ -16,7 +16,7 @@ class CMatchData {
   CMatchData(this.opponent, this.day, this.matchNo);
   String opponent;
   String day;
-  int    matchNo;
+  int    matchNo; 
   String ?nextOrToday;
 }
 List<CMatchData> lAllMatch = [];
