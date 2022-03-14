@@ -1,5 +1,9 @@
 
 
+* Null Checkについて
+?を要素の後ろにつけると、その要素が値を取得出来なかった場合もNULLとして処理を続行する
+=値が入っていなくてもエラーにならずに続行できる
+
 
 * Winで作業後MacでPullしてBUildでエラー発生
 エラーメッセージ
@@ -12,3 +16,11 @@
 * エミュレータにキーボード入力ができなくなる
 解決方法
     エミュレータを閉じて再起動
+
+
+* Debugボタンが押せない
+* enable to locate adb ...
+解決方法
+    File -> project structure -> ProjectSDK
+    が、No SDKになっているので、SDKを設定する
+    https://halzoblog.com/adb-error/
