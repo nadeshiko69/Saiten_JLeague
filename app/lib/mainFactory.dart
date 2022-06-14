@@ -34,17 +34,18 @@ void fGetNextMatch(String teamName) async{
 
   //final _userCollection = FirebaseFirestore.instance.collection('Nagoya _Schedule');
   final _userCollection = FirebaseFirestore.instance
-      .collection('Data')
+      .collection('Data2022')
       .doc(teamName)
       .collection('Match');
   final QuerySnapshot snapshot = await _userCollection.get();
 
   final matchData = snapshot.docs.map((DocumentSnapshot document){
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-    final String opponent = data['opponent'];
-    final String day = data['date'].toString();
-    final int matchNo = data['matchNo'];
-    return CMatchData(opponent, day, matchNo);
+    final String day = data['kickoff'].toString();
+    final int matchNo = data['section'];
+    final String home = data['home'];
+    final String away = data['away'];
+    return CMatchData(day, matchNo, home, away);
   }).toList();
 
   lAllMatch = matchData;

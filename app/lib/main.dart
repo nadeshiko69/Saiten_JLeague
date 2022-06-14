@@ -75,7 +75,7 @@ class CMainPageState extends State<CMainPage> {
             children: [
               InkWell(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => CMatchDetailView(_deviceHeight, _deviceWidth, lNextMatch[0].matchNo, _teamName, lNextMatch[0].opponent),));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => CMatchDetailView(_deviceHeight, _deviceWidth, lNextMatch[0].matchNo, _teamName, lNextMatch[0].opponent),)); // opponentではなくてHOMEAWAY両方読み込んでいるので構造を変える
                 },
                 child: Container(
                   height: _deviceHeight*0.15,
