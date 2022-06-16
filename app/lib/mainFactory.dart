@@ -2,7 +2,6 @@
 /// main.dartで使用する関数定義
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:judge/mainData.dart';
@@ -41,11 +40,17 @@ void fGetNextMatch(String teamName) async{
 
   final matchData = snapshot.docs.map((DocumentSnapshot document){
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    print(data['kickoff'].toString()); // Firebase側で16節以降のkickoffがtimestampという名称で登録されていてtoDateできない。っFirebaseを修正する
     final String day = data['kickoff'].toString();
     final int matchNo = data['section'];
-    final String home = data['home'];
-    final String away = data['away'];
-    return CMatchData(day, matchNo, home, away);
+    String opponent;
+    if(data["home"] == fConverseTeamName(teamName)) {
+      opponent = data['away'];
+    }
+    else {
+      opponent = data['home'];
+    }
+    return CMatchData(opponent, day, matchNo);
   }).toList();
 
   lAllMatch = matchData;
@@ -81,4 +86,19 @@ void fGetNextMatch(String teamName) async{
       // No Action
     }
   }
+}
+
+/*
+Name : fConverseTeamName()
+Arg  : String teamName : firebaseに登録してあるチーム名
+Func : firebaseのチーム名を漢字表記に直す（HOME／AWAY判定で使用）
+Todo : 他チーム実装したらcaseを追加する
+* */
+String fConverseTeamName(String teamName){
+  String ret;
+  switch(teamName){
+    case 'Nagoya': ret = "名古屋"; break;
+    default : ret = "Abnormal case";
+  }
+  return ret;
 }
