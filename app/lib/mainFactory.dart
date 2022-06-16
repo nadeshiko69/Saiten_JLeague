@@ -41,7 +41,7 @@ void fGetNextMatch(String teamName) async{
   final matchData = snapshot.docs.map((DocumentSnapshot document){
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
     print(data['kickoff'].toString()); // Firebase側で16節以降のkickoffがtimestampという名称で登録されていてtoDateできない。っFirebaseを修正する
-    final String day = data['kickoff'].toString();
+    final String day = data['kickoff'].toDate().toString();
     final int matchNo = data['section'];
     String opponent;
     if(data["home"] == fConverseTeamName(teamName)) {
