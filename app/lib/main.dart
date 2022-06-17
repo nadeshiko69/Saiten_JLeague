@@ -76,6 +76,9 @@ class CMainPageState extends State<CMainPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Judge'),
+        actions: [IconButton(onPressed: () => {
+          setState((){}),
+        }, icon: Icon(Icons.autorenew))],
       ),
       body: Padding(
         padding: const EdgeInsets.all(0.0),
