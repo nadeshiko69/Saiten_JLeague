@@ -56,7 +56,7 @@ Future<List<CPlayerData>> fGetMatchMember(String teamName, int matchNo, bool isS
   else           {memberCond = 0;}
 
   final _memberData = FirebaseFirestore.instance
-      .collection('Data')
+      .collection('Data2022')
       .doc(teamName)
       .collection('Member')
       .where(matchNoIdx, isEqualTo: memberCond);
@@ -105,9 +105,9 @@ Func : 採点結果をfirebaseに格納
 void fSubmit() async {
   // ドキュメント作成
   await FirebaseFirestore.instance
-      .collection('Data')
-      .doc('Nagoya')
-      .collection('Match')
+      .collection('Data2022')
+      .doc('Scores')
+      .collection('Nagoya')
       .doc(myData.email) // ここは空欄だと自動でIDが付く
       .set({
     'name': 'sato',
@@ -116,11 +116,3 @@ void fSubmit() async {
     'type': ['A', 'B']
   }); // データ
 }
-
-/*
-final _userCollection = FirebaseFirestore.instance
-      .collection('Data')
-      .doc(teamName)
-      .collection('Match');
-  final QuerySnapshot snapshot = await _userCollection.get();
-* */
