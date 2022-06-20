@@ -1,0 +1,4 @@
+
+・環境立ち上げ
+	https://qiita.com/soh506/items/12a5df2d19f1c2c792fe
+　	空のフォルダにDjango環境を導入してブラウザでロケットを飛ばす
