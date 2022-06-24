@@ -1,4 +1,56 @@
-<参考>
-・環境立ち上げ
-	https://qiita.com/soh506/items/12a5df2d19f1c2c792fe
-　	空のフォルダにDjango環境を導入してブラウザでロケットを飛ばす
+
+●立ち上げ
+    ・仮想環境の作成
+    　642  python3 -m venv django-venv
+    ・仮想環境に入る
+    　643  cd django-venv
+    　645  source bin/activate
+    ・仮想環境内にDjangoをインストール、freezeで確認
+    　※競合しないように仮想環境ごとに使うフレームワークを分けてinstallする
+    　646  python3 -m pip install django
+    　648  pip freeze
+    ・プロジェクトフォルダ作成
+　    685  django-admin startproject pJudgeOperator
+    ・アプリケーション作成
+　    687  cd pJudgeOperator
+  　  688  python manage.py startapp aFirebaseOperator
+
+    <構成>
+    django-venv
+     L bin
+     L include
+     L lib
+     L pJudgeOperator           # Project
+        L aFirebaseOperator     # App
+        L pJudgeOperator
+        L manage.py
+    
+    ・Server起動してみる
+    上記のpJudgeOperatorフォルダをCodeで開き直す（# Projectって書いてある方）
+    source ../bin/activate で仮想環境に入る
+    あとは基本的には参考欄のQiitaを見る
+    
+    ※ VScodeで仮想環境内のPythonが指定できていないとエラーになるよ
+    - `python manage.py runserver`を手打ちすると起動できるけど、
+      F5でcodeに起動してもらおうとするとDjangoが入ってない的なことを言われる
+    - 仮想環境に入った状態で`which python`で仮想環境ないのPythonパスを調べてコピー
+      View->Command Parette->Select Interpriter->インタプリタパスを入力からコピーしたパスをペーストする
+
+        
+    <参考>
+    https://qiita.com/soh506/items/12a5df2d19f1c2c792fe
+    https://www.youtube.com/watch?v=O037g3NOoXY
+
+
+●XXX
+    ・初期設定
+    Project（pJudgeOperator）->setting.pyを修正
+    - INSTALLED_APPSに'aFirebaseOperator'を追加
+    - LANGUAGE_CODEVを'ja', TIME_ZONEを'Asia/Tokyo'に変更(任意)
+
+    ・トップページの作成（動画13分位）
+    - Project->urls.pyにpath('', frontpage)を加筆（指定なしならfrontpageに飛ぶ）
+    - App->views.pyにfrontpageを加筆（呼ばれたらfrontpage.htmlを描画する）
+    - templates(フォルダ作る)にfrontpage.htmlを作成
+      動画内で言っているhtmlの補完機能は、https://zenn.dev/wtkn25/articles/vscode-emmet-setting
+      

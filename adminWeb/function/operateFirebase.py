@@ -37,11 +37,15 @@ class operateFirebase():
             # print(f"id:{doc.id}")
             # print(f"Name:{doc.get('name')}")
             personalData = {
-                id:{doc.id},
-                name:{doc.get('name')},
-                number:{doc.get('number')},
-                position:{doc.get('position')}
+                'id':doc.id,
+                'name':doc.get('name'),
+                'number':doc.get('number'),
+                'position':doc.get('position')
             }
+            self.lMemberList.append(personalData)
+        
+        return self.lMemberList
+            
 
         
 # FOR DEBUG
