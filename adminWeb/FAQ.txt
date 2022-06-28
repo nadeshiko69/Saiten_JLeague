@@ -42,8 +42,7 @@
     https://www.youtube.com/watch?v=O037g3NOoXY
 
 
-●XXX
-    ・初期設定
+●初期設定
     Project（pJudgeOperator）->setting.pyを修正
     - INSTALLED_APPSに'aFirebaseOperator'を追加
     - LANGUAGE_CODEVを'ja', TIME_ZONEを'Asia/Tokyo'に変更(任意)
@@ -53,4 +52,30 @@
     - App->views.pyにfrontpageを加筆（呼ばれたらfrontpage.htmlを描画する）
     - templates(フォルダ作る)にfrontpage.htmlを作成
       動画内で言っているhtmlの補完機能は、https://zenn.dev/wtkn25/articles/vscode-emmet-setting
-      
+
+
+●管理者アカウント作成（動画では後述のDB作成の途中でやってる）
+    　python manage.py createsuperuser
+    　Username：名姓Spaceなし
+    　Mail：未入力
+    　Pass：一番複雑なやつ
+
+    　127.0.0.1:8000/adminで管理者画面
+  
+●DB関連
+    - DB作成、連携
+    　Appのmodels.pyに、DBおModelのクラスを記述
+    　python manage.py makemigrations で、migrationファイル( App > migration > 00XX_initial.py )を作成する
+    　python manage.py migrate で、作成したModelをDBに反映させる
+    　models.pyに作成したクラスをregister()で与える
+    　管理者画面に表示されるのでクリック
+
+●htmlファイルの共通化
+    base.htmlを作成
+    {% block content %}  {% endblock %}の間を加筆していく、他は共通化される
+
+●DBの中身をhtmlで出力する
+    views.pyを加筆：クラスを指定しall()で取得。return renderの第三引数で渡す
+    frontpage.htmlを加筆：{%for%}で取得
+
+    
