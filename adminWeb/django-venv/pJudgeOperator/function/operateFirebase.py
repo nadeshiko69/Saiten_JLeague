@@ -5,7 +5,7 @@ from pyparsing import LRUMemo
 
 class operateFirebase():
     def __init__(self):
-        JSON_PATH = 'saitenj-408a1-firebase-adminsdk-r2bv3-1e3090988e.json'
+        JSON_PATH = 'function/saitenj-408a1-firebase-adminsdk-r2bv3-1e3090988e.json'
         # Firebase初期化
         self.cred = credentials.Certificate(JSON_PATH)
         firebase_admin.initialize_app(self.cred)
@@ -50,6 +50,6 @@ class operateFirebase():
         
 # FOR DEBUG
 
-of = operateFirebase()
-of.fWriteMemberDataToFirebase()
-of.fReadMemberDataFromFirebase('Nagoya')
+# of = operateFirebase()
+# of.fWriteMemberDataToFirebase()
+# print(of.fReadMemberDataFromFirebase('Nagoya'))
