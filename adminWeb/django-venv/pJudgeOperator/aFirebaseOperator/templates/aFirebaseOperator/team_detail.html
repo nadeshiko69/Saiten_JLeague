@@ -1,17 +1,12 @@
 {% extends "aFirebaseOperator/base.html" %}
 {% block content %} 
-    <h1 class="title"> {{post.title}} </h1>
-    <p>{{post.intro}}</p>
-    <hr />
-
-    <!-- コメント -->
-    <h2 class="subtitle"> コメントを追加 </h2>
+    <h2 class="subtitle"> {{team.engName}} </h2>
 
     <form action="." method="post">
         {% csrf_token %}<!-- セキュリティ用タグ、form追加時は書く -->
         <div class="field">
             <div class="control">
-                <button type="submit" name="run_script">Run script</button>
+                <button type="submit" name="run_script">メンバー情報を取得</button>
             </div>
         </div>
     </form>

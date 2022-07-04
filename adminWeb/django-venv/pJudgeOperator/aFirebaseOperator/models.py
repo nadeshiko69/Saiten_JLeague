@@ -1,4 +1,5 @@
 # DBと接続するための記述
+from pyexpat import model
 from django.db import models
 
 class Post(models.Model):
@@ -21,3 +22,9 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ["-posted_date"]
+        
+        
+# チーム一覧表示用
+class Team(models.Model):
+    jpnName = models.CharField(max_length=32)
+    engName = models.CharField(max_length=16)

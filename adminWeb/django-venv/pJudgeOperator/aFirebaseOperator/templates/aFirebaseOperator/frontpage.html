@@ -1,9 +1,8 @@
 {% extends "aFirebaseOperator/base.html" %}
 {% block content %} 
-{% for post in posts %}
+{% for team in teams %}
 <div class="post block">
-    <p>{{post.intro}}</p>
-    <a href="{% url 'post_detail' post.slug %}">mores</a>
+    <a href="{% url 'team_detail' team.engName %}">{{team.jpnName}}</a>
     <hr />
 </div>
 {% endfor %}
