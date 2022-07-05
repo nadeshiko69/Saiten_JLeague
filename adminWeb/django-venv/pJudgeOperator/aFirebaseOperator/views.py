@@ -14,7 +14,7 @@ def fGetNemberData(request, engName):
         import sys
         from function.operateFirebase import operateFirebase
         of = operateFirebase()
-        print(of.fReadMemberDataFromFirebase(engName))
+        print(of.fReadMemberDataFromFirebase(engName)[0]["name"])
 
     else:
         CommentForm()

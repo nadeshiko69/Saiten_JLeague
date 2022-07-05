@@ -28,3 +28,11 @@ class Comment(models.Model):
 class Team(models.Model):
     jpnName = models.CharField(max_length=32)
     engName = models.CharField(max_length=16)
+
+class Player(models.Model):
+    team = models.CharField(max_length=16)
+    pid = models.CharField(max_length=32)
+    name = models.CharField(max_length=16)
+    number = models.IntegerField()
+    position = models.CharField(max_length=2)
+    
