@@ -1,8 +1,9 @@
+from email.policy import default
 from http.client import HTTPResponse
 from django.shortcuts import render, redirect
 
 from .forms import CommentForm
-from .models import Post, Team
+from .models import Post, Team, Player
 
 def frontpage(request):
     teams = Team.objects.all()
@@ -14,7 +15,19 @@ def fGetNemberData(request, engName):
         import sys
         from function.operateFirebase import operateFirebase
         of = operateFirebase()
-        print(of.fReadMemberDataFromFirebase(engName)[0]["name"])
+        players = of.fReadMemberDataFromFirebase(engName)
+        for player in players:
+            print(player["name"])
+            # DB内にIDが一致する項目がなければ新規登録
+            Player.objects.get_or_create(pid=player["id"],
+                                         defaults = {
+                                             'team':engName,
+                                             'pid':player["id"],
+                                             'name':player["name"],
+                                             'number':player["number"],
+                                             'position':player["position"]
+                                         }
+                                         )
 
     else:
         CommentForm()
