@@ -6,8 +6,22 @@
         {% csrf_token %}<!-- セキュリティ用タグ、form追加時は書く -->
         <div class="field">
             <div class="control">
-                <button type="submit" name="run_script">メンバー情報を取得</button>
+                <button type="submit" name="run_script">メンバー情報を再取得</button>
             </div>
+            <table border="1">
+                <tr>
+                    <th>name</th>
+                    <th>num</th>
+                    <th>pos</th>
+                </tr>
+                {% for member in players %}
+                <tr>
+                    <td>{{ member.name }}</td>
+                    <td>{{ member.number }}</td>
+                    <td>{{ member.position }}</td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
     </form>
 {% endblock %}

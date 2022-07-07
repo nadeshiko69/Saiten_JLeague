@@ -10,7 +10,7 @@ def frontpage(request):
     return render(request, "aFirebaseOperator/frontpage.html", {"teams": teams})
 
 def fGetNemberData(request, engName):
-    post = Team.objects.get(engName=engName)
+    # 再取得ボタンが押されたらこっち
     if request.method=="POST" and "run_script" in request.POST:
         import sys
         from function.operateFirebase import operateFirebase
@@ -21,15 +21,20 @@ def fGetNemberData(request, engName):
             # DB内にIDが一致する項目がなければ新規登録
             Player.objects.get_or_create(pid=player["id"],
                                          defaults = {
-                                             'team':engName,
-                                             'pid':player["id"],
-                                             'name':player["name"],
-                                             'number':player["number"],
-                                             'position':player["position"]
-                                         }
-                                         )
-
+                                            'team':engName,
+                                            'pid':player["id"],
+                                            'name':player["name"],
+                                            'number':player["number"],
+                                            'position':player["position"]})
+    # 最初にアクセスされるのはこっち
     else:
-        CommentForm()
+        pass
 
-    return render(request, "aFirebaseOperator/team_detail.html")
+    # DBから選手情報を取得して表示    
+    data = Player.objects.all()
+    data.filter(number=0).delete() # 退団選手は背番号0としているので非表示
+    data = data.order_by('number')
+    params = {'players':data}
+
+    return render(request, "aFirebaseOperator/team_detail.html", params)
+
