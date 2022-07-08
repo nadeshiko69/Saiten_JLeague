@@ -1,5 +1,6 @@
 from email.policy import default
 from http.client import HTTPResponse
+import numbers
 from django.shortcuts import render, redirect
 
 from .forms import CommentForm
@@ -19,13 +20,18 @@ def fGetNemberData(request, engName):
         for player in players:
             print(player["name"])
             # DB内にIDが一致する項目がなければ新規登録
-            Player.objects.get_or_create(pid=player["id"],
+            nouse, created = Player.objects.get_or_create(pid=player["id"],
                                          defaults = {
                                             'team':engName,
                                             'pid':player["id"],
                                             'name':player["name"],
                                             'number':player["number"],
                                             'position':player["position"]})
+            # IDあるから更新しなかったけど背番号が0 ->退団選手
+            if (created == False) and player["number"] == 0:
+               db = Player.objects.get(pid=player["id"])
+               db.number = 0
+               db.save()
     # 最初にアクセスされるのはこっち
     else:
         pass
