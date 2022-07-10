@@ -10,18 +10,24 @@
             </div>
             <table border="1">
                 <tr>
-                    <th>name</th>
-                    <th>num</th>
-                    <th>pos</th>
+                    <th>選手名</th>
+                    <th>背番号</th>
+                    <th>ポジション</th>
+                    <th>スタメン</th>
+                    <th>サブ</th>
                 </tr>
                 {% for member in players %}
                 <tr>
                     <td>{{ member.name }}</td>
-                    <td>{{ member.number }}</td>
-                    <td>{{ member.position }}</td>
+                    <td align="right">{{ member.number }}</td>
+                    <td align="center">{{ member.position }}</td>
+                    <td align="center"><label><input type="checkbox" name="starting_number" value=member.pid></label></td>
+                    <td align="center"><label><input type="checkbox" name="substitute_number" value=member.pid></label></td>
                 </tr>
                 {% endfor %}
             </table>
+            <!-- views.pyのdef receive_checkboxで受け取る -->
+            <input type="submit" name="submit" value="送信">
         </div>
     </form>
 {% endblock %}
