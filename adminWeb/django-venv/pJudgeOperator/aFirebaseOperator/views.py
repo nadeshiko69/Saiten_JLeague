@@ -1,10 +1,13 @@
 from email.policy import default
 from http.client import HTTPResponse
+import math
 import numbers
 from django.shortcuts import render, redirect
 
 from .forms import CommentForm
 from .models import Post, Team, Player
+
+import datetime
 
 # TopPageの表示
 def frontpage(request):
@@ -20,9 +23,9 @@ def fGetNemberData(request, engName):
             import sys
             from function.operateFirebase import operateFirebase
             of = operateFirebase()
+            # 選手情報をDjangoのDBに格納
             players = of.fReadMemberDataFromFirebase(engName)
             for player in players:
-                print(player["name"])
                 # DB内にIDが一致する項目がなければ新規登録
                 nouse, created = Player.objects.get_or_create(pid=player["id"],
                                             defaults = {
@@ -36,10 +39,28 @@ def fGetNemberData(request, engName):
                     db = Player.objects.get(pid=player["id"])
                     db.number = 0
                     db.save()
+            # 試合情報をDjangoのDBに格納
+            matches = of.fReadMatchDataFromFirebase(engName)
+            dt_now = datetime.datetime.today()
+            # dt_now = datetime.datetime(2022, 7, 16)
+            for match in matches:
+                # matchDay, matchTime = match["kickoff"].isoformat('minutes').split()
+                # print(matchDay)
+                matchDay = datetime.datetime(
+                    match["kickoff"].year,
+                    match["kickoff"].month,
+                    match["kickoff"].day
+                )
+                print(matchDay == dt_now)
         # 送信ボタンが押されたらこっち
-        if "submit" in request.POST:
-            check = request.POST.getlist["submit"]
-            print(check)            
+        elif "submit" in request.POST:
+            startingMember = request.POST.getlist("starting_number")
+            substituteMember = request.POST.getlist("substitute_number")
+            
+            # submitの日時と一致している試合があればFirebaseに送信
+
+            
+            
         # 最初にアクセスされるのはこっち
         else:
             pass

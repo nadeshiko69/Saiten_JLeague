@@ -11,6 +11,8 @@ class operateFirebase():
         firebase_admin.initialize_app(self.cred)
         self.db = firestore.client()
         self.lMemberList = []
+        self.lMatchList = []
+        
       
     # 試合開始前にスタメン / ベンチ情報を登録する   
     def fWriteMemberDataToFirebase(self):
@@ -34,8 +36,6 @@ class operateFirebase():
         doc_ref = self.db.collection('Data2022').document(teamName).collection('Member')
         docs = doc_ref.stream()
         for doc in docs:
-            # print(f"id:{doc.id}")
-            # print(f"Name:{doc.get('name')}")
             personalData = {
                 'id':doc.id,
                 'name':doc.get('name'),
@@ -45,9 +45,26 @@ class operateFirebase():
             self.lMemberList.append(personalData)
         
         return self.lMemberList
-            
-
+    
+    def fReadMatchDataFromFirebase(self, teamName):
+        self.lMatchList.clear()
         
+        doc_ref = self.db.collection('Data2022').document(teamName).collection('Match')
+        docs = doc_ref.stream()        
+        for doc in docs:
+            matchData = {
+                'id':doc.id,
+                'home':doc.get('home'),
+                'away':doc.get('away'),
+                'homescore':doc.get('homescore'),
+                'awayscore':doc.get('awayscore'),
+                'kickoff':doc.get('kickoff'),
+                'section':doc.get('section'),
+                'stadium':doc.get('stadium'),
+            }
+            self.lMatchList.append(matchData)
+        
+        return self.lMatchList
 # FOR DEBUG
 
 # of = operateFirebase()

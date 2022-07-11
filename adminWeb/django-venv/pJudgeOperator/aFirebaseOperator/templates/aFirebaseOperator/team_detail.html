@@ -21,8 +21,9 @@
                     <td>{{ member.name }}</td>
                     <td align="right">{{ member.number }}</td>
                     <td align="center">{{ member.position }}</td>
-                    <td align="center"><label><input type="checkbox" name="starting_number" value=member.pid></label></td>
-                    <td align="center"><label><input type="checkbox" name="substitute_number" value=member.pid></label></td>
+                    <!-- TODO: スタメン11人サブ7人で指定してないと送信できないようにする -->
+                    <td align="center"><label><input type="checkbox" name="starting_number" value={{member.pid}}></label></td>
+                    <td align="center"><label><input type="checkbox" name="substitute_number" value={{member.pid}}></label></td>
                 </tr>
                 {% endfor %}
             </table>
