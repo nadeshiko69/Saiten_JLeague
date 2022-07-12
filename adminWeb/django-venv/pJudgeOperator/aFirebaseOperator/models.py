@@ -24,15 +24,27 @@ class Comment(models.Model):
         ordering = ["-posted_date"]
         
         
-# チーム一覧表示用
+# チーム一覧
 class Team(models.Model):
     jpnName = models.CharField(max_length=32)
     engName = models.CharField(max_length=16)
 
+# 選手情報
 class Player(models.Model):
     team = models.CharField(max_length=16)
     pid = models.CharField(max_length=32)
     name = models.CharField(max_length=16)
     number = models.IntegerField()
     position = models.CharField(max_length=2)
+
+# 試合情報
+class Match(models.Model):
+    mid = models.CharField(max_length=32)
+    section = models.IntegerField()
+    hometeam = models.CharField(max_length=4)
+    homescore = models.IntegerField()
+    awayteam = models.CharField(max_length=4)
+    awayscore = models.IntegerField()
+    kickoff = models.DateField()
+    stadium = models.CharField(max_length=32)
     

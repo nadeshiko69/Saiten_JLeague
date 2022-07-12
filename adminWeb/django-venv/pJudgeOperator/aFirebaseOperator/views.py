@@ -4,8 +4,11 @@ import math
 import numbers
 from django.shortcuts import render, redirect
 
+import sys
+from function.operateFirebase import operateFirebase
+
 from .forms import CommentForm
-from .models import Post, Team, Player
+from .models import Post, Team, Player, Match
 
 import datetime
 
@@ -20,9 +23,7 @@ def fGetNemberData(request, engName):
     # 再取得ボタンが押されたらこっち
     if request.method=="POST":
         if "run_script" in request.POST:
-            import sys
-            from function.operateFirebase import operateFirebase
-            of = operateFirebase()
+            of = operateFirebase() # 2回目のInstance作成処理が入ってしまうとエラーが出るので初回のみ実施にしたい
             # 選手情報をDjangoのDBに格納
             players = of.fReadMemberDataFromFirebase(engName)
             for player in players:
@@ -51,14 +52,26 @@ def fGetNemberData(request, engName):
                     match["kickoff"].month,
                     match["kickoff"].day
                 )
-                print(matchDay == dt_now)
+                nouse, created = Match.objects.get_or_create(mid=match["id"],
+                                            defaults = {
+                                                'mid':match["id"],
+                                                'section':match["section"],
+                                                'hometeam':match["home"],
+                                                'homescore':match["homescore"],
+                                                'awayteam':match["away"],
+                                                'awayscore':match["awayscore"],
+                                                'kickoff':match["kickoff"],
+                                                'stadium':match["stadium"]})
+                
+                
         # 送信ボタンが押されたらこっち
         elif "submit" in request.POST:
             startingMember = request.POST.getlist("starting_number")
             substituteMember = request.POST.getlist("substitute_number")
             
             # submitの日時と一致している試合があればFirebaseに送信
-
+            dt_now = datetime.datetime.today()
+            print(matchDay == dt_now)
             
             
         # 最初にアクセスされるのはこっち
