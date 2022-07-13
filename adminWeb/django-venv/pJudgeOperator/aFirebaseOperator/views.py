@@ -12,6 +12,9 @@ from .models import Post, Team, Player, Match
 
 import datetime
 
+class firebaseOperator:
+    of = operateFirebase()
+
 # TopPageの表示
 def frontpage(request):
     teams = Team.objects.all()
@@ -23,9 +26,8 @@ def fGetNemberData(request, engName):
     # 再取得ボタンが押されたらこっち
     if request.method=="POST":
         if "run_script" in request.POST:
-            of = operateFirebase() # 2回目のInstance作成処理が入ってしまうとエラーが出るので初回のみ実施にしたい
             # 選手情報をDjangoのDBに格納
-            players = of.fReadMemberDataFromFirebase(engName)
+            players = firebaseOperator.of.fReadMemberDataFromFirebase(engName)
             for player in players:
                 # DB内にIDが一致する項目がなければ新規登録
                 nouse, created = Player.objects.get_or_create(pid=player["id"],
@@ -41,7 +43,7 @@ def fGetNemberData(request, engName):
                     db.number = 0
                     db.save()
             # 試合情報をDjangoのDBに格納
-            matches = of.fReadMatchDataFromFirebase(engName)
+            matches = firebaseOperator.of.fReadMatchDataFromFirebase(engName)
             dt_now = datetime.datetime.today()
             # dt_now = datetime.datetime(2022, 7, 16)
             for match in matches:
@@ -61,8 +63,7 @@ def fGetNemberData(request, engName):
                                                 'awayteam':match["away"],
                                                 'awayscore':match["awayscore"],
                                                 'kickoff':match["kickoff"],
-                                                'stadium':match["stadium"]})
-                
+                                                'stadium':match["stadium"]})   
                 
         # 送信ボタンが押されたらこっち
         elif "submit" in request.POST:
