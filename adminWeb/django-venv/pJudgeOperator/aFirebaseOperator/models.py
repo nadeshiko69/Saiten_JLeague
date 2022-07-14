@@ -1,29 +1,7 @@
 # DBと接続するための記述
 from pyexpat import model
 from django.db import models
-
-class Post(models.Model):
-    title = models.CharField(max_length=64)
-    slug = models.SlugField()
-    intro = models.TextField()
-    body = models.TextField()
-    posted_date = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ["-posted_date"]
-
-
-class Comment(models.Model):
-    post = models.ForeignKey(Post, related_name="comments", on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    email = models.EmailField()
-    body = models.TextField()
-    posted_date = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ["-posted_date"]
-        
-        
+ 
 # チーム一覧
 class Team(models.Model):
     jpnName = models.CharField(max_length=32)
@@ -40,11 +18,17 @@ class Player(models.Model):
 # 試合情報
 class Match(models.Model):
     mid = models.CharField(max_length=32)
-    section = models.IntegerField()
-    hometeam = models.CharField(max_length=4)
-    homescore = models.IntegerField()
-    awayteam = models.CharField(max_length=4)
-    awayscore = models.IntegerField()
+    team = models.CharField(max_length=8)
+    opponent = models.CharField(max_length=8)
     kickoff = models.DateField()
-    stadium = models.CharField(max_length=32)
-    
+
+'''
+● DBの内容を過去の状態に戻す時
+どこまで巻きもどすかを確認
+python manage.py showmigrations
+DBを過去の状態に戻す
+python manage.py migrate aFirebaseOperator 000X_hogohoge
+migrationフォルダ内にある、戻した地点以降のファイルを削除
+
+※モデルの構成要素を変更したい！みたいな時はこの要領で一回無かったことにして作り直す
+'''

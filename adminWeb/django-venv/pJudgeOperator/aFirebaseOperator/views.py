@@ -7,11 +7,11 @@ from django.shortcuts import render, redirect
 import sys
 from function.operateFirebase import operateFirebase
 
-from .forms import CommentForm
-from .models import Post, Team, Player, Match
+from .models import Team, Player, Match
 
 import datetime
 
+# FirebaseのInitialize_Appを複数回起動しないようにクラス化
 class firebaseOperator:
     of = operateFirebase()
 
@@ -42,28 +42,30 @@ def fGetNemberData(request, engName):
                     db = Player.objects.get(pid=player["id"])
                     db.number = 0
                     db.save()
+            
+            
             # 試合情報をDjangoのDBに格納
             matches = firebaseOperator.of.fReadMatchDataFromFirebase(engName)
-            dt_now = datetime.datetime.today()
-            # dt_now = datetime.datetime(2022, 7, 16)
+            # 必要な情報の確保
+            dt_now = datetime.datetime.today() # 入力日
+            jpnName = Team.objects.get(engName=engName).jpnName # 入力対象のチーム名
+
             for match in matches:
                 # matchDay, matchTime = match["kickoff"].isoformat('minutes').split()
                 # print(matchDay)
-                matchDay = datetime.datetime(
-                    match["kickoff"].year,
-                    match["kickoff"].month,
-                    match["kickoff"].day
-                )
+                # matchDay = datetime.datetime(
+                #     match["kickoff"].year,
+                #     match["kickoff"].month,
+                #     match["kickoff"].day
+                # )
+                opponent = match["home"] if match["home"] != jpnName else match["away"] # 対戦相手を抽出
                 nouse, created = Match.objects.get_or_create(mid=match["id"],
                                             defaults = {
                                                 'mid':match["id"],
-                                                'section':match["section"],
-                                                'hometeam':match["home"],
-                                                'homescore':match["homescore"],
-                                                'awayteam':match["away"],
-                                                'awayscore':match["awayscore"],
-                                                'kickoff':match["kickoff"],
-                                                'stadium':match["stadium"]})   
+                                                'team':jpnName,
+                                                'opponent':opponent,
+                                                'kickoff':match["kickoff"]
+                                            })   
                 
         # 送信ボタンが押されたらこっち
         elif "submit" in request.POST:
@@ -72,8 +74,6 @@ def fGetNemberData(request, engName):
             
             # submitの日時と一致している試合があればFirebaseに送信
             dt_now = datetime.datetime.today()
-            print(matchDay == dt_now)
-            
             
         # 最初にアクセスされるのはこっち
         else:
