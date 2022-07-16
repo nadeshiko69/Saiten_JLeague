@@ -1,3 +1,4 @@
+from re import sub
 from firebase_admin import firestore
 import firebase_admin
 from firebase_admin import credentials
@@ -15,19 +16,32 @@ class operateFirebase():
         
       
     # 試合開始前にスタメン / ベンチ情報を登録する   
-    def fWriteMemberDataToFirebase(self):
+    def fWriteMemberDataToFirebase(self, engName, mid, startingMember, subMember):
+        # if len(startingMember) == 11:
         # コレクションにアクセス
-        doc_ref = self.db.collection('news')
-        try:
-            doc_ref.add({
-                'starting': 'a',
-                'score'  : '-1'
-                })
-            
-            print("Done")
-        except:
-            print("Error")
-        # TODO：登録メンバーが18人になっていなければWarningを出す
+        # collectionに追加するときはadd
+        # documentに追加するときはset
+        doc_ref = self.db.collection('Data2022').document(engName).collection('Match').document(mid).collection('Member')
+        for member in startingMember:
+            try:
+                doc_ref.add({ 
+                    'mid': member,
+                    'starting': 'true',
+                    'score'  : -1
+                    })
+                print("startingMember register done.")
+            except:
+                print("Error : StartingMember Register")
+        for member in subMember:
+            try:
+                doc_ref.add({
+                    'mid': member,
+                    'starting': 'false',
+                    'score'  : -1
+                    })
+                print("subMember Register done.")
+            except:
+                print("Error : SubMember Register")
     
     # スタメン/ベンチ情報登録のために、メンバーリストを読み込む　
     def fReadMemberDataFromFirebase(self, teamName):

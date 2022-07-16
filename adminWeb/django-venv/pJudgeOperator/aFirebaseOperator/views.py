@@ -8,7 +8,6 @@ import sys
 from function.operateFirebase import operateFirebase
 
 from .models import Team, Player, Match
-
 import datetime
 
 # FirebaseのInitialize_Appを複数回起動しないようにクラス化
@@ -25,6 +24,9 @@ def frontpage(request):
 def fGetNemberData(request, engName):
     # 再取得ボタンが押されたらこっち
     if request.method=="POST":
+            # 必要な情報の確保
+        today = datetime.datetime.today() # 入力日
+        jpnName = Team.objects.get(engName=engName).jpnName # 入力対象のチーム名
         if "run_script" in request.POST:
             # 選手情報をDjangoのDBに格納
             players = firebaseOperator.of.fReadMemberDataFromFirebase(engName)
@@ -46,18 +48,8 @@ def fGetNemberData(request, engName):
             
             # 試合情報をDjangoのDBに格納
             matches = firebaseOperator.of.fReadMatchDataFromFirebase(engName)
-            # 必要な情報の確保
-            dt_now = datetime.datetime.today() # 入力日
-            jpnName = Team.objects.get(engName=engName).jpnName # 入力対象のチーム名
 
             for match in matches:
-                # matchDay, matchTime = match["kickoff"].isoformat('minutes').split()
-                # print(matchDay)
-                # matchDay = datetime.datetime(
-                #     match["kickoff"].year,
-                #     match["kickoff"].month,
-                #     match["kickoff"].day
-                # )
                 opponent = match["home"] if match["home"] != jpnName else match["away"] # 対戦相手を抽出
                 nouse, created = Match.objects.get_or_create(mid=match["id"],
                                             defaults = {
@@ -65,15 +57,16 @@ def fGetNemberData(request, engName):
                                                 'team':jpnName,
                                                 'opponent':opponent,
                                                 'kickoff':match["kickoff"]
-                                            })   
+                                            }) 
                 
         # 送信ボタンが押されたらこっち
         elif "submit" in request.POST:
-            startingMember = request.POST.getlist("starting_number")
-            substituteMember = request.POST.getlist("substitute_number")
+            if Match.objects.filter(team = jpnName, kickoff = today).exists():  # 送信を押した日に試合があればidを取得して送付
+                mid = Match.objects.get(team = jpnName, kickoff = today).mid
+                startingMember = request.POST.getlist("starting_number")
+                subMember = request.POST.getlist("substitute_number")
+                firebaseOperator.of.fWriteMemberDataToFirebase(engName, mid, startingMember, subMember)
             
-            # submitの日時と一致している試合があればFirebaseに送信
-            dt_now = datetime.datetime.today()
             
         # 最初にアクセスされるのはこっち
         else:
