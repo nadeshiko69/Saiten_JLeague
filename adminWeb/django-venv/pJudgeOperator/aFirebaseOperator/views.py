@@ -25,7 +25,8 @@ def fGetNemberData(request, engName):
     # 再取得ボタンが押されたらこっち
     if request.method=="POST":
             # 必要な情報の確保
-        today = datetime.datetime.today() # 入力日
+        # today = datetime.datetime.today() # 入力日
+        today = datetime.datetime(2022,2,19) # For Debug
         jpnName = Team.objects.get(engName=engName).jpnName # 入力対象のチーム名
         if "run_script" in request.POST:
             # 選手情報をDjangoのDBに格納
@@ -66,6 +67,10 @@ def fGetNemberData(request, engName):
                 startingMember = request.POST.getlist("starting_number")
                 subMember = request.POST.getlist("substitute_number")
                 firebaseOperator.of.fWriteMemberDataToFirebase(engName, mid, startingMember, subMember)
+            else:
+                # TODO : 試合日以外に入力できないようにセーフティ入れる
+                print("Register failed")
+                pass
             
             
         # 最初にアクセスされるのはこっち

@@ -21,11 +21,12 @@ class operateFirebase():
         # コレクションにアクセス
         # collectionに追加するときはadd
         # documentに追加するときはset
-        doc_ref = self.db.collection('Data2022').document(engName).collection('Match').document(mid).collection('Member')
+        base_ref = self.db.collection('Data2022').document(engName).collection('Match').document(mid).collection('Member')
         for member in startingMember:
+            doc_ref = base_ref.document(member)
             try:
-                doc_ref.add({ 
-                    'mid': member,
+                # TODO : 2回目以降の送信で重複しないようにセーフティ入れる
+                doc_ref.set({
                     'starting': 'true',
                     'score'  : -1
                     })
@@ -33,9 +34,9 @@ class operateFirebase():
             except:
                 print("Error : StartingMember Register")
         for member in subMember:
+            doc_ref = base_ref.document(member)
             try:
-                doc_ref.add({
-                    'mid': member,
+                doc_ref.set({
                     'starting': 'false',
                     'score'  : -1
                     })
