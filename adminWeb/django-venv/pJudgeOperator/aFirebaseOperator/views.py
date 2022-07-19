@@ -25,8 +25,8 @@ def fGetNemberData(request, engName):
     # 再取得ボタンが押されたらこっち
     if request.method=="POST":
             # 必要な情報の確保
-        # today = datetime.datetime.today() # 入力日
-        today = datetime.datetime(2022,2,19) # For Debug
+        today = datetime.datetime.today() # 入力日
+        # today = datetime.datetime(2022,7,10) # For Debug
         jpnName = Team.objects.get(engName=engName).jpnName # 入力対象のチーム名
         if "run_script" in request.POST:
             # 選手情報をDjangoのDBに格納
