@@ -100,6 +100,7 @@ class CMainPageState extends State<CMainPage> {
                             _deviceHeight,
                             _deviceWidth,
                             lNextMatch[0].matchNo,
+                            lNextMatch[0].matchID,
                             _teamName,
                             lNextMatch[0].opponent),
                       ));
@@ -144,6 +145,7 @@ class CMainPageState extends State<CMainPage> {
                                   _deviceHeight,
                                   _deviceWidth,
                                   lAllMatch[index].matchNo,
+                                  lAllMatch[index].matchID,
                                   _teamName,
                                   lAllMatch[index].opponent),
                             ));

@@ -12,6 +12,9 @@
     Podfile.lockを削除して再インストール、クリーン
     詳細は　https://dolphinetech.com/flutter/error-running-pod-install/
 
+* snapshotの取り扱い
+https://zenn.dev/tsuruo/articles/a3d77c4854e108
+
 
 * エミュレータにキーボード入力ができなくなる
 解決方法

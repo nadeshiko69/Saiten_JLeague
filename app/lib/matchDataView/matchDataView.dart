@@ -6,12 +6,13 @@ import 'package:judge/matchDataView/matchDataViewFactory.dart';
 
 class CMatchDetailView extends StatefulWidget {
   CMatchDetailView(this.deviceHeight, this.deviceWidth, this.matchNo,
-      this.teamName, this.opponent,
+      this.matchID, this.teamName, this.opponent,
       {Key? key})
       : super(key: key);
   double deviceHeight;
   double deviceWidth;
   int matchNo;
+  String matchID;
   String teamName;
   String opponent;
 
@@ -33,9 +34,9 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
     // 表示する Widget の一覧
     List<Widget> _pageList = [
       BodyDisp(widget.deviceHeight, widget.deviceWidth, widget.teamName,
-          widget.matchNo, true),
+          widget.matchID, widget.matchNo, true),
       BodyDisp(widget.deviceHeight, widget.deviceWidth, widget.teamName,
-          widget.matchNo, false),
+          widget.matchID, widget.matchNo, false),
     ];
     String submitMainMsg = "ログインしてください";
     String submitSubMsg  = "採点の提出にはログインが必要です。";
@@ -95,13 +96,14 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
 
 // Scaffold内のBodyを定義Footerでスタメンとベンチ切り替え
 class BodyDisp extends StatefulWidget {
-  BodyDisp(this.deviceHeight, this.deviceWidth, this.teamName, this.matchNo,
+  BodyDisp(this.deviceHeight, this.deviceWidth, this.teamName,this.matchID, this.matchNo,
       this.isStarting,
       {Key? key})
       : super(key: key);
   double deviceHeight;
   double deviceWidth;
   String teamName;
+  String matchID;
   int matchNo;
   bool isStarting;
 
@@ -138,7 +140,8 @@ class _BodyDispState extends State<BodyDisp> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future:
-          fGetMatchMember(widget.teamName, widget.matchNo, widget.isStarting),
+          // ここに遷移してきた時点でまだlNextMatchに値が入っていない
+          fGetMatchMember(widget.teamName, widget.matchID, widget.matchNo, widget.isStarting),
       builder:
           (BuildContext context, AsyncSnapshot<List<CPlayerData>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

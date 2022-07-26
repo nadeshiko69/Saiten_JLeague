@@ -7,95 +7,82 @@ import 'package:judge/mainData.dart';
 import 'package:judge/matchDataView/matchDataViewData.dart';
 
 /*
-TODO データ追加の処理見つけたから貼っておく、あとでやる
-              onPressed: () async {
-                // ドキュメント作成
-                await FirebaseFirestore.instance
-                    .collection('test_collection1') // コレクションID
-                    .doc() // ここは空欄だと自動でIDが付く
-                    .set({
-                  'name': 'sato',
-                  'age': 20,
-                  'sex': 'male',
-                  'type': ['A', 'B']
-                }); // データ
-              },
-* */
-
-/*
-TODO : https://ichi.pro/flutter-de-cloudfirestore-o-shiyosuru-hoho-174444485265984
-  void _onPressed() {
-  firestoreInstance.collection("users").add(
-  {
-    "name" : "john",
-    "age" : 50,
-    "email" : "example@example.com",
-    "address" : {
-      "street" : "street 24",
-      "city" : "new york"
-    }
-  }).then((value){
-    print(value.id);
-  });
-}
-* */
-
-/*
 Name : fGetMatchMember()
 Arg  : teamName, matchNo : 対象チーム、節
      : isStarting : スタメン or ベンチ / trueならスタメン, falseならベンチ
 Func : 該当する試合の登録メンバーを取得
 * */
-Future<List<CPlayerData>> fGetMatchMember(String teamName, int matchNo, bool isStarting) async {
+Future<List<CPlayerData>> fGetMatchMember(
+    String teamName, String matchID, int matchNo, bool isStarting) async {
   String matchNoIdx = "match" + matchNo.toString();
-  int memberCond = -1;
+  // int memberCond = -1;
   List<CPlayerData> lMemberData;
-
-  // 初期化
-  if(isStarting) {memberCond = 1;}
-  else           {memberCond = 0;}
-
+  // // 初期化
+  // if (isStarting) {
+  //   memberCond = 1;
+  // } else {
+  //   memberCond = 0;
+  // }
+  // 試合情報のDBから登録メンバーのIDを取得
+  final baseCollection = FirebaseFirestore.instance
+      .collection('Data2022')
+      .doc(teamName)
+      .collection('Match')
+      .doc(matchID)
+      .collection('Member').get();
+  List lMemList = [];
+  await baseCollection.then(
+        (QuerySnapshot querySnapshot) => {
+          querySnapshot.docs.forEach(
+            (doc) {
+              print("a");
+              lMemList.add(fGetMemberInfoForMemberID(teamName, doc.id));
+              print(lMemList.length);
+            },
+          ),
+        },
+      );
   final _memberData = FirebaseFirestore.instance
       .collection('Data2022')
       .doc(teamName)
+      .collection('Match')
+      .doc(matchID)
       .collection('Member')
-      .where(matchNoIdx, isEqualTo: memberCond);
-
+      .where('isStarting', isEqualTo: isStarting);
+  print("b");
   final QuerySnapshot<Map<String, dynamic>> memberSnapshot =
-  await _memberData.get();
-
-  lMemberData =
-      memberSnapshot.docs.map((DocumentSnapshot document) {
-        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-        final String name = data['name'];
-        final int number = data['number'];
-        return CPlayerData(name, number);
-      }).toList();
-
+      await _memberData.get();
+  print("c");
+  lMemberData = memberSnapshot.docs.map((DocumentSnapshot document) {
+    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    // ここに入ってきていない
+    final String name = data['name'];
+    final int number = data['number'];
+    print("d");
+    return CPlayerData(name, number);
+  }).toList();
+  print("e");
   return lMemberData;
 }
 
-// 使用しないので一旦コメントアウト
 /*
-Future<void> GetMatchInfo(String teamName, int matchNo) async {
-  final _matchData = FirebaseFirestore.instance
-      .collection('Data')
+Name : fGetMemberInfoForMemberID()
+Arg  : void
+Func : 選手のIDから選手名等の情報を取得
+* */
+Future<CPlayerData> fGetMemberInfoForMemberID(String teamName, String memberID) async {
+  final DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
+      .collection('Data2022')
       .doc(teamName)
-      .collection('Match')
-      .where("matchNo", isEqualTo: matchNo);
+      .collection('Member')
+      .doc(memberID).get();
+  String name = docSnapshot.get("name");
+  String pos  = docSnapshot.get("position");
+  int    num  = docSnapshot.get("number");
+  CPlayerData returnData = CPlayerData(name, num);
 
-  final QuerySnapshot<Map<String, dynamic>> snapshot = await _matchData.get();
-
-  final lMatchData = snapshot.docs.map((DocumentSnapshot document) {
-    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-    final String opponent = data['opponent'];
-    final String day = data['date'].toString();
-    final int matchNo = data['matchNo'];
-    return cMatchData(opponent, day, matchNo);
-  }).toList();
+  return returnData;
 }
-*/
-
 
 /*
 Name : fSubmit()
@@ -116,3 +103,4 @@ void fSubmit() async {
     'type': ['A', 'B']
   }); // データ
 }
+
