@@ -16,13 +16,8 @@ Future<List<CPlayerData>> fGetMatchMember(
     String teamName, String matchID, int matchNo, bool isStarting) async {
   String matchNoIdx = "match" + matchNo.toString();
   // int memberCond = -1;
-  List<CPlayerData> lMemberData;
-  // // 初期化
-  // if (isStarting) {
-  //   memberCond = 1;
-  // } else {
-  //   memberCond = 0;
-  // }
+  List<CPlayerData> lMemberData = [];
+
   // 試合情報のDBから登録メンバーのIDを取得
   final baseCollection = FirebaseFirestore.instance
       .collection('Data2022')
@@ -30,38 +25,25 @@ Future<List<CPlayerData>> fGetMatchMember(
       .collection('Match')
       .doc(matchID)
       .collection('Member').get();
-  List lMemList = [];
+
   await baseCollection.then(
         (QuerySnapshot querySnapshot) => {
           querySnapshot.docs.forEach(
-            (doc) {
-              print("a");
-              lMemList.add(fGetMemberInfoForMemberID(teamName, doc.id));
-              print(lMemList.length);
+            (doc) async {
+              if(doc.get("starting") == isStarting.toString()) {
+                //  fGetMemberInfoForMemberID(teamName, doc.id).then((result) {
+                //   lMemberData.add(result);
+                //   print(result);
+                //   print(lMemberData.length);
+                // });
+                lMemberData.add(await fGetMemberInfoForMemberID(teamName, doc.id));
+                print("w");
+              }
             },
           ),
         },
       );
-  final _memberData = FirebaseFirestore.instance
-      .collection('Data2022')
-      .doc(teamName)
-      .collection('Match')
-      .doc(matchID)
-      .collection('Member')
-      .where('isStarting', isEqualTo: isStarting);
-  print("b");
-  final QuerySnapshot<Map<String, dynamic>> memberSnapshot =
-      await _memberData.get();
-  print("c");
-  lMemberData = memberSnapshot.docs.map((DocumentSnapshot document) {
-    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-    // ここに入ってきていない
-    final String name = data['name'];
-    final int number = data['number'];
-    print("d");
-    return CPlayerData(name, number);
-  }).toList();
-  print("e");
+  print("unko");
   return lMemberData;
 }
 
