@@ -37,8 +37,6 @@ Future<List<CPlayerData>> fGetMatchMember(
           }
         }
       });
-
-  print("unko");
   return lMemberData;
 }
 
@@ -74,7 +72,7 @@ void fSubmit() async {
       .collection('Nagoya')
       .doc(myData.email) // ここは空欄だと自動でIDが付く
       .set({
-    'name': 'sato',
+    'teamname': 'sato',
     'age': 20,
     'sex': 'male',
     'type': ['A', 'B']

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:badges/badges.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/matchDataView/matchDataViewData.dart';
 import 'package:judge/matchDataView/matchDataViewFactory.dart';
@@ -15,7 +16,6 @@ class CMatchDetailView extends StatefulWidget {
   String matchID;
   String teamName;
   String opponent;
-
 
   @override
   State<CMatchDetailView> createState() => _CMatchDetailViewState();
@@ -39,15 +39,44 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
           widget.matchID, widget.matchNo, false),
     ];
     String submitMainMsg = "ログインしてください";
-    String submitSubMsg  = "採点の提出にはログインが必要です。";
-    if(myData.isAlreadyLogin){
+    String submitSubMsg = "採点の提出にはログインが必要です。";
+    if (myData.isAlreadyLogin) {
       submitMainMsg = "提出が完了しました";
-      submitSubMsg  = "結果発表をお待ちください！";
+      submitSubMsg = "結果発表をお待ちください！";
     }
 
     return Scaffold(
       appBar: AppBar(
         title: Text("Match " + widget.matchNo.toString()),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () => {
+                    setState(() {
+                      if (myData.isAlreadyLogin) {
+                        fSubmit();
+                      } else {/* No Action */}
+
+                      // ログインしていなかった場合警告を出す
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            title: Text(submitMainMsg),
+                            content: Text(submitSubMsg),
+                            actions: <Widget>[
+                              CupertinoDialogAction(
+                                child: const Text("OK"),
+                                onPressed: () => Navigator.pop(context),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }),
+                  },
+              child: Text("Submit", style:tsSubmitIcon),
+          )
+        ],
       ),
       body: _pageList[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -64,40 +93,14 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
         currentIndex: _selectedIndex,
         onTap: _onTapItem,
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.done),
-        onPressed: () {
-          // 提出
-          if(myData.isAlreadyLogin){fSubmit();}
-          else{ /* No Action */ }
-
-          // ログインしていなかった場合警告を出す
-          showDialog(
-            context: context,
-            builder: (context) {
-              return CupertinoAlertDialog(
-                title: Text(submitMainMsg),
-                content: Text(submitSubMsg),
-                actions: <Widget>[
-                  CupertinoDialogAction(
-                    child: const Text("OK"),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-      ),
     );
   }
 }
 
-
 // Scaffold内のBodyを定義Footerでスタメンとベンチ切り替え
 class BodyDisp extends StatefulWidget {
-  BodyDisp(this.deviceHeight, this.deviceWidth, this.teamName,this.matchID, this.matchNo,
-      this.isStarting,
+  BodyDisp(this.deviceHeight, this.deviceWidth, this.teamName, this.matchID,
+      this.matchNo, this.isStarting,
       {Key? key})
       : super(key: key);
   double deviceHeight;
@@ -139,9 +142,8 @@ class _BodyDispState extends State<BodyDisp> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future:
-          // ここに遷移してきた時点でまだlNextMatchに値が入っていない
-          fGetMatchMember(widget.teamName, widget.matchID, widget.matchNo, widget.isStarting),
+      future: fGetMatchMember(
+          widget.teamName, widget.matchID, widget.matchNo, widget.isStarting),
       builder:
           (BuildContext context, AsyncSnapshot<List<CPlayerData>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

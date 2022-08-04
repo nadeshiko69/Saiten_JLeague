@@ -51,7 +51,6 @@ class CMainPage extends StatefulWidget {
 }
 
 class CMainPageState extends State<CMainPage> {
-  //final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('Nagoya _Schedule').snapshots();
   String _teamName = '';
 
   @override
@@ -83,7 +82,7 @@ class CMainPageState extends State<CMainPage> {
                       fGetNextMatch(_teamName);
                     }),
                   },
-              icon: Icon(Icons.autorenew))
+              icon: const Icon(Icons.autorenew))
         ],
       ),
       body: Padding(
