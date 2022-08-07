@@ -1,11 +1,10 @@
 /// matchDataViewFactory.dart
 /// matchDataView.dartで使用する関数定義
 
-import 'dart:convert';
+//import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:judge/mainData.dart';
+//import 'package:judge/mainData.dart';
 import 'package:judge/matchDataView/matchDataViewData.dart';
 
 /*
@@ -16,7 +15,7 @@ Func : 該当する試合の登録メンバーを取得
 * */
 Future<List<CPlayerData>> fGetMatchMember(
     String teamName, String matchID, int matchNo, bool isStarting) async {
-  String matchNoIdx = "match" + matchNo.toString();
+  // String matchNoIdx = "match" + matchNo.toString();
   // int memberCond = -1;
   List<CPlayerData> lMemberData = [];
 
@@ -52,9 +51,9 @@ Future<CPlayerData> fGetMemberInfoForMemberID(String teamName, String memberID) 
       .collection('Member')
       .doc(memberID).get();
   String name = docSnapshot.get("name");
-  String pos  = docSnapshot.get("position");
+  // String pos  = docSnapshot.get("position");
   int    num  = docSnapshot.get("number");
-  CPlayerData returnData = CPlayerData(name, num);
+  CPlayerData returnData = CPlayerData(memberID, name, num);
 
   return returnData;
 }
@@ -64,18 +63,56 @@ Name : fSubmit()
 Arg  : void
 Func : 採点結果をfirebaseに格納
 * */
-void fSubmit() async {
-  // ドキュメント作成
-  await FirebaseFirestore.instance
+void fSubmit(String teamName, String matchID) async {
+  String userID = "tID"; // FOR DEBUG
+
+  // 既に採点情報が格納されているか確認して、あれば新規追加ではなく更新
+  final QuerySnapshot snapshot = await FirebaseFirestore.instance
       .collection('Data2022')
       .doc('Scores')
-      .collection('Nagoya')
-      .doc(myData.email) // ここは空欄だと自動でIDが付く
-      .set({
-    'teamname': 'sato',
-    'age': 20,
-    'sex': 'male',
-    'type': ['A', 'B']
-  }); // データ
+      .collection(teamName)
+      .where('userID', isEqualTo: userID)
+      .where('matchID', isEqualTo: matchID)
+      .get();
+
+  // まだ一度も送信していない(snapshotのサイズが0)場合、新規追加
+  if (snapshot.size == 0) {
+    for (CPlayerData member in lStartingList!) {
+      int index = 0;
+      // スタメンの採点情報
+      await FirebaseFirestore.instance
+          .collection('Data2022')
+          .doc('Scores')
+          .collection(teamName)
+          .doc() // ここは空欄だと自動でIDが付く
+          .set({
+        'MemberID': member.mid,
+        'MatchID': matchID,
+        'userID': userID, // TODO:後で直す。UserIDをfirebase authからDB格納できるようになってから
+        'score': lSelectedPointList![index]
+      }); // データ
+      index++;
+    }
+    // サブの採点情報
+    for (CPlayerData member in lSubList!) {
+      int index = 11;
+      await FirebaseFirestore.instance
+          .collection('Data2022')
+          .doc('Scores')
+          .collection(teamName)
+          .doc() // ここは空欄だと自動でIDが付く
+          .set({
+        'MemberID': member.mid,
+        'MatchID': matchID,
+        'userID': userID, // TODO:後で直す。UserIDをfirebase authからDB格納できるようになってから
+        'score': lSelectedPointList![index]
+      }); // データ
+
+      index++;
+    }
+  }
+
+  // 既に送信済なら情報をさいしんに更新する
+  else{} // TODO : 今日やる
 }
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:judge/main.dart';
-import 'package:judge/matchDataView/matchDataView.dart';
 import 'package:judge/mainData.dart';
 
 class CMyPage extends StatelessWidget {

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/matchDataView/matchDataViewData.dart';
 import 'package:judge/matchDataView/matchDataViewFactory.dart';
@@ -49,11 +48,11 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
       appBar: AppBar(
         title: Text("Match " + widget.matchNo.toString()),
         actions: <Widget>[
-          TextButton(
+          IconButton(
               onPressed: () => {
                     setState(() {
                       if (myData.isAlreadyLogin) {
-                        fSubmit();
+                        fSubmit(widget.teamName, widget.matchID);
                       } else {/* No Action */}
 
                       // ログインしていなかった場合警告を出す
@@ -74,7 +73,7 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
                       );
                     }),
                   },
-              child: Text("Submit", style:tsSubmitIcon),
+              icon: const Icon(Icons.arrow_circle_right),// Text("Submit", style:tsSubmitIcon),
           )
         ],
       ),
@@ -109,6 +108,10 @@ class BodyDisp extends StatefulWidget {
   String matchID;
   int matchNo;
   bool isStarting;
+
+  void fWriteStartingData(){
+
+  }
 
   @override
   State<BodyDisp> createState() => _BodyDispState();
@@ -158,7 +161,14 @@ class _BodyDispState extends State<BodyDisp> {
           );
         }
 
-        List<CPlayerData>? lMemberData = snapshot.data;
+        List<CPlayerData>? lMemberData = snapshot.data; // 描画用
+        // Firebase 送信用
+        if(widget.isStarting) {
+          lStartingList = lMemberData;
+        }
+        else{
+          lSubList = lMemberData;
+        }
         return Padding(
           padding: const EdgeInsets.all(0.0),
           child: Column(
@@ -204,6 +214,7 @@ class _BodyDispState extends State<BodyDisp> {
                                   setState(() {
                                     _selectedPoints[_selectedPointsIndex] =
                                         value!;
+                                    lSelectedPointList = _selectedPoints; // 送信用リストを更新
                                   });
                                 },
                               ),

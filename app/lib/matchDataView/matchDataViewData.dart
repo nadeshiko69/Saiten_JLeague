@@ -10,10 +10,16 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class CPlayerData {
-  CPlayerData(this.name, this.number);
+  CPlayerData(this.mid, this.name, this.number);
+  String mid;
   String name;
   int    number;
 }
+
+// Submitで送信する用のリストたち
+List<CPlayerData>? lStartingList = [];
+List<CPlayerData>? lSubList = [];
+List<double>? lSelectedPointList = [];
 
 // Today'sMatch か NextMatchのテキストスタイル
 var tsSubmitIcon = const TextStyle(
