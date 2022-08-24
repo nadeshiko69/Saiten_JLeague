@@ -1,0 +1,11 @@
+ncnq-taks-wpqy-suwr-ndfv
+
+
+● stripeダッシュボードのセットアップの参考
+https://qiita.com/mogmet/items/cddc182156028c928ecf
+
+●App側のセットアップ
+https://blog.pentagon.tokyo/3004/
+
+CocoaPods could not find compatible versions for pod "stripe_ios":
+のErrorはPodFile内のiosVerを上げてあげると解決（今回は13まで上げた、11だとダメだった）
