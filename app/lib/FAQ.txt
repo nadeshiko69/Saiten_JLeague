@@ -20,6 +20,11 @@ https://zenn.dev/tsuruo/articles/a3d77c4854e108
 解決方法
     エミュレータを閉じて再起動
 
+* Androidフォルダ内のMainActivity.ktがデフォルトで赤字になっている
+* Unresolved reference: FlutterFragmentActivity
+    ファイルを開いた時のPathの問題
+    Androidフォルダを選択した状態でFile -> Openからファイルを開くとOK
+
 
 * Debugボタンが押せない
 * enable to locate adb ...

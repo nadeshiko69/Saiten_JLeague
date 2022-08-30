@@ -3,6 +3,8 @@
 
 //import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart' hide Card; // こっちのCardクラスをhideしないとデフォルトのCardが使用できない
 import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,12 @@ import 'package:judge/myPage/myPageViewer.dart';
 import 'matchDataView/matchDataView.dart';
 
 void main() async {
+  // For Stripe
+  await dotenv.load(fileName: '.env');
+  final publishableKey = dotenv.get('STRIPE_KEY');
+  Stripe.publishableKey = publishableKey;
+  await Stripe.instance.applySettings();
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const CMyApp());
