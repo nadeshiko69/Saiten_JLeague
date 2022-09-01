@@ -2,9 +2,11 @@
 /// メインページを管理
 
 //import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: prefer_const_constructors
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_stripe/flutter_stripe.dart' hide Card; // こっちのCardクラスをhideしないとデフォルトのCardが使用できない
+import 'package:flutter_stripe/flutter_stripe.dart'
+    hide Card; // こっちのCardクラスをhideしないとデフォルトのCardが使用できない
 import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,7 @@ import 'matchDataView/matchDataView.dart';
 
 void main() async {
   // For Stripe
-  await dotenv.load(fileName: '.env');
+  await dotenv.load(fileName: 'lib/.env');
   final publishableKey = dotenv.get('STRIPE_KEY');
   Stripe.publishableKey = publishableKey;
   await Stripe.instance.applySettings();
@@ -32,8 +34,8 @@ class CMyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Judge',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+          // primarySwatch: Colors.blue,
+          ),
       home: CMainPage(
         userID: '',
         email: 'NOT LOGIN',
@@ -82,7 +84,15 @@ class CMainPageState extends State<CMainPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Judge'),
+        title: const Text(
+          'Judge',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          ),
+        ),
+        backgroundColor: Colors.white54,
+        iconTheme: IconThemeData(color: Colors.black),
         actions: [
           IconButton(
               onPressed: () => {
@@ -90,97 +100,110 @@ class CMainPageState extends State<CMainPage> {
                       fGetNextMatch(_teamName);
                     }),
                   },
-              icon: const Icon(Icons.autorenew))
+              icon: const Icon(
+                Icons.autorenew,
+                color: Colors.black,
+              ))
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(0.0),
-        child: Center(
-          child: Column(
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CMatchDetailView(
-                            _deviceHeight,
-                            _deviceWidth,
-                            lNextMatch[0].matchNo,
-                            lNextMatch[0].matchID,
-                            _teamName,
-                            lNextMatch[0].opponent),
-                      ));
-                },
-                child: Container(
-                  height: _deviceHeight * 0.15,
-                  width: _deviceWidth,
-                  color: Colors.blue, // FOR DEBUG
-                  child: Column(
-                    children: [
-                      Text(
-                        lNextMatch[0].nextOrToday.toString(),
-                        style: tsNextMatchTextStyle,
+      body: Container(
+        color: Colors.black,
+        child: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: Center(
+            child: Column(
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CMatchDetailView(
+                              _deviceHeight,
+                              _deviceWidth,
+                              lNextMatch[0].matchNo,
+                              lNextMatch[0].matchID,
+                              _teamName,
+                              lNextMatch[0].opponent),
+                        ));
+                  },
+                  child: Container(
+                    height: _deviceHeight * 0.15,
+                    width: _deviceWidth * 0.95,
+                    decoration: BoxDecoration(
+                      color: Colors.amber,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            lNextMatch[0].nextOrToday.toString(),
+                            style: tsNextMatchTextStyle,
+                          ),
+                          Text(
+                            lNextMatch[0].day,
+                            style: tsScheduleTextStyle,
+                          ),
+                          Text(
+                            'vs' + lNextMatch[0].opponent,
+                            style: tsOpponentNameTextStyle,
+                          ),
+                        ],
                       ),
-                      Text(
-                        lNextMatch[0].day,
-                        style: tsScheduleTextStyle,
-                      ),
-                      Text(
-                        'vs' + lNextMatch[0].opponent,
-                        style: tsOpponentNameTextStyle,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                height: _deviceHeight * 0.7,
-                width: _deviceWidth,
-                color: Colors.red, // FOR DEBUG
-                child: ListView.builder(
-                  itemCount: lAllMatch.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () async {
-                        // タップしたときの処理
-                        //print(lAllMatch[index].opponent);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CMatchDetailView(
-                                  _deviceHeight,
-                                  _deviceWidth,
-                                  lAllMatch[index].matchNo,
-                                  lAllMatch[index].matchID,
-                                  _teamName,
-                                  lAllMatch[index].opponent),
-                            ));
-                      },
-                      child: Card(
-                        child: ListTile(
-                          title: Text("MATCH " +
-                              lAllMatch[index].matchNo.toString() +
-                              "  " +
-                              lAllMatch[index].opponent),
-                          subtitle: Text(lAllMatch[index].day + " "),
+                Container(
+                  height: _deviceHeight * 0.7,
+                  width: _deviceWidth * 0.95,
+                  color: Colors.black, // FOR DEBUG
+                  child: ListView.builder(
+                    itemCount: lAllMatch.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () async {
+                          // タップしたときの処理
+                          //print(lAllMatch[index].opponent);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CMatchDetailView(
+                                    _deviceHeight,
+                                    _deviceWidth,
+                                    lAllMatch[index].matchNo,
+                                    lAllMatch[index].matchID,
+                                    _teamName,
+                                    lAllMatch[index].opponent),
+                              ));
+                        },
+                        child: Card(
+                          child: ListTile(
+                            title: Text("MATCH " +
+                                lAllMatch[index].matchNo.toString() +
+                                "  " +
+                                lAllMatch[index].opponent),
+                            subtitle: Text(lAllMatch[index].day + " "),
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
       drawer: Drawer(
+        backgroundColor: Colors.white,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
               decoration: const BoxDecoration(
-                color: Colors.blue,
+                color: Colors.white54,
               ),
               child: Text(myData.email),
             ),

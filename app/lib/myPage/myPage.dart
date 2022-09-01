@@ -5,6 +5,7 @@ import 'package:judge/mainData.dart';
 class CMyPage extends StatelessWidget {
   const CMyPage({Key? key}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
