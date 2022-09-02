@@ -124,7 +124,8 @@ class CMainPageState extends State<CMainPage> {
                               lNextMatch[0].matchNo,
                               lNextMatch[0].matchID,
                               _teamName,
-                              lNextMatch[0].opponent),
+                              lNextMatch[0].opponent,
+                              DateTime.parse(lNextMatch[0].day)),
                         ));
                   },
                   child: Container(
@@ -175,7 +176,8 @@ class CMainPageState extends State<CMainPage> {
                                     lAllMatch[index].matchNo,
                                     lAllMatch[index].matchID,
                                     _teamName,
-                                    lAllMatch[index].opponent),
+                                    lAllMatch[index].opponent,
+                                    DateTime.parse(lNextMatch[0].day)),
                               ));
                         },
                         child: Card(

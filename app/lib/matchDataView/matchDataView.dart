@@ -6,7 +6,7 @@ import 'package:judge/matchDataView/matchDataViewFactory.dart';
 
 class CMatchDetailView extends StatefulWidget {
   CMatchDetailView(this.deviceHeight, this.deviceWidth, this.matchNo,
-      this.matchID, this.teamName, this.opponent,
+      this.matchID, this.teamName, this.opponent, this.matchDay,
       {Key? key})
       : super(key: key);
   double deviceHeight;
@@ -15,6 +15,7 @@ class CMatchDetailView extends StatefulWidget {
   String matchID;
   String teamName;
   String opponent;
+  DateTime matchDay;
 
   @override
   State<CMatchDetailView> createState() => _CMatchDetailViewState();
@@ -33,9 +34,9 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
     // 表示する Widget の一覧
     List<Widget> _pageList = [
       BodyDisp(widget.deviceHeight, widget.deviceWidth, widget.teamName,
-          widget.matchID, widget.matchNo, true),
+          widget.matchID, widget.matchNo, true, widget.matchDay),
       BodyDisp(widget.deviceHeight, widget.deviceWidth, widget.teamName,
-          widget.matchID, widget.matchNo, false),
+          widget.matchID, widget.matchNo, false, widget.matchDay),
     ];
     String submitMainMsg = "ログインしてください";
     String submitSubMsg = "採点の提出にはログインが必要です。";
@@ -46,34 +47,44 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Match " + widget.matchNo.toString()),
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: Text(
+          "Match " + widget.matchNo.toString(),
+          style: const TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          ),
+        ),
+        backgroundColor: Colors.white54,
         actions: <Widget>[
           IconButton(
-              onPressed: () => {
-                    setState(() {
-                      if (myData.isAlreadyLogin) {
-                        fSubmit(widget.teamName, widget.matchID);
-                      } else {/* No Action */}
+            color: Colors.black,
+            onPressed: () => {
+              setState(() {
+                if (myData.isAlreadyLogin) {
+                  fSubmit(widget.teamName, widget.matchID);
+                } else {/* No Action */}
 
-                      // ログインしていなかった場合警告を出す
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return CupertinoAlertDialog(
-                            title: Text(submitMainMsg),
-                            content: Text(submitSubMsg),
-                            actions: <Widget>[
-                              CupertinoDialogAction(
-                                child: const Text("OK"),
-                                onPressed: () => Navigator.pop(context),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    }),
+                // ログインしていなかった場合警告を出す
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CupertinoAlertDialog(
+                      title: Text(submitMainMsg),
+                      content: Text(submitSubMsg),
+                      actions: <Widget>[
+                        CupertinoDialogAction(
+                          child: const Text("OK"),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ],
+                    );
                   },
-              icon: const Icon(Icons.arrow_circle_right),// Text("Submit", style:tsSubmitIcon),
+                );
+              }),
+            },
+            icon: const Icon(Icons
+                .arrow_circle_right), // Text("Submit", style:tsSubmitIcon),
           )
         ],
       ),
@@ -99,7 +110,7 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
 // Scaffold内のBodyを定義Footerでスタメンとベンチ切り替え
 class BodyDisp extends StatefulWidget {
   BodyDisp(this.deviceHeight, this.deviceWidth, this.teamName, this.matchID,
-      this.matchNo, this.isStarting,
+      this.matchNo, this.isStarting, this.matchDay,
       {Key? key})
       : super(key: key);
   double deviceHeight;
@@ -108,10 +119,9 @@ class BodyDisp extends StatefulWidget {
   String matchID;
   int matchNo;
   bool isStarting;
+  DateTime matchDay;
 
-  void fWriteStartingData(){
-
-  }
+  void fWriteStartingData() {}
 
   @override
   State<BodyDisp> createState() => _BodyDispState();
@@ -163,68 +173,75 @@ class _BodyDispState extends State<BodyDisp> {
 
         List<CPlayerData>? lMemberData = snapshot.data; // 描画用
         // Firebase 送信用
-        if(widget.isStarting) {
+        if (widget.isStarting) {
           lStartingList = lMemberData;
-        }
-        else{
+        } else {
           lSubList = lMemberData;
         }
+
+        // TODO : 表示させる試合の日程が過去なら、採点送信画面ではなく採点結果確認画面を表示する
+        // 試合日の翌日と今を比較　→　試合から一日以上経っていたら結果出力
+        if(widget.matchDay.add(const Duration(days:1)).difference(DateTime.now()).inDays < 0){
+
+        }
+        // 試合終了から1日以内なら採点入力画面
+        else{
+
+        }
+
         return Padding(
           padding: const EdgeInsets.all(0.0),
           child: Column(
             children: [
               Container(
-                height: widget.deviceHeight * 0.15,
+                height: widget.deviceHeight * 0.10,
                 width: widget.deviceWidth,
-                color: Colors.blue, // FOR DEBUG
+                color: Colors.amber, // FOR DEBUG
                 child: Center(
                     child: Text(
                   'vs' + lAllMatch[widget.matchNo - 1].opponent,
                   style: tsOpponentNameTextStyle,
                 )),
               ),
-              Row(
-                children: [
-                  Container(
-                    height: widget.deviceHeight * 0.6,
-                    width: widget.deviceWidth,
-                    color: Colors.red, // FOR DEBUG
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: lMemberData?.length,
-                      itemBuilder: (context, index) {
-                        final int _selectedPointsIndex;
-                        if (widget.isStarting == true) {
-                          _selectedPointsIndex = index;
-                        } else {
-                          _selectedPointsIndex = index + 11;
-                        }
-                        return InkWell(
-                          child: Card(
-                            child: ListTile(
-                              title: Text(lMemberData![index].name),
-                              subtitle:
-                                  Text(lMemberData[index].number.toString()),
-                              trailing: DropdownButton(
-                                isExpanded: false,
-                                items: _candidatePoints,
-                                value: _selectedPoints[_selectedPointsIndex],
-                                onChanged: (double? value) {
-                                  setState(() {
-                                    _selectedPoints[_selectedPointsIndex] =
-                                        value!;
-                                    lSelectedPointList = _selectedPoints; // 送信用リストを更新
-                                  });
-                                },
-                              ),
-                            ),
+              Container(
+                height: widget.deviceHeight * 0.67,
+                width: widget.deviceWidth,
+                color: Colors.red, // FOR DEBUG
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: lMemberData?.length,
+                  itemBuilder: (context, index) {
+                    final int _selectedPointsIndex;
+                    if (widget.isStarting == true) {
+                      _selectedPointsIndex = index;
+                    } else {
+                      _selectedPointsIndex = index + 11;
+                    }
+                    return InkWell(
+                      child: Card(
+                        child: ListTile(
+                          title: Text(lMemberData![index].name),
+                          subtitle:
+                              Text(lMemberData[index].number.toString()),
+                          trailing: DropdownButton(
+                            isExpanded: false,
+                            items: _candidatePoints,
+                            value: _selectedPoints[_selectedPointsIndex],
+                            onChanged: (double? value) {
+                              setState(() {
+                                _selectedPoints[_selectedPointsIndex] =
+                                    value!;
+                                lSelectedPointList =
+                                    _selectedPoints; // 送信用リストを更新
+                              });
+                            },
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
