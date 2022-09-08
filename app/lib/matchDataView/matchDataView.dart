@@ -31,6 +31,12 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO : 表示させる試合の日程が過去なら、採点送信画面ではなく採点結果確認画面を表示する
+    // 試合日の翌日と今を比較　→　試合から一日以上経っていたら結果出力
+    bool dispInput = (widget.matchDay.add(const Duration(days:1)).difference(DateTime.now()).inDays) > 0;
+    print(widget.matchDay);
+    print(dispInput);
+
     // 表示する Widget の一覧
     List<Widget> _pageList = [
       BodyDisp(widget.deviceHeight, widget.deviceWidth, widget.teamName,
@@ -59,7 +65,7 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
         actions: <Widget>[
           IconButton(
             color: Colors.black,
-            onPressed: () => {
+            onPressed:  !dispInput ? null : () => {
               setState(() {
                 if (myData.isAlreadyLogin) {
                   fSubmit(widget.teamName, widget.matchID);
@@ -177,16 +183,6 @@ class _BodyDispState extends State<BodyDisp> {
           lStartingList = lMemberData;
         } else {
           lSubList = lMemberData;
-        }
-
-        // TODO : 表示させる試合の日程が過去なら、採点送信画面ではなく採点結果確認画面を表示する
-        // 試合日の翌日と今を比較　→　試合から一日以上経っていたら結果出力
-        if(widget.matchDay.add(const Duration(days:1)).difference(DateTime.now()).inDays < 0){
-
-        }
-        // 試合終了から1日以内なら採点入力画面
-        else{
-
         }
 
         return Padding(

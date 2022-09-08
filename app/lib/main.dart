@@ -177,7 +177,7 @@ class CMainPageState extends State<CMainPage> {
                                     lAllMatch[index].matchID,
                                     _teamName,
                                     lAllMatch[index].opponent,
-                                    DateTime.parse(lNextMatch[0].day)),
+                                    DateTime.parse(lAllMatch[index].day)),
                               ));
                         },
                         child: Card(
