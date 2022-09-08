@@ -31,18 +31,19 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO : 表示させる試合の日程が過去なら、採点送信画面ではなく採点結果確認画面を表示する
     // 試合日の翌日と今を比較　→　試合から一日以上経っていたら結果出力
-    bool dispInput = (widget.matchDay.add(const Duration(days:1)).difference(DateTime.now()).inDays) > 0;
-    print(widget.matchDay);
-    print(dispInput);
+    bool dispInput = (widget.matchDay
+            .add(const Duration(days: 1))
+            .difference(DateTime.now())
+            .inDays) >
+        0;
 
     // 表示する Widget の一覧
     List<Widget> _pageList = [
       BodyDisp(widget.deviceHeight, widget.deviceWidth, widget.teamName,
-          widget.matchID, widget.matchNo, true, widget.matchDay),
+          widget.matchID, widget.matchNo, true, widget.matchDay, dispInput),
       BodyDisp(widget.deviceHeight, widget.deviceWidth, widget.teamName,
-          widget.matchID, widget.matchNo, false, widget.matchDay),
+          widget.matchID, widget.matchNo, false, widget.matchDay, dispInput),
     ];
     String submitMainMsg = "ログインしてください";
     String submitSubMsg = "採点の提出にはログインが必要です。";
@@ -65,30 +66,32 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
         actions: <Widget>[
           IconButton(
             color: Colors.black,
-            onPressed:  !dispInput ? null : () => {
-              setState(() {
-                if (myData.isAlreadyLogin) {
-                  fSubmit(widget.teamName, widget.matchID);
-                } else {/* No Action */}
+            onPressed: !dispInput
+                ? null
+                : () => {
+                      setState(() {
+                        if (myData.isAlreadyLogin) {
+                          fSubmit(widget.teamName, widget.matchID);
+                        } else {/* No Action */}
 
-                // ログインしていなかった場合警告を出す
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return CupertinoAlertDialog(
-                      title: Text(submitMainMsg),
-                      content: Text(submitSubMsg),
-                      actions: <Widget>[
-                        CupertinoDialogAction(
-                          child: const Text("OK"),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }),
-            },
+                        // ログインしていなかった場合警告を出す
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return CupertinoAlertDialog(
+                              title: Text(submitMainMsg),
+                              content: Text(submitSubMsg),
+                              actions: <Widget>[
+                                CupertinoDialogAction(
+                                  child: const Text("OK"),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }),
+                    },
             icon: const Icon(Icons
                 .arrow_circle_right), // Text("Submit", style:tsSubmitIcon),
           )
@@ -116,7 +119,7 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
 // Scaffold内のBodyを定義Footerでスタメンとベンチ切り替え
 class BodyDisp extends StatefulWidget {
   BodyDisp(this.deviceHeight, this.deviceWidth, this.teamName, this.matchID,
-      this.matchNo, this.isStarting, this.matchDay,
+      this.matchNo, this.isStarting, this.matchDay, this.dispInput,
       {Key? key})
       : super(key: key);
   double deviceHeight;
@@ -126,6 +129,7 @@ class BodyDisp extends StatefulWidget {
   int matchNo;
   bool isStarting;
   DateTime matchDay;
+  bool dispInput;
 
   void fWriteStartingData() {}
 
@@ -216,24 +220,33 @@ class _BodyDispState extends State<BodyDisp> {
                     }
                     return InkWell(
                       child: Card(
-                        child: ListTile(
-                          title: Text(lMemberData![index].name),
-                          subtitle:
-                              Text(lMemberData[index].number.toString()),
-                          trailing: DropdownButton(
-                            isExpanded: false,
-                            items: _candidatePoints,
-                            value: _selectedPoints[_selectedPointsIndex],
-                            onChanged: (double? value) {
-                              setState(() {
-                                _selectedPoints[_selectedPointsIndex] =
-                                    value!;
-                                lSelectedPointList =
-                                    _selectedPoints; // 送信用リストを更新
-                              });
-                            },
-                          ),
-                        ),
+                        child: widget.dispInput
+                        // 採点入力画面を表示
+                            ? ListTile(
+                                title: Text(lMemberData![index].name),
+                                subtitle:
+                                    Text(lMemberData[index].number.toString()),
+                                trailing: DropdownButton(
+                                  isExpanded: false,
+                                  items: _candidatePoints,
+                                  value: _selectedPoints[_selectedPointsIndex],
+                                  onChanged: (double? value) {
+                                    setState(() {
+                                      _selectedPoints[_selectedPointsIndex] =
+                                          value!;
+                                      lSelectedPointList =
+                                          _selectedPoints; // 送信用リストを更新
+                                    });
+                                  },
+                                ),
+                              )
+                        // 採点集計結果を表示
+                            : ListTile(
+                                title: Text(lMemberData![index].name),
+                                subtitle:
+                                    Text(lMemberData[index].number.toString()),
+                                trailing: Text("a")
+                              ),
                       ),
                     );
                   },
