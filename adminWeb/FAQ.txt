@@ -1,3 +1,9 @@
+●起動
+pJudgeOperatorのディレクトリをVScodeで開いてDebug→Run
+ブラウザで http://127.0.0.1:8000/
+
+
+
 
 ●立ち上げ
     ・仮想環境の作成

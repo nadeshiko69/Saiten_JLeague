@@ -72,6 +72,10 @@ def fGetNemberData(request, engName):
                 print("Register failed")
                 pass
             
+        # 計算ボタンが押されたらこっち
+        elif "calc" in request.POST:
+            pass
+            
             
         # 最初にアクセスされるのはこっち
         else:

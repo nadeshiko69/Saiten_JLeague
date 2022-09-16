@@ -7,6 +7,7 @@
         <div class="field">
             <div class="control">
                 <button type="submit" name="run_script">メンバー情報を再取得</button>
+                <button type="calc" name="run_script">採点結果を計算</button>
             </div>
             <table border="1">
                 <tr>
@@ -15,6 +16,7 @@
                     <th>ポジション</th>
                     <th>スタメン</th>
                     <th>サブ</th>
+                    <th>採点</th>
                 </tr>
                 {% for member in players %}
                 <tr>
@@ -24,6 +26,8 @@
                     <!-- TODO: スタメン11人サブ7人で指定してないと送信できないようにする -->
                     <td align="center"><label><input type="checkbox" name="starting_number" value={{member.pid}}></label></td>
                     <td align="center"><label><input type="checkbox" name="substitute_number" value={{member.pid}}></label></td>
+                    <td align="center">a</td>
+                    
                 </tr>
                 {% endfor %}
             </table>
