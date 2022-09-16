@@ -86,6 +86,7 @@ class operateFirebase():
     
     # 採点結果をfirebaseから読み込む
     def fReadPointsFromFirebase(self, teamName, matchID):
+        self.npPoints = np.empty(0)
         doc_ref = self.db.collection('Data2022').document('Scores').collection(teamName).where('MatchID', '==', matchID)
         docs = doc_ref.stream()
         for doc in docs:

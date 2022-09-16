@@ -9,6 +9,7 @@ from function.operateFirebase import operateFirebase
 
 from .models import Team, Player, Match
 import datetime
+import numpy as np
 
 # FirebaseのInitialize_Appを複数回起動しないようにクラス化
 class firebaseOperator:
@@ -77,7 +78,7 @@ def fGetNemberData(request, engName):
         elif "calc" in request.POST:
             matches = Match.objects.filter(team = jpnName, kickoff__range=[today - datetime.timedelta(days=3),today]).order_by('kickoff') # 3日前から今日の間に開催された試合の情報を抽出
             points = firebaseOperator.of.fReadPointsFromFirebase(engName,matches[0].mid) # 採点結果を読み込み
-            ave_points = fCalcAveragePoints(points) # みんなの採点結果の平均を計算
+            ave_points = fCalcAveragePoints(engName, points) # みんなの採点結果の平均を計算
             pass
             
             
@@ -93,5 +94,15 @@ def fGetNemberData(request, engName):
 
     return render(request, "aFirebaseOperator/team_detail.html", params)
 
-def fCalcAveragePoints(points):
+def fCalcAveragePoints(engName, points):
+    players = firebaseOperator.of.fReadMemberDataFromFirebase(engName)
+    for player in players:
+        points_eachMember = points[np.any(points==player["id"], axis=1)][:,1] # 採点の値のみ抽出
+        points_eachMember = [float(s) for s in points_eachMember] # 取得するときにstrで取ってきてるのでfloatに変換。後で修正する
+        if len(points_eachMember) != 0:
+            ave_point = sum(points_eachMember) / len(points_eachMember) # 平均値
+            db = Player.objects.get(pid=player["id"])
+            db.point = ave_point
+            db.save()
+            
     pass
