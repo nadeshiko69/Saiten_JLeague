@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:judge/main.dart';
-import 'package:judge/matchDataView/matchDataView.dart';
 import 'package:judge/mainData.dart';
 
 class CMyPage extends StatelessWidget {
   const CMyPage({Key? key}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {

@@ -6,15 +6,16 @@ import 'package:judge/matchDataView/matchDataViewFactory.dart';
 
 class CMatchDetailView extends StatefulWidget {
   CMatchDetailView(this.deviceHeight, this.deviceWidth, this.matchNo,
-      this.teamName, this.opponent,
+      this.matchID, this.teamName, this.opponent, this.matchDay,
       {Key? key})
       : super(key: key);
   double deviceHeight;
   double deviceWidth;
   int matchNo;
+  String matchID;
   String teamName;
   String opponent;
-
+  DateTime matchDay;
 
   @override
   State<CMatchDetailView> createState() => _CMatchDetailViewState();
@@ -30,23 +31,71 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
 
   @override
   Widget build(BuildContext context) {
+    // 試合日の翌日と今を比較　→　試合から一日以上経っていたら結果出力
+    bool dispInput = (widget.matchDay
+            .add(const Duration(days: 1))
+            .difference(DateTime.now())
+            .inDays) >
+        0;
+
     // 表示する Widget の一覧
     List<Widget> _pageList = [
       BodyDisp(widget.deviceHeight, widget.deviceWidth, widget.teamName,
-          widget.matchNo, true),
+          widget.matchID, widget.matchNo, true, widget.matchDay, dispInput),
       BodyDisp(widget.deviceHeight, widget.deviceWidth, widget.teamName,
-          widget.matchNo, false),
+          widget.matchID, widget.matchNo, false, widget.matchDay, dispInput),
     ];
     String submitMainMsg = "ログインしてください";
-    String submitSubMsg  = "採点の提出にはログインが必要です。";
-    if(myData.isAlreadyLogin){
+    String submitSubMsg = "採点の提出にはログインが必要です。";
+    if (myData.isAlreadyLogin) {
       submitMainMsg = "提出が完了しました";
-      submitSubMsg  = "結果発表をお待ちください！";
+      submitSubMsg = "結果発表をお待ちください！";
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Match " + widget.matchNo.toString()),
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: Text(
+          "Match " + widget.matchNo.toString(),
+          style: const TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          ),
+        ),
+        backgroundColor: Colors.white54,
+        actions: <Widget>[
+          IconButton(
+            color: Colors.black,
+            onPressed: !dispInput
+                ? null
+                : () => {
+                      setState(() {
+                        if (myData.isAlreadyLogin) {
+                          fSubmit(widget.teamName, widget.matchID);
+                        } else {/* No Action */}
+
+                        // ログインしていなかった場合警告を出す
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return CupertinoAlertDialog(
+                              title: Text(submitMainMsg),
+                              content: Text(submitSubMsg),
+                              actions: <Widget>[
+                                CupertinoDialogAction(
+                                  child: const Text("OK"),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }),
+                    },
+            icon: const Icon(Icons
+                .arrow_circle_right), // Text("Submit", style:tsSubmitIcon),
+          )
+        ],
       ),
       body: _pageList[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -63,47 +112,26 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
         currentIndex: _selectedIndex,
         onTap: _onTapItem,
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.done),
-        onPressed: () {
-          // 提出
-          if(myData.isAlreadyLogin){fSubmit();}
-          else{ /* No Action */ }
-
-          // ログインしていなかった場合警告を出す
-          showDialog(
-            context: context,
-            builder: (context) {
-              return CupertinoAlertDialog(
-                title: Text(submitMainMsg),
-                content: Text(submitSubMsg),
-                actions: <Widget>[
-                  CupertinoDialogAction(
-                    child: const Text("OK"),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-      ),
     );
   }
 }
 
-
 // Scaffold内のBodyを定義Footerでスタメンとベンチ切り替え
 class BodyDisp extends StatefulWidget {
-  BodyDisp(this.deviceHeight, this.deviceWidth, this.teamName, this.matchNo,
-      this.isStarting,
+  BodyDisp(this.deviceHeight, this.deviceWidth, this.teamName, this.matchID,
+      this.matchNo, this.isStarting, this.matchDay, this.dispInput,
       {Key? key})
       : super(key: key);
   double deviceHeight;
   double deviceWidth;
   String teamName;
+  String matchID;
   int matchNo;
   bool isStarting;
+  DateTime matchDay;
+  bool dispInput;
+
+  void fWriteStartingData() {}
 
   @override
   State<BodyDisp> createState() => _BodyDispState();
@@ -137,8 +165,8 @@ class _BodyDispState extends State<BodyDisp> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future:
-          fGetMatchMember(widget.teamName, widget.matchNo, widget.isStarting),
+      future: fGetMatchMember(
+          widget.teamName, widget.matchID, widget.matchNo, widget.isStarting),
       builder:
           (BuildContext context, AsyncSnapshot<List<CPlayerData>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -153,62 +181,76 @@ class _BodyDispState extends State<BodyDisp> {
           );
         }
 
-        List<CPlayerData>? lMemberData = snapshot.data;
+        List<CPlayerData>? lMemberData = snapshot.data; // 描画用
+        // Firebase 送信用
+        if (widget.isStarting) {
+          lStartingList = lMemberData;
+        } else {
+          lSubList = lMemberData;
+        }
+
         return Padding(
           padding: const EdgeInsets.all(0.0),
           child: Column(
             children: [
               Container(
-                height: widget.deviceHeight * 0.15,
+                height: widget.deviceHeight * 0.10,
                 width: widget.deviceWidth,
-                color: Colors.blue, // FOR DEBUG
+                color: Colors.amber, // FOR DEBUG
                 child: Center(
                     child: Text(
                   'vs' + lAllMatch[widget.matchNo - 1].opponent,
                   style: tsOpponentNameTextStyle,
                 )),
               ),
-              Row(
-                children: [
-                  Container(
-                    height: widget.deviceHeight * 0.6,
-                    width: widget.deviceWidth,
-                    color: Colors.red, // FOR DEBUG
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: lMemberData?.length,
-                      itemBuilder: (context, index) {
-                        final int _selectedPointsIndex;
-                        if (widget.isStarting == true) {
-                          _selectedPointsIndex = index;
-                        } else {
-                          _selectedPointsIndex = index + 11;
-                        }
-                        return InkWell(
-                          child: Card(
-                            child: ListTile(
-                              title: Text(lMemberData![index].name),
-                              subtitle:
-                                  Text(lMemberData[index].number.toString()),
-                              trailing: DropdownButton(
-                                isExpanded: false,
-                                items: _candidatePoints,
-                                value: _selectedPoints[_selectedPointsIndex],
-                                onChanged: (double? value) {
-                                  setState(() {
-                                    _selectedPoints[_selectedPointsIndex] =
-                                        value!;
-                                  });
-                                },
+              Container(
+                height: widget.deviceHeight * 0.67,
+                width: widget.deviceWidth,
+                color: Colors.red, // FOR DEBUG
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: lMemberData?.length,
+                  itemBuilder: (context, index) {
+                    final int _selectedPointsIndex;
+                    if (widget.isStarting == true) {
+                      _selectedPointsIndex = index;
+                    } else {
+                      _selectedPointsIndex = index + 11;
+                    }
+                    return InkWell(
+                      child: Card(
+                        child: widget.dispInput
+                        // 採点入力画面を表示
+                            ? ListTile(
+                                title: Text(lMemberData![index].name),
+                                subtitle:
+                                    Text(lMemberData[index].number.toString()),
+                                trailing: DropdownButton(
+                                  isExpanded: false,
+                                  items: _candidatePoints,
+                                  value: _selectedPoints[_selectedPointsIndex],
+                                  onChanged: (double? value) {
+                                    setState(() {
+                                      _selectedPoints[_selectedPointsIndex] =
+                                          value!;
+                                      lSelectedPointList =
+                                          _selectedPoints; // 送信用リストを更新
+                                    });
+                                  },
+                                ),
+                              )
+                        // 採点集計結果を表示
+                            : ListTile(
+                                title: Text(lMemberData![index].name),
+                                subtitle:
+                                    Text(lMemberData[index].number.toString()),
+                                trailing: Text("a")
                               ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),

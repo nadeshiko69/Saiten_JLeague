@@ -31,7 +31,6 @@ void fGetNextMatch(String teamName) async{
   DateTime _todayDate = DateTime.parse(fGetTodayDate());
   bool _decidedNextMatch = false;
 
-  //final _userCollection = FirebaseFirestore.instance.collection('Nagoya _Schedule');
   final _userCollection = FirebaseFirestore.instance
       .collection('Data2022')
       .doc(teamName)
@@ -40,7 +39,8 @@ void fGetNextMatch(String teamName) async{
 
   final matchData = snapshot.docs.map((DocumentSnapshot document){
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-    print(data['kickoff'].toString()); // Firebase側で16節以降のkickoffがtimestampという名称で登録されていてtoDateできない。っFirebaseを修正する
+
+    final String matchID = document.id;
     final String day = data['kickoff'].toDate().toString();
     final int matchNo = data['section'];
     String opponent;
@@ -50,20 +50,20 @@ void fGetNextMatch(String teamName) async{
     else {
       opponent = data['home'];
     }
-    return CMatchData(opponent, day, matchNo);
+    return CMatchData(matchID,opponent, day, matchNo);
   }).toList();
 
   lAllMatch = matchData;
   lAllMatch.sort((a, b) => a.matchNo.compareTo(b.matchNo));
 
   for (var v in lAllMatch) {
-    //print(v.day);
     DateTime databaseTime = DateTime.parse(v.day);
     if (_todayDate.difference(databaseTime).inDays == 0 &&
         _todayDate.day == databaseTime.day) {
       // 今日試合がある場合
       lNextMatch[0].opponent = v.opponent;
       lNextMatch[0].matchNo  = v.matchNo;
+      lNextMatch[0].matchID  = v.matchID;
       lNextMatch[0].day      = v.day;
       lNextMatch[0].nextOrToday = "TODAY'S MATCH";
       _decidedNextMatch = true;
@@ -73,6 +73,7 @@ void fGetNextMatch(String teamName) async{
       if (!_decidedNextMatch) {
         lNextMatch[0].opponent = v.opponent;
         lNextMatch[0].matchNo  = v.matchNo;
+        lNextMatch[0].matchID  = v.matchID;
         lNextMatch[0].day      = v.day;
         lNextMatch[0].nextOrToday = "NEXT MATCH";
         _decidedNextMatch = true;

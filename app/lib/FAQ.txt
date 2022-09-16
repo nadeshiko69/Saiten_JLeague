@@ -5,17 +5,29 @@
 =値が入っていなくてもエラーにならずに続行できる
 
 
-* Winで作業後MacでPullしてBUildでエラー発生
+* Winで作業後MacでPullしてBuildでエラー発生
 エラーメッセージ
     error running pod install Error launching application on iPhone 13.
 解決方法
     Podfile.lockを削除して再インストール、クリーン
+    ios/podfile.lockを削除
+    iosディレクトリで　pod install --repo-update
+    flutter clean
+
     詳細は　https://dolphinetech.com/flutter/error-running-pod-install/
+
+* snapshotの取り扱い
+https://zenn.dev/tsuruo/articles/a3d77c4854e108
 
 
 * エミュレータにキーボード入力ができなくなる
 解決方法
     エミュレータを閉じて再起動
+
+* Androidフォルダ内のMainActivity.ktがデフォルトで赤字になっている
+* Unresolved reference: FlutterFragmentActivity
+    ファイルを開いた時のPathの問題
+    Androidフォルダを選択した状態でFile -> Openからファイルを開くとOK
 
 
 * Debugボタンが押せない

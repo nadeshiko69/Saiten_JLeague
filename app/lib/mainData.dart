@@ -13,7 +13,8 @@ CMyData myData = CMyData('','NOT LOGIN', false);
 
 // Firebaseから全試合情報を取得
 class CMatchData {
-  CMatchData(this.opponent, this.day, this.matchNo);
+  CMatchData(this.matchID, this.opponent, this.day, this.matchNo);
+  String matchID;
   String opponent;
   String day;
   int    matchNo;
@@ -22,7 +23,7 @@ class CMatchData {
 List<CMatchData> lAllMatch = [];
 
 // メインページ上部NextMatchに表示する情報
-CMatchData nextMatchData = CMatchData("opponent", "day", -1);
+CMatchData nextMatchData = CMatchData("","opponent", "day", -1);
 List<CMatchData> lNextMatch = [nextMatchData];
 
 // メインページ下部に表示する今後の試合情報
