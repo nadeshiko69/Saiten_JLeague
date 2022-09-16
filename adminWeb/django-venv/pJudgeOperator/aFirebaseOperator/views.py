@@ -39,7 +39,8 @@ def fGetNemberData(request, engName):
                                                 'pid':player["id"],
                                                 'name':player["name"],
                                                 'number':player["number"],
-                                                'position':player["position"]})
+                                                'position':player["position"],
+                                                'point':player["point"]})
                 # IDあるから更新しなかったけど背番号が0 = 退団選手。 DjangoのDBも背番号を更新
                 if (created == False) and player["number"] == 0:
                     db = Player.objects.get(pid=player["id"])
@@ -74,6 +75,9 @@ def fGetNemberData(request, engName):
             
         # 計算ボタンが押されたらこっち
         elif "calc" in request.POST:
+            matches = Match.objects.filter(team = jpnName, kickoff__range=[today - datetime.timedelta(days=3),today]).order_by('kickoff') # 3日前から今日の間に開催された試合の情報を抽出
+            points = firebaseOperator.of.fReadPointsFromFirebase(engName,matches[0].mid) # 採点結果を読み込み
+            ave_points = fCalcAveragePoints(points) # みんなの採点結果の平均を計算
             pass
             
             
@@ -89,4 +93,5 @@ def fGetNemberData(request, engName):
 
     return render(request, "aFirebaseOperator/team_detail.html", params)
 
-    
+def fCalcAveragePoints(points):
+    pass

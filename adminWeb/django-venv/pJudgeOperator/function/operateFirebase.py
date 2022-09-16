@@ -3,6 +3,7 @@ from firebase_admin import firestore
 import firebase_admin
 from firebase_admin import credentials
 from pyparsing import LRUMemo
+import numpy as np
 
 class operateFirebase():
     def __init__(self):
@@ -13,6 +14,7 @@ class operateFirebase():
         self.db = firestore.client()
         self.lMemberList = []
         self.lMatchList = []
+        self.npPoints = np.empty(0) # ユーザが増えた時に要素数が莫大になるのでNumpyで処理する
         
       
     # 試合開始前にスタメン / ベンチ情報を登録する   
@@ -55,7 +57,8 @@ class operateFirebase():
                 'id':doc.id,
                 'name':doc.get('name'),
                 'number':doc.get('number'),
-                'position':doc.get('position')
+                'position':doc.get('position'),
+                'point':0.0
             }
             self.lMemberList.append(personalData)
         
@@ -80,8 +83,19 @@ class operateFirebase():
             self.lMatchList.append(matchData)
         
         return self.lMatchList
+    
+    # 採点結果をfirebaseから読み込む
+    def fReadPointsFromFirebase(self, teamName, matchID):
+        doc_ref = self.db.collection('Data2022').document('Scores').collection(teamName).where('MatchID', '==', matchID)
+        docs = doc_ref.stream()
+        for doc in docs:
+            appendData = [
+                doc.get('MemberID'),
+                doc.get('score')
+            ]
+            self.npPoints = np.append(self.npPoints, appendData)
+        return self.npPoints.reshape(int(self.npPoints.size/2),2)
 # FOR DEBUG
 
 # of = operateFirebase()
-# of.fWriteMemberDataToFirebase()
-# print(of.fReadMemberDataFromFirebase('Nagoya'))
+# print(of.fReadPointsFromFirebase('Nagoya', 'sMctnFCinggva3GpQye1'))
