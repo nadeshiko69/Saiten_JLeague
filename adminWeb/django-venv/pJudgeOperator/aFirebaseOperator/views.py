@@ -25,7 +25,7 @@ def frontpage(request):
 def fGetNemberData(request, engName):
     # 再取得ボタンが押されたらこっち
     if request.method=="POST":
-            # 必要な情報の確保
+        # 必要な情報の確保
         today = datetime.datetime.today() # 入力日
         # today = datetime.datetime(2022,7,10) # For Debug
         jpnName = Team.objects.get(engName=engName).jpnName # 入力対象のチーム名
@@ -41,12 +41,13 @@ def fGetNemberData(request, engName):
                                                 'name':player["name"],
                                                 'number':player["number"],
                                                 'position':player["position"],
-                                                'point':player["point"]})
+                                                'point':-1.0})
                 # IDあるから更新しなかったけど背番号が0 = 退団選手。 DjangoのDBも背番号を更新
+                db = Player.objects.get(pid=player["id"])
+                db.point = -1.0
                 if (created == False) and player["number"] == 0:
-                    db = Player.objects.get(pid=player["id"])
                     db.number = 0
-                    db.save()
+                db.save()
             
             
             # 試合情報をDjangoのDBに格納
@@ -73,6 +74,7 @@ def fGetNemberData(request, engName):
                 # TODO : 試合日以外に入力できないようにセーフティ入れる
                 print("Register failed")
                 pass
+            
             
         # 計算ボタンが押されたらこっち
         elif "calc" in request.POST:
@@ -105,4 +107,9 @@ def fCalcAveragePoints(engName, points):
             db.point = ave_point
             db.save()
             
-    pass
+def ReloadPoints(self, engName):
+    players = firebaseOperator.of.fReadMemberDataFromFirebase(engName)
+    for player in players:
+        db = Player.objects.get(pid=player["id"])
+        db.point = -1
+        db.save()

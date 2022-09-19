@@ -14,7 +14,7 @@ class Player(models.Model):
     name = models.CharField(max_length=16)
     number = models.IntegerField()
     position = models.CharField(max_length=2)
-    point = models.FloatField(default=0)
+    point = models.FloatField(default=-1)
 
 # 試合情報
 class Match(models.Model):

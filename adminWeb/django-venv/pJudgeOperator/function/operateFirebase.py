@@ -58,7 +58,7 @@ class operateFirebase():
                 'name':doc.get('name'),
                 'number':doc.get('number'),
                 'position':doc.get('position'),
-                'point':0.0
+                'point':-1.0
             }
             self.lMemberList.append(personalData)
         
@@ -96,6 +96,9 @@ class operateFirebase():
             ]
             self.npPoints = np.append(self.npPoints, appendData)
         return self.npPoints.reshape(int(self.npPoints.size/2),2)
+        
+    def fWritePointsToFirebase():
+        pass
 # FOR DEBUG
 
 # of = operateFirebase()
