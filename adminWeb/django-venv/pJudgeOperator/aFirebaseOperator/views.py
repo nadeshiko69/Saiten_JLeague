@@ -75,6 +75,8 @@ def fGetNemberData(request, engName):
                 print("Register failed")
                 pass
             
+            matches = Match.objects.filter(team = jpnName, kickoff__range=[today - datetime.timedelta(days=3),today]).order_by('kickoff') # 3日前から今日の間に開催された試合の情報を抽出
+            firebaseOperator.of.fWritePointsToFirebase(engName,matches[0].mid)
             
         # 計算ボタンが押されたらこっち
         elif "calc" in request.POST:

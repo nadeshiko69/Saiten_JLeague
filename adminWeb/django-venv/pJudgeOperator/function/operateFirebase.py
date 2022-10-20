@@ -4,6 +4,7 @@ import firebase_admin
 from firebase_admin import credentials
 from pyparsing import LRUMemo
 import numpy as np
+from aFirebaseOperator.models import Player
 
 class operateFirebase():
     def __init__(self):
@@ -97,8 +98,16 @@ class operateFirebase():
             self.npPoints = np.append(self.npPoints, appendData)
         return self.npPoints.reshape(int(self.npPoints.size/2),2)
         
-    def fWritePointsToFirebase():
-        pass
+    def fWritePointsToFirebase(self, engName, matchID):
+        db = Player.objects.all()
+        db.filter(point=-1).delete()
+        
+        doc_ref = self.db.collection('Data2022').document(engName).collection('Match').document(matchID).collection('Member')
+        docs = doc_ref.stream()
+        for doc in docs:
+            print(doc.id)
+            
+            
 # FOR DEBUG
 
 # of = operateFirebase()

@@ -4,9 +4,21 @@
 
     <form action="." method="post">
         {% csrf_token %}<!-- セキュリティ用タグ、form追加時は書く -->
+        <h1>How To Use</h1>
+        <tr>
+            試合前 = 登録メンバーの反映
+            <li>「リロード」ボタンを押下。選手一覧が最新情報に更新、採点の値は初期値（=-1.0）に更新される</li>
+            <li>スタメン、サブにチェックを入れ、下部の「送信」ボタンを押下。</li>
+            <li>firebase上に反映され、Appでスタメンが閲覧できることを確認。</li>
+            <br>
+            試合後 = 採点結果の反映
+            <li>「リロード」ボタンを押下。まずは採点結果の初期化。</li>
+            <li>「採点結果を計算」ボタンを押下。firebase上の採点結果の平均値がリストに反映される。</li>
+            <li>「送信」ボタンを押下。firebase上に結果が反映されていることを確認。</li>
+        </tr>
         <div class="field">
             <div class="control">
-                <button type="submit" name="run_script">メンバー情報を再取得</button>
+                <button type="submit" name="run_script">リロード</button>
                 <button type="submit" name="calc">採点結果を計算</button>
             </div>
             <table border="1">
