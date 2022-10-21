@@ -107,7 +107,7 @@ class CMainPageState extends State<CMainPage> {
         ],
       ),
       body: Container(
-        color: Colors.black,
+        color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(0.0),
           child: Center(
@@ -132,8 +132,16 @@ class CMainPageState extends State<CMainPage> {
                     height: _deviceHeight * 0.15,
                     width: _deviceWidth * 0.95,
                     decoration: BoxDecoration(
-                      color: Colors.amber,
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.grey, //色
+                          spreadRadius: 2,
+                          blurRadius: 2,
+                          offset: Offset(1, 1),
+                        ),
+                      ],
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
