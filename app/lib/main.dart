@@ -7,11 +7,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart'
     hide Card; // こっちのCardクラスをhideしないとデフォルトのCardが使用できない
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
 import 'package:flutter/material.dart';
 import 'package:judge/myPage/myPageViewer.dart';
 
+import 'imageFilePath.dart';
 import 'matchDataView/matchDataView.dart';
 
 void main() async {
@@ -128,40 +130,50 @@ class CMainPageState extends State<CMainPage> {
                               DateTime.parse(lNextMatch[0].day)),
                         ));
                   },
-                  child: Container(
-                    height: _deviceHeight * 0.15,
-                    width: _deviceWidth * 0.95,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.grey, //色
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: Offset(1, 1),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        height: _deviceHeight * 0.15,
+                        width: _deviceWidth * 0.4,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            image: AssetImage(lTeamLogoPath[NAGOYA]),
+                          ),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey, //色
+                              spreadRadius: 2,
+                              blurRadius: 2,
+                              offset: Offset(1, 1),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            lNextMatch[0].nextOrToday.toString(),
-                            style: tsNextMatchTextStyle,
-                          ),
-                          Text(
-                            lNextMatch[0].day,
-                            style: tsScheduleTextStyle,
-                          ),
-                          Text(
-                            'vs' + lNextMatch[0].opponent,
-                            style: tsOpponentNameTextStyle,
-                          ),
-                        ],
+
                       ),
-                    ),
+                      Container(
+                        height: _deviceHeight * 0.15,
+                        width: _deviceWidth * 0.4,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            image: AssetImage("lib/image/1327_grampus_logo.jpg"),
+                          ),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey, //色
+                              spreadRadius: 2,
+                              blurRadius: 2,
+                              offset: Offset(1, 1),
+                            ),
+                          ],
+                        ),
+
+                      ),
+                    ],
                   ),
                 ),
                 Container(
