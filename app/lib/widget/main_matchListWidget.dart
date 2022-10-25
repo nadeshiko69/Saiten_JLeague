@@ -38,12 +38,12 @@ class Widget_MatchInfo extends StatelessWidget {
     return ListTile(
       leading: Image.asset(imagePath),
       title: Text(
-        teamName,
-        style: const TextStyle(color: Colors.amber),
+        opponent,
+        style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
       ),
       trailing: Text(
-        matchID,
-        style: const TextStyle(color: Colors.amber),
+        "Match " + matchNo.toString(),
+        style: const TextStyle(color: Colors.black),
       ),
     );
   }
@@ -63,7 +63,7 @@ class Widget_MatchListComponent extends StatelessWidget {
           child: Column(
             children: [
               Widget_MatchInfo(
-                imagePath: lTeamLogoPath[NAGOYA],
+                imagePath: lTeamLogoPath[Function_GetTeamLogoPathIndex(lAllMatch[index].opponent)],
                 matchNo: lAllMatch[index].matchNo,
                 matchID: lAllMatch[index].matchID,
                 teamName: _teamName,
@@ -75,14 +75,6 @@ class Widget_MatchListComponent extends StatelessWidget {
           ),
         );
       },
-      // children: [
-      //   _AppColumn(
-      //     icon: Icon(Icons.sms, color: Colors.indigo),
-      //     name: 'SMSApp',
-      //     percentage: '75%',
-      //   ),
-      //   _HorizontalBorder(),
-      // ],
     );
   }
 }
