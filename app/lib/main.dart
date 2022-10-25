@@ -112,6 +112,7 @@ class CMainPageState extends State<CMainPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(height: 20,),
             InkWell(
               onTap: () {
                 Navigator.push(
@@ -173,6 +174,7 @@ class CMainPageState extends State<CMainPage> {
                 ],
               ),
             ),
+            SizedBox(height: 20,),
             Container(
               height: _deviceHeight * 0.7,
               width: _deviceWidth * 0.95,
