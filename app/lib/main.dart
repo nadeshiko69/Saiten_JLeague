@@ -12,6 +12,7 @@ import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
 import 'package:flutter/material.dart';
 import 'package:judge/myPage/myPageViewer.dart';
+import 'package:judge/widget/main_matchListWidget.dart';
 
 import 'imageFilePath.dart';
 import 'matchDataView/matchDataView.dart';
@@ -108,114 +109,77 @@ class CMainPageState extends State<CMainPage> {
               ))
         ],
       ),
-      body: Container(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: Center(
-            child: Column(
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CMatchDetailView(
-                              _deviceHeight,
-                              _deviceWidth,
-                              lNextMatch[0].matchNo,
-                              lNextMatch[0].matchID,
-                              _teamName,
-                              lNextMatch[0].opponent,
-                              DateTime.parse(lNextMatch[0].day)),
-                        ));
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        height: _deviceHeight * 0.15,
-                        width: _deviceWidth * 0.4,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                            image: AssetImage(lTeamLogoPath[NAGOYA]),
-                          ),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.grey, //色
-                              spreadRadius: 2,
-                              blurRadius: 2,
-                              offset: Offset(1, 1),
-                            ),
-                          ],
-                        ),
-
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CMatchDetailView(
+                          _deviceHeight,
+                          _deviceWidth,
+                          lNextMatch[0].matchNo,
+                          lNextMatch[0].matchID,
+                          _teamName,
+                          lNextMatch[0].opponent,
+                          DateTime.parse(lNextMatch[0].day)),
+                    ));
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    height: _deviceHeight * 0.15,
+                    width: _deviceWidth * 0.4,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        image: AssetImage(lTeamLogoPath[NAGOYA]),
                       ),
-                      Container(
-                        height: _deviceHeight * 0.15,
-                        width: _deviceWidth * 0.4,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                            image: AssetImage("lib/image/1327_grampus_logo.jpg"),
-                          ),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.grey, //色
-                              spreadRadius: 2,
-                              blurRadius: 2,
-                              offset: Offset(1, 1),
-                            ),
-                          ],
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.grey, //色
+                          spreadRadius: 2,
+                          blurRadius: 2,
+                          offset: Offset(1, 1),
                         ),
+                      ],
+                    ),
 
+                  ),
+                  Container(
+                    height: _deviceHeight * 0.15,
+                    width: _deviceWidth * 0.4,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        image: AssetImage("lib/image/1327_grampus_logo.jpg"),
                       ),
-                    ],
-                  ),
-                ),
-                Container(
-                  height: _deviceHeight * 0.7,
-                  width: _deviceWidth * 0.95,
-                  color: Colors.black, // FOR DEBUG
-                  child: ListView.builder(
-                    itemCount: lAllMatch.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () async {
-                          // タップしたときの処理
-                          //print(lAllMatch[index].opponent);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CMatchDetailView(
-                                    _deviceHeight,
-                                    _deviceWidth,
-                                    lAllMatch[index].matchNo,
-                                    lAllMatch[index].matchID,
-                                    _teamName,
-                                    lAllMatch[index].opponent,
-                                    DateTime.parse(lAllMatch[index].day)),
-                              ));
-                        },
-                        child: Card(
-                          child: ListTile(
-                            title: Text("MATCH " +
-                                lAllMatch[index].matchNo.toString() +
-                                "  " +
-                                lAllMatch[index].opponent),
-                            subtitle: Text(lAllMatch[index].day + " "),
-                          ),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.grey, //色
+                          spreadRadius: 2,
+                          blurRadius: 2,
+                          offset: Offset(1, 1),
                         ),
-                      );
-                    },
+                      ],
+                    ),
+
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+            Container(
+              height: _deviceHeight * 0.7,
+              width: _deviceWidth * 0.95,
+              color: Colors.white, // FOR DEBUG
+              child: Widget_MatchListComponent(),
+            ),
+          ],
         ),
       ),
       drawer: Drawer(
