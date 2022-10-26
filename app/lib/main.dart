@@ -8,14 +8,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart'
     hide Card; // こっちのCardクラスをhideしないとデフォルトのCardが使用できない
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:judge/inputScore/Page_inputScore.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
 import 'package:flutter/material.dart';
 import 'package:judge/myPage/myPageViewer.dart';
+import 'package:judge/widget/main_UpperLogoButtonWidget.dart';
 import 'package:judge/widget/main_matchListWidget.dart';
 
 import 'imageFilePath.dart';
-import 'matchDataView/matchDataView.dart';
 
 void main() async {
   // For Stripe
@@ -114,63 +115,11 @@ class CMainPageState extends State<CMainPage> {
           children: [
             SizedBox(height: 20,),
             InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CMatchDetailView(
-                          _deviceHeight,
-                          _deviceWidth,
-                          lNextMatch[0].matchNo,
-                          lNextMatch[0].matchID,
-                          _teamName,
-                          lNextMatch[0].opponent,
-                          DateTime.parse(lNextMatch[0].day)),
-                    ));
-              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    height: _deviceHeight * 0.15,
-                    width: _deviceWidth * 0.4,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                        image: AssetImage(lTeamLogoPath[NAGOYA]),
-                      ),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.grey, //色
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: Offset(1, 1),
-                        ),
-                      ],
-                    ),
-
-                  ),
-                  Container(
-                    height: _deviceHeight * 0.15,
-                    width: _deviceWidth * 0.4,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                        image: AssetImage("lib/image/1327_grampus_logo.jpg"),
-                      ),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.grey, //色
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: Offset(1, 1),
-                        ),
-                      ],
-                    ),
-
-                  ),
+                  Widget_UpperLogoButton(teamName: fConverseTeamName(_teamName)),
+                  Widget_UpperLogoButton(teamName: lNextMatch[0].opponent),
                 ],
               ),
             ),

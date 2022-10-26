@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:judge/matchDataView/matchDataView.dart';
 
 import '../imageFilePath.dart';
@@ -39,12 +40,21 @@ class Widget_MatchInfo extends StatelessWidget {
       leading: Image.asset(imagePath),
       title: Text(
         opponent,
-        style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        style:
+            const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
       ),
-      trailing: Text(
-        "Match " + matchNo.toString(),
-        style: const TextStyle(color: Colors.black),
+      trailing: Column(
+        children: [
+          Text("Match " + matchNo.toString(),
+              style: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.bold)),
+          Text(DateFormat('yyyy年M月d日').format(matchDay),
+              style: const TextStyle(color: Colors.black)),
+        ],
       ),
+      onTap: (){
+        // ページ遷移
+      },
     );
   }
 }
@@ -63,7 +73,8 @@ class Widget_MatchListComponent extends StatelessWidget {
           child: Column(
             children: [
               Widget_MatchInfo(
-                imagePath: lTeamLogoPath[Function_GetTeamLogoPathIndex(lAllMatch[index].opponent)],
+                imagePath: lTeamLogoPath[
+                    Function_GetTeamLogoPathIndex(lAllMatch[index].opponent)],
                 matchNo: lAllMatch[index].matchNo,
                 matchID: lAllMatch[index].matchID,
                 teamName: _teamName,
