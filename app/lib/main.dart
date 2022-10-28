@@ -16,8 +16,6 @@ import 'package:judge/myPage/myPageViewer.dart';
 import 'package:judge/widget/main_UpperLogoButtonWidget.dart';
 import 'package:judge/widget/main_matchListWidget.dart';
 
-import 'imageFilePath.dart';
-
 void main() async {
   // For Stripe
   await dotenv.load(fileName: 'lib/.env');
@@ -113,17 +111,27 @@ class CMainPageState extends State<CMainPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             InkWell(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Widget_UpperLogoButton(teamName: fConverseTeamName(_teamName)),
-                  Widget_UpperLogoButton(teamName: lNextMatch[0].opponent),
+                  Widget_UpperLogoButton(
+                    teamName: fConverseTeamName(_teamName),
+                    routingFor: "FavTeamInfo",
+                  ),
+                  Widget_UpperLogoButton(
+                    teamName: lNextMatch[0].opponent,
+                    routingFor: "inputScore",
+                  ),
                 ],
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Container(
               height: _deviceHeight * 0.7,
               width: _deviceWidth * 0.95,

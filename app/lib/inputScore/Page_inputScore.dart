@@ -6,8 +6,8 @@ import 'package:judge/matchDataView/matchDataViewFactory.dart';
 
 import '../widget/inputScore_BodyDispWidget.dart';
 
-class CMatchDetailView extends StatefulWidget {
-  CMatchDetailView(this.deviceHeight, this.deviceWidth, this.matchNo,
+class Page_inputScore extends StatefulWidget {
+  Page_inputScore(this.deviceHeight, this.deviceWidth, this.matchNo,
       this.matchID, this.teamName, this.opponent, this.matchDay,
       {Key? key})
       : super(key: key);
@@ -20,10 +20,10 @@ class CMatchDetailView extends StatefulWidget {
   DateTime matchDay;
 
   @override
-  State<CMatchDetailView> createState() => _CMatchDetailViewState();
+  State<Page_inputScore> createState() => _inputScoreState();
 }
 
-class _CMatchDetailViewState extends State<CMatchDetailView> {
+class _inputScoreState extends State<Page_inputScore> {
   int _selectedIndex = 0;
   void _onTapItem(int index) {
     setState(() {
@@ -109,7 +109,7 @@ class _CMatchDetailViewState extends State<CMatchDetailView> {
                       }),
                     },
             icon: const Icon(Icons
-                .arrow_circle_right), // Text("Submit", style:tsSubmitIcon),
+                .arrow_circle_right),
           )
         ],
       ),

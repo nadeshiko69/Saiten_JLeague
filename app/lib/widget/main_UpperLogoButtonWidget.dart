@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:judge/mainData.dart';
+import 'package:judge/widget/inputScore_BodyDispWidget.dart';
 import '../imageFilePath.dart';
+import '../inputScore/Page_inputScore.dart';
 
 class Widget_UpperLogoButton extends StatelessWidget {
   final String teamName;
-  const Widget_UpperLogoButton({Key? key, required this.teamName}) : super(key: key);
+  final String routingFor; // ダサいのでいずれ修正する
+  Widget_UpperLogoButton({Key? key, required this.teamName, required this.routingFor}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +17,24 @@ class Widget_UpperLogoButton extends StatelessWidget {
     return InkWell(
       onTap: (){
         // ページ遷移
-      },
+          switch(routingFor) {
+            case "inputScore":{
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                  Page_inputScore(
+                      _deviceHeight,
+                      _deviceWidth,
+                      lNextMatch[0].matchNo,
+                      lNextMatch[0].matchID,
+                      teamName,
+                      lNextMatch[0].opponent,
+                      DateTime.parse(lNextMatch[0].day))
+              ));
+              break;
+            }
+            case "FavTeamInfo":{break;}
+            default:{break;}
+          }
+        },
       child: Container(
         height: _deviceHeight * 0.15,
         width: _deviceWidth * 0.4,
@@ -36,3 +57,5 @@ class Widget_UpperLogoButton extends StatelessWidget {
     );
   }
 }
+
+
