@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:judge/inputScore/Factory_inputScore.dart';
 import 'package:judge/mainData.dart';
-import 'package:judge/matchDataView/matchDataViewData.dart';
-import 'package:judge/matchDataView/matchDataViewFactory.dart';
-
 import '../widget/inputScore_BodyDispWidget.dart';
 
 class Page_inputScore extends StatefulWidget {

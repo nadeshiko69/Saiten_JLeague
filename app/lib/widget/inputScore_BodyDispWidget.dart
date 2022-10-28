@@ -2,9 +2,8 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:judge/inputScore/Factory_inputScore.dart';
 import '../mainData.dart';
-import '../matchDataView/matchDataViewData.dart';
-import '../matchDataView/matchDataViewFactory.dart';
 
 // Scaffold内のBodyを定義Footerでスタメンとベンチ切り替え
 class Widget_inputScoreBody extends StatefulWidget {

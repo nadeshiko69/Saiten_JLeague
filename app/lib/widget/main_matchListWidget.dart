@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:judge/matchDataView/matchDataView.dart';
 
 import '../imageFilePath.dart';
 import '../mainData.dart';
