@@ -14,7 +14,7 @@ import 'package:judge/mainFactory.dart';
 import 'package:flutter/material.dart';
 import 'package:judge/myPage/myPageViewer.dart';
 import 'package:judge/widget/main_UpperLogoButtonWidget.dart';
-import 'package:judge/widget/main_matchListWidget.dart';
+import 'package:judge/widget/main_MatchListComponentWidget.dart';
 
 void main() async {
   // For Stripe
@@ -120,7 +120,7 @@ class CMainPageState extends State<CMainPage> {
                 children: [
                   Widget_UpperLogoButton(
                     teamName: fConverseTeamName(_teamName),
-                    routingFor: "FavTeamInfo",
+                    routingFor: "favTeamInfo",
                   ),
                   Widget_UpperLogoButton(
                     teamName: lNextMatch[0].opponent,
@@ -135,7 +135,7 @@ class CMainPageState extends State<CMainPage> {
             Container(
               height: _deviceHeight * 0.7,
               width: _deviceWidth * 0.95,
-              color: Colors.white, // FOR DEBUG
+              color: Colors.white,
               child: Widget_MatchListComponent(),
             ),
           ],

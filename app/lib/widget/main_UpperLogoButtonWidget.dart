@@ -31,7 +31,7 @@ class Widget_UpperLogoButton extends StatelessWidget {
               ));
               break;
             }
-            case "FavTeamInfo":{break;}
+            case "favTeamInfo":{break;}
             default:{break;}
           }
         },

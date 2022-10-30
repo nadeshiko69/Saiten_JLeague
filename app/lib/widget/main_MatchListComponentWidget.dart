@@ -53,6 +53,7 @@ class Widget_MatchInfo extends StatelessWidget {
       ),
       onTap: (){
         // ページ遷移
+
       },
     );
   }
