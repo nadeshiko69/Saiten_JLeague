@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:judge/mainData.dart';
+import 'package:judge/widget/_generalWidget.dart';
 import 'package:judge/widget/confirmScore_BodyDispWidget.dart';
 
 class Page_confirmScore extends StatefulWidget {
@@ -45,8 +46,7 @@ class _confirmScoreState extends State<Page_confirmScore> {
           widget.matchID,
           widget.matchNo,
           true,
-          widget.matchDay,
-          dispInput),
+          widget.matchDay,),
       Widget_confirmScoreBody(
           widget.deviceHeight,
           widget.deviceWidth,
@@ -54,15 +54,8 @@ class _confirmScoreState extends State<Page_confirmScore> {
           widget.matchID,
           widget.matchNo,
           false,
-          widget.matchDay,
-          dispInput),
+          widget.matchDay,),
     ];
-    String submitMainMsg = "ログインしてください";
-    String submitSubMsg = "採点の提出にはログインが必要です。";
-    if (myData.isAlreadyLogin) {
-      submitMainMsg = "提出が完了しました";
-      submitSubMsg = "結果発表をお待ちください！";
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -76,7 +69,14 @@ class _confirmScoreState extends State<Page_confirmScore> {
         ),
         backgroundColor: Colors.white54,
       ),
-      body: _pageList[_selectedIndex],
+      body: Container(
+      child: Column(
+       children:[
+        _pageList[_selectedIndex],
+      ],
+      ),
+
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(

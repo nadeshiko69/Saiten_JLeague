@@ -4,8 +4,8 @@ import '../mainData.dart';
 
 // Scaffold内のBodyを定義Footerでスタメンとベンチ切り替え
 class Widget_confirmScoreBody extends StatefulWidget {
-  Widget_confirmScoreBody(this.deviceHeight, this.deviceWidth, this.teamName, this.matchID,
-      this.matchNo, this.isStarting, this.matchDay, this.dispInput,
+  Widget_confirmScoreBody(this.deviceHeight, this.deviceWidth, this.teamName,
+      this.matchID, this.matchNo, this.isStarting, this.matchDay,
       {Key? key})
       : super(key: key);
   double deviceHeight;
@@ -15,7 +15,6 @@ class Widget_confirmScoreBody extends StatefulWidget {
   int matchNo;
   bool isStarting;
   DateTime matchDay;
-  bool dispInput;
 
   void fWriteStartingData() {}
 
@@ -32,20 +31,6 @@ class _Body extends State<Widget_confirmScoreBody> {
   @override
   void initState() {
     super.initState();
-    setItems();
-  }
-
-  void setItems() {
-    // candidateに0.5~10.0の値を入れる
-    for (int i = 0; i < 20; i++) {
-      _candidatePoints.add(DropdownMenuItem(
-        child: Text(
-          (i / 2 + 0.5).toString(),
-          style: const TextStyle(fontSize: 10.0),
-        ),
-        value: (i / 2 + 0.5),
-      ));
-    }
   }
 
   @override
@@ -79,20 +64,37 @@ class _Body extends State<Widget_confirmScoreBody> {
           padding: const EdgeInsets.all(0.0),
           child: Column(
             children: [
-              Container(
-                height: widget.deviceHeight * 0.10,
-                width: widget.deviceWidth,
-                color: Colors.amber, // FOR DEBUG
-                child: Center(
-                    child: Text(
-                      'vs' + lAllMatch[widget.matchNo - 1].opponent,
-                      style: tsOpponentNameTextStyle,
-                    )),
+              const SizedBox(
+                height: 20,
               ),
               Container(
-                height: widget.deviceHeight * 0.67,
+                height: widget.deviceHeight * 0.1,
+                width: widget.deviceWidth * 0.95,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey, //色
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(1, 1),
+                    ),
+                  ],
+                ),
+                child: Center(
+                    child: Text(
+                  'vs' + lAllMatch[widget.matchNo - 1].opponent,
+                  style: tsOpponentNameTextStyle,
+                )),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: widget.deviceHeight * 0.6,
                 width: widget.deviceWidth,
-                color: Colors.red, // FOR DEBUG
+                color: Colors.white, // FOR DEBUG
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
@@ -106,33 +108,11 @@ class _Body extends State<Widget_confirmScoreBody> {
                     }
                     return InkWell(
                       child: Card(
-                        child: widget.dispInput
-                        // 採点入力画面を表示
-                            ? ListTile(
-                          title: Text(lMemberData![index].name),
-                          subtitle:
-                          Text(lMemberData[index].number.toString()),
-                          trailing: DropdownButton(
-                            isExpanded: false,
-                            items: _candidatePoints,
-                            value: _selectedPoints[_selectedPointsIndex],
-                            onChanged: (double? value) {
-                              setState(() {
-                                _selectedPoints[_selectedPointsIndex] =
-                                value!;
-                                lSelectedPointList =
-                                    _selectedPoints; // 送信用リストを更新
-                              });
-                            },
-                          ),
-                        )
-                        // 採点集計結果を表示
-                            : ListTile(
+                        child: ListTile(
                             title: Text(lMemberData![index].name),
                             subtitle:
-                            Text(lMemberData[index].number.toString()),
-                            trailing: Text("a")
-                        ),
+                                Text(lMemberData[index].number.toString()),
+                            trailing: Text("a")),// Firebaseから値を取得してList化してTextで出力
                       ),
                     );
                   },

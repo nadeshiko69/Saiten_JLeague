@@ -1,20 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:judge/confirmScore/Page_confirmScore.dart';
+import 'package:judge/imageFilePath.dart';
+import 'package:judge/mainData.dart';
+import 'package:judge/widget/_generalWidget.dart';
 
-import '../imageFilePath.dart';
-import '../mainData.dart';
-
-class Widget_HorizontalBorder extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 1,
-      margin: EdgeInsets.symmetric(horizontal: 16),
-      color: Colors.grey[200],
-    );
-  }
-}
 
 class Widget_MatchInfo extends StatelessWidget {
   final String imagePath;
