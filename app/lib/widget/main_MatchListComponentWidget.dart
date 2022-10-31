@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:judge/confirmScore/Page_confirmScore.dart';
 
 import '../imageFilePath.dart';
 import '../mainData.dart';
@@ -35,6 +36,8 @@ class Widget_MatchInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double _deviceHeight = MediaQuery.of(context).size.height;
+    final double _deviceWidth = MediaQuery.of(context).size.width;
     return ListTile(
       leading: Image.asset(imagePath),
       title: Text(
@@ -53,7 +56,17 @@ class Widget_MatchInfo extends StatelessWidget {
       ),
       onTap: (){
         // ページ遷移
-
+//Page_confirmScore
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>
+            Page_confirmScore(
+                _deviceHeight,
+                _deviceWidth,
+                matchNo,
+                matchID,
+                teamName,
+                opponent,
+                matchDay)
+        ));
       },
     );
   }
