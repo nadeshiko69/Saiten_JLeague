@@ -15,6 +15,7 @@
     flutter clean
 
     詳細は　https://dolphinetech.com/flutter/error-running-pod-install/
+    https://minpro.net/error-running-pod-install
 
 * snapshotの取り扱い
 https://zenn.dev/tsuruo/articles/a3d77c4854e108

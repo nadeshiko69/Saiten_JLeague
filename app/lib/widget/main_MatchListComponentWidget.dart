@@ -46,7 +46,6 @@ class Widget_MatchInfo extends StatelessWidget {
       ),
       onTap: (){
         // ページ遷移
-//Page_confirmScore
         Navigator.push(context, MaterialPageRoute(builder: (context) =>
             Page_confirmScore(
                 _deviceHeight,

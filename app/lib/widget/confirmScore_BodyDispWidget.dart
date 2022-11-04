@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:judge/inputScore/Factory_inputScore.dart';
+import 'package:judge/confirmScore/Factory_confirmScore.dart';
 import '../mainData.dart';
 
 // Scaffold内のBodyを定義Footerでスタメンとベンチ切り替え
@@ -15,31 +15,18 @@ class Widget_confirmScoreBody extends StatefulWidget {
   int matchNo;
   bool isStarting;
   DateTime matchDay;
-
-  void fWriteStartingData() {}
-
   @override
   State<Widget_confirmScoreBody> createState() => _Body();
 }
 
 class _Body extends State<Widget_confirmScoreBody> {
-  // 採点用リスト、0.5~10.0
-  final List<DropdownMenuItem<double>> _candidatePoints = [];
-
-  final List<double> _selectedPoints = List.generate(11 + 7, (i) => 6.0);
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: fGetMatchMember(
+      future: fGetMatchMemberWithScore(
           widget.teamName, widget.matchID, widget.matchNo, widget.isStarting),
       builder:
-          (BuildContext context, AsyncSnapshot<List<CPlayerData>> snapshot) {
+          (BuildContext context, AsyncSnapshot<List<CPlayerDataWithScore>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // 通信中
           return const Center(
@@ -47,17 +34,18 @@ class _Body extends State<Widget_confirmScoreBody> {
           );
         }
         if (snapshot.error != null) {
+          print(snapshot.error);
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
 
-        List<CPlayerData>? lMemberData = snapshot.data; // 描画用
+        List<CPlayerDataWithScore>? lMemberData = snapshot.data; // 描画用
         // Firebase 送信用
         if (widget.isStarting) {
-          lStartingList = lMemberData;
+          lStartingListWithScore = lMemberData;
         } else {
-          lSubList = lMemberData;
+          lSubListWithScore = lMemberData;
         }
 
         return Padding(
@@ -112,7 +100,7 @@ class _Body extends State<Widget_confirmScoreBody> {
                             title: Text(lMemberData![index].name),
                             subtitle:
                                 Text(lMemberData[index].number.toString()),
-                            trailing: Text("a")),// Firebaseから値を取得してList化してTextで出力
+                            trailing: Text(lMemberData[index].score.toString())),// Firebaseから値を取得してList化してTextで出力
                       ),
                     );
                   },
