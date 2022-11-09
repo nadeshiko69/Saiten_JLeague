@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:judge/imageFilePath.dart';
+import 'package:judge/inputScore/Page_inputScore.dart';
 import 'package:judge/mainData.dart';
-import 'package:judge/widget/inputScore_BodyDispWidget.dart';
-import '../imageFilePath.dart';
-import '../inputScore/Page_inputScore.dart';
+import 'package:judge/mainFactory.dart';
+
 
 class Widget_UpperLogoButton extends StatelessWidget {
   final String teamName;
@@ -13,6 +14,13 @@ class Widget_UpperLogoButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final double _deviceHeight = MediaQuery.of(context).size.height;
     final double _deviceWidth = MediaQuery.of(context).size.width;
+
+    int viewLogoIndex = 0;
+    switch(routingFor){
+      case "inputScore":{ viewLogoIndex = Function_GetTeamLogoPathIndex(lNextMatch[0].opponent);break;}
+      case "favTeamInfo":{ viewLogoIndex = Function_GetTeamLogoPathIndex(teamName);break;}
+      default:{break;}
+    }
 
     return InkWell(
       onTap: (){
@@ -42,7 +50,7 @@ class Widget_UpperLogoButton extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
-            image: AssetImage(lTeamLogoPath[Function_GetTeamLogoPathIndex(teamName)]),
+            image: AssetImage(lTeamLogoPath[viewLogoIndex]),
           ),
           boxShadow: const [
             BoxShadow(

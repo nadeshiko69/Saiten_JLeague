@@ -1,14 +1,17 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:judge/inputScore/Factory_inputScore.dart';
 import '../mainData.dart';
 
 // Scaffold内のBodyを定義Footerでスタメンとベンチ切り替え
 class Widget_inputScoreBody extends StatefulWidget {
-  Widget_inputScoreBody(this.deviceHeight, this.deviceWidth, this.teamName, this.matchID,
-      this.matchNo, this.isStarting, this.matchDay, this.dispInput,
+  Widget_inputScoreBody(
+      this.deviceHeight,
+      this.deviceWidth,
+      this.teamName,
+      this.matchID,
+      this.matchNo,
+      this.isStarting,
+      this.matchDay,
       {Key? key})
       : super(key: key);
   double deviceHeight;
@@ -18,7 +21,6 @@ class Widget_inputScoreBody extends StatefulWidget {
   int matchNo;
   bool isStarting;
   DateTime matchDay;
-  bool dispInput;
 
   void fWriteStartingData() {}
 
@@ -53,7 +55,7 @@ class _Body extends State<Widget_inputScoreBody> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder (
       future: fGetMatchMember(
           widget.teamName, widget.matchID, widget.matchNo, widget.isStarting),
       builder:
@@ -77,7 +79,6 @@ class _Body extends State<Widget_inputScoreBody> {
         } else {
           lSubList = lMemberData;
         }
-
         return Padding(
           padding: const EdgeInsets.all(0.0),
           child: Column(
@@ -88,9 +89,9 @@ class _Body extends State<Widget_inputScoreBody> {
                 color: Colors.amber, // FOR DEBUG
                 child: Center(
                     child: Text(
-                      'vs' + lAllMatch[widget.matchNo - 1].opponent,
-                      style: tsOpponentNameTextStyle,
-                    )),
+                  'vs' + lAllMatch[widget.matchNo - 1].opponent,
+                  style: tsOpponentNameTextStyle,
+                )),
               ),
               Container(
                 height: widget.deviceHeight * 0.67,
@@ -109,33 +110,25 @@ class _Body extends State<Widget_inputScoreBody> {
                     }
                     return InkWell(
                       child: Card(
-                        child: widget.dispInput
-                        // 採点入力画面を表示
-                            ? ListTile(
-                          title: Text(lMemberData![index].name),
-                          subtitle:
-                          Text(lMemberData[index].number.toString()),
-                          trailing: DropdownButton(
-                            isExpanded: false,
-                            items: _candidatePoints,
-                            value: _selectedPoints[_selectedPointsIndex],
-                            onChanged: (double? value) {
-                              setState(() {
-                                _selectedPoints[_selectedPointsIndex] =
-                                value!;
-                                lSelectedPointList =
-                                    _selectedPoints; // 送信用リストを更新
-                              });
-                            },
-                          ),
-                        )
-                        // 採点集計結果を表示
-                            : ListTile(
-                            title: Text(lMemberData![index].name),
-                            subtitle:
-                            Text(lMemberData[index].number.toString()),
-                            trailing: Text("a")
-                        ),
+                        child: ListTile(
+                                title: Text(lMemberData![index].name),
+                                subtitle:
+                                    Text(lMemberData[index].number.toString()),
+                                trailing: DropdownButton(
+                                  isExpanded: false,
+                                  items: _candidatePoints,
+                                  value: _selectedPoints[_selectedPointsIndex],
+                                  onChanged: (double? value) {
+                                    setState(() {
+                                      _selectedPoints[_selectedPointsIndex] =
+                                          value!;
+                                      lSelectedPointList =
+                                          _selectedPoints; // 送信用リストを更新
+                                    });
+                                  },
+                                ),
+                              )
+                            // 採点集計結果を表示
                       ),
                     );
                   },

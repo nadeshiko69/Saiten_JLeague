@@ -46,29 +46,88 @@ int Function_GetTeamLogoPathIndex(String teamNameJpn) {
   int ret = -1;
   try {
     switch (teamNameJpn) {
-      case '名古屋': ret = NAGOYA; break;
-      case '横浜FM': ret = YOKOHAMA; break;
-      case '川崎': ret = KAWASAKI; break;
-      case '広島': ret = HIROSHIMA; break;
-      case 'C大阪': ret = COSAKA; break;
-      case 'FC東京': ret = FCTOKYO; break;
-      case '鹿島': ret = KASHIMA; break;
-      case '柏': ret = KASHIWA; break;
-      case '浦和': ret = URAWA; break;
-      case '鳥栖': ret = TOSU; break;
-      case '神戸': ret = KOBE; break;
-      case '札幌': ret = SAPPORO; break;
-      case '湘南': ret = SHONAN; break;
-      case '京都': ret = KYOTO; break;
-      case '福岡': ret = FUKUOKA; break;
-      case '清水': ret = SHIMIZU; break;
-      case 'G大阪': ret = GOSAKA; break;
-      case '磐田': ret = IWATA; break;
+      case '名古屋':
+      case 'Nagoya':
+        ret = NAGOYA;
+        break;
+      case '横浜FM':
+      case 'YokohamaFM':
+        ret = YOKOHAMA;
+        break;
+      case '川崎':
+      case 'Kawasaki':
+        ret = KAWASAKI;
+        break;
+      case '広島':
+      case 'Hiroshima':
+        ret = HIROSHIMA;
+        break;
+      case 'C大阪':
+      case 'COsaka':
+        ret = COSAKA;
+        break;
+      case 'FC東京':
+      case 'FCTokyo':
+        ret = FCTOKYO;
+        break;
+      case '鹿島':
+      case 'Kashima':
+        ret = KASHIMA;
+        break;
+      case '柏':
+      case 'Kashiwa':
+        ret = KASHIWA;
+        break;
+      case '浦和':
+      case 'Urawa':
+        ret = URAWA;
+        break;
+      case '鳥栖':
+      case 'Tosu':
+        ret = TOSU;
+        break;
+      case '神戸':
+      case 'Kobe':
+        ret = KOBE;
+        break;
+      case '札幌':
+      case 'Sapporo':
+        ret = SAPPORO;
+        break;
+      case '湘南':
+      case 'Shonan':
+        ret = SHONAN;
+        break;
+      case '京都':
+      case 'Kyoto':
+        ret = KYOTO;
+        break;
+      case '福岡':
+      case 'Fukuoka':
+        ret = FUKUOKA;
+        break;
+      case '清水':
+      case 'Shimizu':
+        ret = SHIMIZU;
+        break;
+      case 'G大阪':
+      case 'GOsaka':
+        ret = GOSAKA;
+        break;
+      case '磐田':
+      case 'Iwata':
+        ret = IWATA;
+        break;
+      case 'opponent':
+        ret = 0;
+        break;
       default:
         break;
     }
   } catch (e) {
-    if (kDebugMode) { print(e); }
+    if (kDebugMode) {
+      print(e);
+    }
   }
   return ret;
 }

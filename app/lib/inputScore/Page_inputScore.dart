@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:judge/inputScore/Factory_inputScore.dart';
 import 'package:judge/mainData.dart';
-import '../widget/inputScore_BodyDispWidget.dart';
+import 'package:judge/widget/inputScore_BodyDispWidget.dart';
+
 
 class Page_inputScore extends StatefulWidget {
   Page_inputScore(this.deviceHeight, this.deviceWidth, this.matchNo,
@@ -47,8 +48,7 @@ class _inputScoreState extends State<Page_inputScore> {
           widget.matchID,
           widget.matchNo,
           true,
-          widget.matchDay,
-          dispInput),
+          widget.matchDay),
       Widget_inputScoreBody(
           widget.deviceHeight,
           widget.deviceWidth,
@@ -56,8 +56,7 @@ class _inputScoreState extends State<Page_inputScore> {
           widget.matchID,
           widget.matchNo,
           false,
-          widget.matchDay,
-          dispInput),
+          widget.matchDay),
     ];
     String submitMainMsg = "ログインしてください";
     String submitSubMsg = "採点の提出にはログインが必要です。";

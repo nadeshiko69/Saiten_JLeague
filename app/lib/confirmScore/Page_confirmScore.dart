@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:judge/mainData.dart';
-import 'package:judge/widget/_generalWidget.dart';
 import 'package:judge/widget/confirmScore_BodyDispWidget.dart';
 
 class Page_confirmScore extends StatefulWidget {
@@ -30,13 +28,6 @@ class _confirmScoreState extends State<Page_confirmScore> {
 
   @override
   Widget build(BuildContext context) {
-    // 試合日の翌日と今を比較　→　試合から一日以上経っていたら結果出力
-    bool dispInput = (widget.matchDay
-        .add(const Duration(days: 1))
-        .difference(DateTime.now())
-        .inDays) >
-        0;
-
     // 表示する Widget の一覧
     List<Widget> _pageList = [
       Widget_confirmScoreBody(
@@ -69,14 +60,7 @@ class _confirmScoreState extends State<Page_confirmScore> {
         ),
         backgroundColor: Colors.white54,
       ),
-      body: Container(
-      child: Column(
-       children:[
-        _pageList[_selectedIndex],
-      ],
-      ),
-
-      ),
+      body: _pageList[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(

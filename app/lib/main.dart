@@ -7,8 +7,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart'
     hide Card; // こっちのCardクラスをhideしないとデフォルトのCardが使用できない
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:judge/inputScore/Page_inputScore.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +81,6 @@ class CMainPageState extends State<CMainPage> {
     } else {
       _myPageText = 'Log in';
     }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -119,11 +116,11 @@ class CMainPageState extends State<CMainPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Widget_UpperLogoButton(
-                    teamName: fConverseTeamName(_teamName),
+                    teamName: _teamName,
                     routingFor: "favTeamInfo",
                   ),
                   Widget_UpperLogoButton(
-                    teamName: lNextMatch[0].opponent,
+                    teamName: _teamName,
                     routingFor: "inputScore",
                   ),
                 ],

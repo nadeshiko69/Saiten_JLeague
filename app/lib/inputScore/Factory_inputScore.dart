@@ -145,7 +145,8 @@ Future<List<CPlayerData>> fGetMatchMember(
         });
       }
     }
-  });
+  }
+  );
   return lMemberData;
 }
 
