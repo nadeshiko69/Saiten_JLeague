@@ -11,6 +11,9 @@ from .models import Team, Player, Match
 import datetime
 import numpy as np
 
+DEBUG_MODE = True
+
+
 # FirebaseのInitialize_Appを複数回起動しないようにクラス化
 class firebaseOperator:
     of = operateFirebase()
@@ -65,7 +68,7 @@ def fGetNemberData(request, engName):
                 
         # 送信ボタンが押されたらこっち
         elif "submit" in request.POST:
-            if Match.objects.filter(team = jpnName, kickoff = today).exists():  # 送信を押した日に試合があればidを取得して送付
+            if Match.objects.filter(team = jpnName, kickoff = today).exists() or DEBUG_MODE == True:  # 送信を押した日に試合があればidを取得して送付
                 mid = Match.objects.get(team = jpnName, kickoff = today).mid
                 startingMember = request.POST.getlist("starting_number")
                 subMember = request.POST.getlist("substitute_number")
