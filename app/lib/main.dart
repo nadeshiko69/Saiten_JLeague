@@ -5,8 +5,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_stripe/flutter_stripe.dart'
-    hide Card; // こっちのCardクラスをhideしないとデフォルトのCardが使用できない
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
 import 'package:flutter/material.dart';
