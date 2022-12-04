@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:judge/inputScore/Factory_inputScore.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/widget/inputScore_BodyDispWidget.dart';
+import 'package:judge/widget/inputScore_UpperMatchDataWidget.dart';
 
 
 class Page_inputScore extends StatefulWidget {
@@ -75,7 +76,7 @@ class _inputScoreState extends State<Page_inputScore> {
             color: Colors.black,
           ),
         ),
-        backgroundColor: Colors.white54,
+        backgroundColor: kColorPrimary,
         actions: <Widget>[
           IconButton(
             color: Colors.black,
@@ -109,8 +110,14 @@ class _inputScoreState extends State<Page_inputScore> {
                 .arrow_circle_right),
           )
         ],
+          elevation: 0,
+          leading: const Icon(Icons.navigate_before),
       ),
-      body: _pageList[_selectedIndex],
+      body: Column(
+        children: [
+          _pageList[_selectedIndex],
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(

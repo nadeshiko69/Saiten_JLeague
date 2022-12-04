@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:judge/inputScore/Factory_inputScore.dart';
+import 'package:judge/widget/inputScore_UpperMatchDataWidget.dart';
 import '../mainData.dart';
 
 // Scaffold内のBodyを定義Footerでスタメンとベンチ切り替え
@@ -83,20 +84,12 @@ class _Body extends State<Widget_inputScoreBody> {
           padding: const EdgeInsets.all(0.0),
           child: Column(
             children: [
+              //
+              FlightInfo(),
               Container(
-                height: widget.deviceHeight * 0.10,
+                height: widget.deviceHeight * 0.59,
                 width: widget.deviceWidth,
-                color: Colors.amber, // FOR DEBUG
-                child: Center(
-                    child: Text(
-                  'vs' + lAllMatch[widget.matchNo - 1].opponent,
-                  style: tsOpponentNameTextStyle,
-                )),
-              ),
-              Container(
-                height: widget.deviceHeight * 0.67,
-                width: widget.deviceWidth,
-                color: Colors.red, // FOR DEBUG
+                color: kColorTicketBorder, // FOR DEBUG
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,

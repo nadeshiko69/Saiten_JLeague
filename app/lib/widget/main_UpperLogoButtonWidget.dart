@@ -39,7 +39,9 @@ class Widget_UpperLogoButton extends StatelessWidget {
               ));
               break;
             }
-            case "favTeamInfo":{break;}
+            case "favTeamInfo":{
+              print(lNextMatch[0].day);
+              break;}
             default:{break;}
           }
         },
