@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:judge/mainData.dart';
+import 'package:judge/mainFactory.dart';
 
 const kSingaporeLogoUrl = 'https://user-images.githubusercontent.com/7200238/82220821-1ebc8880-995a-11ea-9d77-07edda64f05c.png';
 const kQantasLogoUrl = 'https://user-images.githubusercontent.com/7200238/82220824-1fedb580-995a-11ea-8124-f59daff4ebda.png';
@@ -8,11 +9,11 @@ const kEmiratesLogoUrl = 'https://user-images.githubusercontent.com/7200238/8222
 const kHainanLogoUrl = 'https://user-images.githubusercontent.com/7200238/82223309-73adce00-995d-11ea-98c0-2dba4e094aca.png';
 
 
-class _AirportName extends StatelessWidget {
-  final String shortName;
-  final String fullName;
+class _TeamName extends StatelessWidget {
+  final String? shortName;
+  final String? fullName;
 
-  const _AirportName({
+  const _TeamName({
     Key? key,
     required this.shortName,
     required this.fullName,
@@ -24,14 +25,14 @@ class _AirportName extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          shortName,
+          shortName!,
           style: const TextStyle(
             color: Colors.white,
             fontSize: 32,
           ),
         ),
         Text(
-          fullName,
+          fullName!,
           style: TextStyle(
             color: kColorFlightText.withOpacity(0.5),
           ),
@@ -41,7 +42,7 @@ class _AirportName extends StatelessWidget {
   }
 }
 
-class _FlightIcon extends StatelessWidget {
+class _VersusIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,9 +56,9 @@ class _FlightIcon extends StatelessWidget {
         borderRadius: BorderRadius.circular(52 / 2),
       ),
       child: Transform.rotate(
-        angle: pi / 2,
+        angle: pi / 4,
         child: const Icon(
-          Icons.flight,
+          Icons.add,
           color: kColorFlightIcon,
           size: 28,
         ),
@@ -66,8 +67,11 @@ class _FlightIcon extends StatelessWidget {
   }
 }
 
-class FlightInfo extends StatelessWidget {
-  const FlightInfo({Key? key}) : super(key: key);
+class Widget_UpperMatchData extends StatelessWidget {
+  const Widget_UpperMatchData(this.homeTeamName, this.awayTeamName,this.day,{Key? key}) : super(key: key);
+  final String homeTeamName;
+  final String awayTeamName;
+  final String day;
 
   @override
   Widget build(BuildContext context) {
@@ -93,16 +97,16 @@ class FlightInfo extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const _AirportName(shortName: 'DHK', fullName: 'Dhaka'),
-                    _FlightIcon(),
-                    const _AirportName(shortName: 'LDN', fullName: 'London'),
+                    _TeamName(shortName: this.homeTeamName, fullName: fConverseTeamName(this.homeTeamName)),
+                    _VersusIcon(),
+                    _TeamName(shortName: fConverseTeamName_ToEngName(this.awayTeamName), fullName: this.awayTeamName),
                   ],
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 25),
                 Container(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Monday, 18 May, 2020',
+                    day.toString(),
                     style: TextStyle(color: kColorFlightText.withOpacity(0.5)),
                   ),
                 ),

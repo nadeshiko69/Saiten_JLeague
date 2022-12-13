@@ -85,7 +85,7 @@ class _Body extends State<Widget_inputScoreBody> {
           child: Column(
             children: [
               //
-              FlightInfo(),
+              Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day),
               Container(
                 height: widget.deviceHeight * 0.59,
                 width: widget.deviceWidth,

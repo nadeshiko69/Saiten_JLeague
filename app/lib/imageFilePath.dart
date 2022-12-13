@@ -3,7 +3,7 @@
 import 'package:flutter/foundation.dart';
 
 const int NAGOYA = 0;
-const int YOKOHAMA = 1;
+const int YOKOHAMAM = 1;
 const int KAWASAKI = 2;
 const int HIROSHIMA = 3;
 const int COSAKA = 4;
@@ -17,9 +17,9 @@ const int SAPPORO = 11;
 const int SHONAN = 12;
 const int KYOTO = 13;
 const int FUKUOKA = 14;
-const int SHIMIZU = 15;
+const int NIGATA = 15;
 const int GOSAKA = 16;
-const int IWATA = 17;
+const int YOKOHAMAC = 17;
 
 List<String> lTeamLogoPath = [
   "lib/_images/1327_grampus_logo.jpg",
@@ -52,7 +52,7 @@ int Function_GetTeamLogoPathIndex(String teamNameJpn) {
         break;
       case '横浜FM':
       case 'YokohamaFM':
-        ret = YOKOHAMA;
+        ret = YOKOHAMAM;
         break;
       case '川崎':
       case 'Kawasaki':
@@ -106,17 +106,17 @@ int Function_GetTeamLogoPathIndex(String teamNameJpn) {
       case 'Fukuoka':
         ret = FUKUOKA;
         break;
-      case '清水':
-      case 'Shimizu':
-        ret = SHIMIZU;
+      case '新潟':
+      case 'Nigata':
+        ret = NIGATA;
         break;
       case 'G大阪':
       case 'GOsaka':
         ret = GOSAKA;
         break;
-      case '磐田':
-      case 'Iwata':
-        ret = IWATA;
+      case '横浜FC':
+      case 'YokohamaC':
+        ret = YOKOHAMAC;
         break;
       case 'opponent':
         ret = 0;
