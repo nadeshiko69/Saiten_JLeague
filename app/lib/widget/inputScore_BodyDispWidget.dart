@@ -74,12 +74,27 @@ class _Body extends State<Widget_inputScoreBody> {
         }
 
         List<CPlayerData>? lMemberData = snapshot.data; // 描画用
+
         // Firebase 送信用
         if (widget.isStarting) {
           lStartingList = lMemberData;
         } else {
           lSubList = lMemberData;
         }
+
+        // まだメンバー登録していない時にアクセスされた場合のWarningを表示
+        if(lMemberData!.isEmpty){
+            return Center(
+              child: Column(
+                children: const [
+                  Text("まだメンバー情報の登録が出来ていません..."),
+                  Text("時間を置いて再接続してください。"),
+                  Text("解決しない場合、お手数ですが管理者へご連絡ください。"),
+                ],
+              ),
+            );
+        }
+
         return Padding(
           padding: const EdgeInsets.all(0.0),
           child: Column(

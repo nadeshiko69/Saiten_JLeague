@@ -113,10 +113,8 @@ class _inputScoreState extends State<Page_inputScore> {
           elevation: 0,
           leading: const Icon(Icons.navigate_before),
       ),
-      body: Column(
-        children: [
-          _pageList[_selectedIndex],
-        ],
+      body: Container(
+        child: _pageList[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
