@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:judge/inputScore/Factory_inputScore.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/widget/inputScore_BodyDispWidget.dart';
-import 'package:judge/widget/inputScore_UpperMatchDataWidget.dart';
-
+import 'package:judge/widget/inputScore_SubmitOperationWidget.dart';
 
 class Page_inputScore extends StatefulWidget {
   Page_inputScore(this.deviceHeight, this.deviceWidth, this.matchNo,
@@ -59,12 +58,6 @@ class _inputScoreState extends State<Page_inputScore> {
           false,
           widget.matchDay),
     ];
-    String submitMainMsg = "ログインしてください";
-    String submitSubMsg = "採点の提出にはログインが必要です。";
-    if (myData.isAlreadyLogin) {
-      submitMainMsg = "提出が完了しました";
-      submitSubMsg = "結果発表をお待ちください！";
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -92,26 +85,20 @@ class _inputScoreState extends State<Page_inputScore> {
                         showDialog(
                           context: context,
                           builder: (context) {
-                            return CupertinoAlertDialog(
-                              title: Text(submitMainMsg),
-                              content: Text(submitSubMsg),
-                              actions: <Widget>[
-                                CupertinoDialogAction(
-                                  child: const Text("OK"),
-                                  onPressed: () => Navigator.pop(context),
-                                ),
-                              ],
-                            );
+                            if (myData.isAlreadyLogin) {
+                              return Widget_CompleteSubmit();
+                            } else {
+                              return Widget_GoLoginPage();
+                            }
                           },
                         );
                       }),
                     },
-            icon: const Icon(Icons
-                .arrow_circle_right),
+            icon: const Icon(Icons.arrow_circle_right),
           )
         ],
-          elevation: 0,
-          leading: const Icon(Icons.navigate_before),
+        elevation: 0,
+        leading: const Icon(Icons.navigate_before),
       ),
       body: Container(
         child: _pageList[_selectedIndex],
