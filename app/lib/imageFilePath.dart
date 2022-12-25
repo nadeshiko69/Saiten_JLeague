@@ -51,7 +51,7 @@ int Function_GetTeamLogoPathIndex(String teamNameJpn) {
         ret = NAGOYA;
         break;
       case '横浜FM':
-      case 'YokohamaFM':
+      case 'YokohamaM':
         ret = YOKOHAMAM;
         break;
       case '川崎':
