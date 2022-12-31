@@ -108,7 +108,7 @@ class _Body extends State<Widget_inputScoreBody> {
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  itemCount: lMemberData?.length,
+                  itemCount: lMemberData.length,
                   itemBuilder: (context, index) {
                     final int _selectedPointsIndex;
                     if (widget.isStarting == true) {

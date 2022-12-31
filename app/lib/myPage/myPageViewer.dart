@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:judge/myPage/login.dart';
-import 'package:judge/myPage/myPage.dart';
 
 // Auth機能 https://www.flutter-study.dev/firebase/authentication
 
@@ -28,7 +27,10 @@ class CMyPageView extends StatelessWidget {
       appBar: AppBar(
         title: const Text("My Page"),
       ),
-      body: const CMyPage(),
+      body: Container(
+
+      ),
     );
   }
 }
+

@@ -17,6 +17,17 @@
     詳細は　https://dolphinetech.com/flutter/error-running-pod-install/
     https://minpro.net/error-running-pod-install
 
+    プラグインのバージョンが古いのが原因かも
+    https://minpro.net/requested-but-did-not-find-extension-point-with-identifier-xcode
+
+    ARM64のSimulatorを除外してみる
+    https://qiita.com/littleossa/items/ff75b19e0ac6713941f8
+    →　下記Errorは発生
+    Swift Compiler Error (Xcode): Could not find module 'Stripe' for target 'arm64-apple-ios-simulator'; found: x86_64-apple-ios-simulator, at:
+
+
+
+
 * snapshotの取り扱い
 https://zenn.dev/tsuruo/articles/a3d77c4854e108
 

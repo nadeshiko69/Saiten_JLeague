@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:judge/inputScore/Factory_inputScore.dart';
 import 'package:judge/mainData.dart';
