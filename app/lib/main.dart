@@ -9,7 +9,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
 import 'package:flutter/material.dart';
-import 'package:judge/myPage/myPageViewer.dart';
+import 'package:judge/myPage/Page_myPage.dart';
 import 'package:judge/widget/main_UpperLogoButtonWidget.dart';
 import 'package:judge/widget/main_MatchListComponentWidget.dart';
 
@@ -65,8 +65,12 @@ class CMainPageState extends State<CMainPage> {
   @override
   void initState() {
     super.initState();
+    Future(() {
     _teamName = 'Nagoya';
-    fGetNextMatch(_teamName); // 表示用のListを作成
+    setState(() {
+      fGetNextMatch(_teamName);
+    });// 表示用のListを作成
+    });
   }
 
   @override

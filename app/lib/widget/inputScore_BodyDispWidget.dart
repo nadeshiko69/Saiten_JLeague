@@ -119,7 +119,7 @@ class _Body extends State<Widget_inputScoreBody> {
                     return InkWell(
                       child: Card(
                         child: ListTile(
-                                title: Text(lMemberData![index].name),
+                                title: Text(lMemberData[index].name),
                                 subtitle:
                                     Text(lMemberData[index].number.toString()),
                                 trailing: DropdownButton(
