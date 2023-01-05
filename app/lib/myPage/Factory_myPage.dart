@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:judge/inputScore/Factory_inputScore.dart';
 import 'package:judge/mainData.dart';
 
-// Name : fGetMyInputScore()
-// Arg  : teamName, matchNo : 対象チーム、節
-//      : isStarting : スタメン or ベンチ / trueならスタメン, falseならベンチ
-// Func : ユーザが過去に提出した採点情報を取得
+// Name : fGetMyInputedMatchID()
+// Arg  : teamName : 対象チーム
+// Func : ユーザが過去に採点を提出した試合のMatchIDを取得
 // * */
-Future<List<String>> fGetMyInputScore(String teamName) async {
-  List<String> lAlreadyInputedMatch = [];
+Future<List<CMatchData>> fGetMyInputedMatchData(String teamName) async {
+  List<CMatchData> lAlreadyInputedMatchData = [];
+  List<String> lMatchIDTemp = []; // matchIDを記憶しておいて、lAlreadyInputedMatchDataに被りが発生しないように調整する用。うまく検索使えれば要らなそう。
 
   // 採点情報DBからユーザが採点を提出した試合のMatchIDを取得
   await FirebaseFirestore.instance
@@ -16,14 +16,29 @@ Future<List<String>> fGetMyInputScore(String teamName) async {
       .doc('Scores')
       .collection(teamName)
       .get()
-      .then((QuerySnapshot querySnapshot) {
+      .then((QuerySnapshot querySnapshot) async {
     for (var doc in querySnapshot.docs) {
-      if (doc["userID"] == myData.userID &&
-          !lAlreadyInputedMatch.contains(doc["MatchID"])) {
-        lAlreadyInputedMatch.add(doc["MatchID"]);
+      if (doc["userID"] == myData.userID) {
+        DocumentSnapshot matchDataSnapshot = await FirebaseFirestore.instance
+            .collection('Data2022')
+            .doc(teamName)
+            .collection("Match")
+            .doc(doc["MatchID"])
+            .get();
+
+        CMatchData matchData = CMatchData(
+            doc["MatchID"],
+            await matchDataSnapshot["home"] != teamName
+                ? matchDataSnapshot["away"]
+                : matchDataSnapshot["home"],
+            await matchDataSnapshot["kickoff"].toString(),
+            await matchDataSnapshot["section"]);
+        if (!lMatchIDTemp.contains(doc["MatchID"])) {
+          lAlreadyInputedMatchData.add(matchData);
+          lMatchIDTemp.add(doc["MatchID"]);
+        }
       }
     }
   });
-  print(lAlreadyInputedMatch);
-  return lAlreadyInputedMatch;
+  return lAlreadyInputedMatchData;
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:judge/inputScore/Factory_inputScore.dart';
+import 'package:judge/mainData.dart';
 import 'package:judge/myPage/Factory_myPage.dart';
 import 'package:judge/myPage/login.dart';
 
@@ -27,9 +28,9 @@ class CMyPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: fGetMyInputScore("Nagoya"),
+        future: fGetMyInputedMatchData("Nagoya"),
         builder:
-            (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+            (BuildContext context, AsyncSnapshot<List<CMatchData>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // 通信中
             return const Center(
@@ -41,10 +42,10 @@ class CMyPageView extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          List<String>? lAlreadyInputedMatch = snapshot.data; // 描画用
+          List<CMatchData>? lAlreadyInputedMatchID = snapshot.data; // 描画用
 
           // まだメンバー登録していない時にアクセスされた場合のWarningを表示
-          if (lAlreadyInputedMatch!.isEmpty) {
+          if (lAlreadyInputedMatchID!.isEmpty) {
             return Center(
               child: Column(
                 children: const [
@@ -58,7 +59,9 @@ class CMyPageView extends StatelessWidget {
             appBar: AppBar(
               title: const Text("My Page"),
             ),
-            body: Container(),
+            body: Container(
+
+            ),
           );
         });
   }
