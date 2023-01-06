@@ -5,7 +5,6 @@ import 'package:judge/imageFilePath.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/widget/_generalWidget.dart';
 
-
 class Widget_MatchInfo extends StatelessWidget {
   final String imagePath;
   final int matchNo;
@@ -44,18 +43,19 @@ class Widget_MatchInfo extends StatelessWidget {
               style: const TextStyle(color: Colors.black)),
         ],
       ),
-      onTap: (){
+      onTap: () {
         // ページ遷移
-        Navigator.push(context, MaterialPageRoute(builder: (context) =>
-            Page_confirmScore(
-                _deviceHeight,
-                _deviceWidth,
-                matchNo,
-                matchID,
-                teamName,
-                opponent,
-                matchDay)
-        ));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Page_confirmScore(
+                    _deviceHeight,
+                    _deviceWidth,
+                    matchNo,
+                    matchID,
+                    teamName,
+                    opponent,
+                    matchDay)));
       },
     );
   }

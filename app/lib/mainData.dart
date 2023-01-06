@@ -1,6 +1,7 @@
 /// mainData.dart
 /// main.dartで使用するdata定義
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 const kColorPrimary = Color(0xFF2E8376);
 const kColorText = Color(0xFF9E9E9E);
@@ -8,6 +9,8 @@ const kColorTextDark = Color(0xFF212121);
 const kColorFlightText = Color(0xFFE0E0E0);
 const kColorFlightIcon = Color(0xFFC1B695);
 const kColorTicketBorder = Color(0xFFE0E0E0);
+
+DateFormat outputDateFormat = DateFormat('yyyy/MM/dd HH:mm');
 
 // ログイン情報
 class CMyData {

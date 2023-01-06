@@ -93,7 +93,6 @@ void fGetNextMatch(String teamName) async{
 Name : fConverseTeamName()
 Arg  : String teamName : firebaseに登録してあるチーム名
 Func : firebaseのチーム名を漢字表記に直す（HOME／AWAY判定で使用）
-Todo : 他チーム実装したらcaseを追加する
 * */
 String fConverseTeamName(String teamName){
   String ret;

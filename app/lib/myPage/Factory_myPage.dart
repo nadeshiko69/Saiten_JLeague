@@ -25,13 +25,13 @@ Future<List<CMatchData>> fGetMyInputedMatchData(String teamName) async {
             .collection("Match")
             .doc(doc["MatchID"])
             .get();
-
         CMatchData matchData = CMatchData(
             doc["MatchID"],
             await matchDataSnapshot["home"] != teamName
                 ? matchDataSnapshot["away"]
                 : matchDataSnapshot["home"],
-            await matchDataSnapshot["kickoff"].toString(),
+            //DateTime.parse(matchDataSnapshot["kickoff"]).toString(),
+            outputDateFormat.format(matchDataSnapshot["kickoff"].toDate()).toString(),
             await matchDataSnapshot["section"]);
         if (!lMatchIDTemp.contains(doc["MatchID"])) {
           lAlreadyInputedMatchData.add(matchData);
