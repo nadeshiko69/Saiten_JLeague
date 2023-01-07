@@ -16,7 +16,6 @@ String fGetTodayDate() {
   DateTime _now = DateTime.now();
   DateFormat outputFormat = DateFormat('yyyy-MM-dd HHmm', "ja_JP");
   String _todayDate = outputFormat.format(_now); // 今日の年月日を取得
-  //print(_todayDate);
   return _todayDate;
 }
 
@@ -61,21 +60,21 @@ void fGetNextMatch(String teamName) async{
     if (_todayDate.difference(databaseTime).inDays == 0 &&
         _todayDate.day == databaseTime.day) {
       // 今日試合がある場合
-      lNextMatch[0].opponent = v.opponent;
-      lNextMatch[0].matchNo  = v.matchNo;
-      lNextMatch[0].matchID  = v.matchID;
-      lNextMatch[0].day      = v.day;
-      lNextMatch[0].nextOrToday = "TODAY'S MATCH";
+      nextMatchData.opponent = v.opponent;
+      nextMatchData.matchNo  = v.matchNo;
+      nextMatchData.matchID  = v.matchID;
+      nextMatchData.day      = v.day;
+      nextMatchData.nextOrToday = "TODAY'S MATCH";
       _decidedNextMatch = true;
     }
     else if (databaseTime.isAfter(_todayDate)) {
       // 今日以降の日付だった場合
       if (!_decidedNextMatch) {
-        lNextMatch[0].opponent = v.opponent;
-        lNextMatch[0].matchNo  = v.matchNo;
-        lNextMatch[0].matchID  = v.matchID;
-        lNextMatch[0].day      = v.day;
-        lNextMatch[0].nextOrToday = "NEXT MATCH";
+        nextMatchData.opponent = v.opponent;
+        nextMatchData.matchNo  = v.matchNo;
+        nextMatchData.matchID  = v.matchID;
+        nextMatchData.day      = v.day;
+        nextMatchData.nextOrToday = "NEXT MATCH";
         _decidedNextMatch = true;
       } else {
         // AllMatch出力する方が良さそうなので、今後も必要なさそうなら削除

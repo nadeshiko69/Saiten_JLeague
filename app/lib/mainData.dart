@@ -28,13 +28,12 @@ class CMatchData {
   String opponent;
   String day;
   int    matchNo;
-  String ?nextOrToday;
+  String nextOrToday = "";
 }
 List<CMatchData> lAllMatch = [];
 
 // メインページ上部NextMatchに表示する情報
 CMatchData nextMatchData = CMatchData("","opponent", "00000000", -1);
-List<CMatchData> lNextMatch = [nextMatchData];
 
 // メインページ下部に表示する今後の試合情報
 List lMatchFromToday = [];
