@@ -60,7 +60,7 @@ class _inputScoreState extends State<Page_inputScore> {
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
+        automaticallyImplyLeading: false,
         title: Text(
           "Match ${widget.matchNo}",
           style: const TextStyle(

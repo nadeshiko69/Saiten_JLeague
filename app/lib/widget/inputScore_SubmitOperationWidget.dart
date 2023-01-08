@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:judge/myPage/Page_myPage.dart';
 
 class Widget_CompleteSubmit extends StatelessWidget {
   @override
@@ -24,8 +26,11 @@ class Widget_GoLoginPage extends StatelessWidget {
       content: const Text("採点の提出にはログインが必要です。"),
       actions: <Widget>[
         CupertinoDialogAction(
-          child: const Text("OK"),
-          onPressed: () => Navigator.pop(context),
+          child: const Text("ログイン画面へ"),
+          onPressed: () =>                   Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const CAuthPageView())),
         ),
       ],
     );

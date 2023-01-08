@@ -4,13 +4,13 @@ import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
 
 class _TeamName extends StatelessWidget {
-  final String? shortName;
-  final String? fullName;
+  final String? jpnName;
+  final String? engName;
 
   const _TeamName({
     Key? key,
-    required this.shortName,
-    required this.fullName,
+    required this.jpnName,
+    required this.engName,
   }) : super(key: key);
 
   @override
@@ -19,14 +19,14 @@ class _TeamName extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          shortName!,
+          jpnName!,
           style: const TextStyle(
             color: kColorBlackText,
             fontSize: 32,
           ),
         ),
         Text(
-          fullName!,
+          engName!,
           style: TextStyle(
             color: kColorBlackText.withOpacity(0.5),
           ),
@@ -91,9 +91,9 @@ class Widget_UpperMatchData extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _TeamName(shortName:fConverseTeamName(homeTeamName) , fullName: homeTeamName),
+                    _TeamName(jpnName:fConverseTeamName(homeTeamName) , engName: homeTeamName),
                     _VersusIcon(),
-                    _TeamName(shortName: awayTeamName, fullName: fConverseTeamName_ToEngName(awayTeamName)),
+                    _TeamName(jpnName: awayTeamName, engName: fConverseTeamName_ToEngName(awayTeamName)),
                   ],
                 ),
                 const SizedBox(height: 25),
