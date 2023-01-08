@@ -1,6 +1,7 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:judge/mainData.dart';
 
 class CPlayerDataWithScore {
   CPlayerDataWithScore(this.mid, this.name, this.number, this.score);
@@ -24,7 +25,7 @@ Future<List<CPlayerDataWithScore>> fGetMatchMemberWithScore(
 
   // 試合情報のDBから登録メンバーのIDを取得
   await FirebaseFirestore.instance
-      .collection('Data2022')
+      .collection(Data20XX)
       .doc(teamName)
       .collection('Match')
       .doc(matchID)
@@ -54,7 +55,7 @@ Func : 選手のIDから選手名等の情報を取得
 Future<CPlayerDataWithScore> fGetMemberInfoForMemberID(
     String teamName, String memberID) async {
   final DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
-      .collection('Data2022')
+      .collection(Data20XX)
       .doc(teamName)
       .collection('Member')
       .doc(memberID)

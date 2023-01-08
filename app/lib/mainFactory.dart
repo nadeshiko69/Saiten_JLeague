@@ -31,7 +31,7 @@ void fGetNextMatch(String teamName) async{
   bool decidedNextMatch = false;
 
   final userCollection = FirebaseFirestore.instance
-      .collection('Data2022')
+      .collection(Data20XX)
       .doc(teamName)
       .collection('Match');
   final QuerySnapshot snapshot = await userCollection.get();

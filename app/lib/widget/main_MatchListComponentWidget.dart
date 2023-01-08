@@ -36,7 +36,7 @@ class Widget_MatchInfo extends StatelessWidget {
       ),
       trailing: Column(
         children: [
-          Text("Match " + matchNo.toString(),
+          Text("Match $matchNo",
               style: const TextStyle(
                   color: Colors.black, fontWeight: FontWeight.bold), textAlign: TextAlign.left,),
           Text(DateFormat('yyyy/M/d').format(matchDay),

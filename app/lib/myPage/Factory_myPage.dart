@@ -12,7 +12,7 @@ Future<List<CMatchData>> fGetMyInputedMatchData(String teamName) async {
 
   // 採点情報DBからユーザが採点を提出した試合のMatchIDを取得
   await FirebaseFirestore.instance
-      .collection('Data2022')
+      .collection(Data20XX)
       .doc('Scores')
       .collection(teamName)
       .get()
@@ -20,7 +20,7 @@ Future<List<CMatchData>> fGetMyInputedMatchData(String teamName) async {
     for (var doc in querySnapshot.docs) {
       if (doc["userID"] == myData.userID) {
         DocumentSnapshot matchDataSnapshot = await FirebaseFirestore.instance
-            .collection('Data2022')
+            .collection(Data20XX)
             .doc(teamName)
             .collection("Match")
             .doc(doc["MatchID"])

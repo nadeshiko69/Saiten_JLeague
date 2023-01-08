@@ -97,9 +97,9 @@ class Widget_UpperMatchData extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _TeamName(shortName: this.homeTeamName, fullName: fConverseTeamName(this.homeTeamName)),
+                    _TeamName(shortName: homeTeamName, fullName: fConverseTeamName(homeTeamName)),
                     _VersusIcon(),
-                    _TeamName(shortName: fConverseTeamName_ToEngName(this.awayTeamName), fullName: this.awayTeamName),
+                    _TeamName(shortName: fConverseTeamName_ToEngName(awayTeamName), fullName: awayTeamName),
                   ],
                 ),
                 const SizedBox(height: 25),

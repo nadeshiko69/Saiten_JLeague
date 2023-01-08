@@ -8,6 +8,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:judge/mainData.dart';
 
 
 class CPlayerData {
@@ -36,7 +37,7 @@ void fSubmit(String teamName, String matchID) async {
 
   // 既に採点情報が格納されているか確認して、あれば新規追加ではなく更新
   final QuerySnapshot snapshot = await FirebaseFirestore.instance
-      .collection('Data2022')
+      .collection(Data20XX)
       .doc('Scores')
       .collection(teamName)
       .where('userID', isEqualTo: userID)
@@ -49,7 +50,7 @@ void fSubmit(String teamName, String matchID) async {
     for (CPlayerData member in lStartingList!) {
       // スタメンの採点情報
       await FirebaseFirestore.instance
-          .collection('Data2022')
+          .collection(Data20XX)
           .doc('Scores')
           .collection(teamName)
           .doc() // ここは空欄だと自動でIDが付く
@@ -65,7 +66,7 @@ void fSubmit(String teamName, String matchID) async {
     index = 11;
     for (CPlayerData member in lSubList!) {
       await FirebaseFirestore.instance
-          .collection('Data2022')
+          .collection(Data20XX)
           .doc('Scores')
           .collection(teamName)
           .doc() // ここは空欄だと自動でIDが付く
@@ -86,7 +87,7 @@ void fSubmit(String teamName, String matchID) async {
     int index = 0;
     for (CPlayerData member in lStartingList!) {
       await FirebaseFirestore.instance
-          .collection('Data2022')
+          .collection(Data20XX)
           .doc('Scores')
           .collection(teamName)
           .where('userID', isEqualTo: userID)
@@ -97,7 +98,7 @@ void fSubmit(String teamName, String matchID) async {
                 snapshot.docs.forEach((f) {
                   // TODO：where.getで現状forEachでループ（1回）を回すしかない。要検討
                   FirebaseFirestore.instance
-                      .collection('Data2022')
+                      .collection(Data20XX)
                       .doc('Scores')
                       .collection(teamName)
                       .doc(f.reference.id)
@@ -130,7 +131,7 @@ Future<List<CPlayerData>> fGetMatchMember(
 
   // 試合情報のDBから登録メンバーのIDを取得
   await FirebaseFirestore.instance
-      .collection('Data2022')
+      .collection(Data20XX)
       .doc(teamName)
       .collection('Match')
       .doc(matchID)
@@ -160,7 +161,7 @@ Func : 選手のIDから選手名等の情報を取得
 Future<CPlayerData> fGetMemberInfoForMemberID(
     String teamName, String memberID) async {
   final DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
-      .collection('Data2022')
+      .collection(Data20XX)
       .doc(teamName)
       .collection('Member')
       .doc(memberID)

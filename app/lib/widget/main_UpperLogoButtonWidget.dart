@@ -31,7 +31,6 @@ class Widget_UpperLogoButton extends StatelessWidget {
             Text(nextMatchData.nextOrToday, style: tsNextMatchTextStyle),
             InkWell(
               onTap: (){
-
                 Navigator.push(context, MaterialPageRoute(builder: (context) =>
                     Page_inputScore(
                         _deviceHeight,

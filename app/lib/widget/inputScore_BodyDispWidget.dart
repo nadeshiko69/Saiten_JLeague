@@ -94,7 +94,6 @@ class _Body extends State<Widget_inputScoreBody> {
               ),
             );
         }
-
         return Padding(
           padding: const EdgeInsets.all(0.0),
           child: Column(
@@ -109,11 +108,11 @@ class _Body extends State<Widget_inputScoreBody> {
                   shrinkWrap: true,
                   itemCount: lMemberData.length,
                   itemBuilder: (context, index) {
-                    final int _selectedPointsIndex;
+                    final int selectedPointsIndex;
                     if (widget.isStarting == true) {
-                      _selectedPointsIndex = index;
+                      selectedPointsIndex = index;
                     } else {
-                      _selectedPointsIndex = index + 11;
+                      selectedPointsIndex = index + 11;
                     }
                     return InkWell(
                       child: Card(
@@ -124,10 +123,10 @@ class _Body extends State<Widget_inputScoreBody> {
                                 trailing: DropdownButton(
                                   isExpanded: false,
                                   items: _candidatePoints,
-                                  value: _selectedPoints[_selectedPointsIndex],
+                                  value: _selectedPoints[selectedPointsIndex],
                                   onChanged: (double? value) {
                                     setState(() {
-                                      _selectedPoints[_selectedPointsIndex] =
+                                      _selectedPoints[selectedPointsIndex] =
                                           value!;
                                       lSelectedPointList =
                                           _selectedPoints; // 送信用リストを更新

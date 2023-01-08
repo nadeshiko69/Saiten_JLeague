@@ -101,7 +101,7 @@ class CMyPageView extends StatelessWidget {
                             subtitle: Text(lAlreadyInputedMatch[index].day),
                             isThreeLine: true,
                             trailing: IconButton(
-                              icon: Icon(Icons.align_horizontal_right_rounded),
+                              icon: const Icon(Icons.align_horizontal_right_rounded),
                               onPressed: () {},
                             ),
                           ),

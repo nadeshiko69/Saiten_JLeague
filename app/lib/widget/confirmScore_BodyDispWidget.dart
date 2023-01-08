@@ -72,7 +72,7 @@ class _Body extends State<Widget_confirmScoreBody> {
                 ),
                 child: Center(
                     child: Text(
-                  'vs' + lAllMatch[widget.matchNo - 1].opponent,
+                  'vs${lAllMatch[widget.matchNo - 1].opponent}',
                   style: tsOpponentNameTextStyle,
                 )),
               ),
@@ -88,12 +88,6 @@ class _Body extends State<Widget_confirmScoreBody> {
                   shrinkWrap: true,
                   itemCount: lMemberData?.length,
                   itemBuilder: (context, index) {
-                    final int _selectedPointsIndex;
-                    if (widget.isStarting == true) {
-                      _selectedPointsIndex = index;
-                    } else {
-                      _selectedPointsIndex = index + 11;
-                    }
                     return InkWell(
                       child: Card(
                         child: ListTile(
