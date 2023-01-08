@@ -94,13 +94,13 @@ class _Body extends State<Widget_inputScoreBody> {
               ),
             );
         }
-        return Padding(
+        return SingleChildScrollView(
           padding: const EdgeInsets.all(0.0),
           child: Column(
             children: [
               Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day.toString()),
               Container(
-                height: widget.deviceHeight * 0.55,
+                height: widget.deviceHeight * 0.6,
                 width: widget.deviceWidth,
                 color: kColorBorder, // FOR DEBUG
                 child: ListView.builder(

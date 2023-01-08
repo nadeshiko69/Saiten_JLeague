@@ -90,9 +90,7 @@ class _inputScoreState extends State<Page_inputScore> {
         ],
         elevation: 0,
       ),
-      body: Container(
-        child: _pageList[_selectedIndex],
-      ),
+      body: _pageList[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
