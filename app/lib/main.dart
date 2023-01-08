@@ -75,13 +75,13 @@ class CMainPageState extends State<CMainPage> {
   @override
   Widget build(BuildContext context) {
     // 端末の縦横サイズを取得
-    final double _deviceHeight = MediaQuery.of(context).size.height;
-    final double _deviceWidth = MediaQuery.of(context).size.width;
-    final String _myPageText;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final String myPageText;
     if (myData.isAlreadyLogin) {
-      _myPageText = 'MyPage';
+      myPageText = 'MyPage';
     } else {
-      _myPageText = 'Log in';
+      myPageText = 'Log in';
     }
     return Scaffold(
       appBar: AppBar(
@@ -133,8 +133,8 @@ class CMainPageState extends State<CMainPage> {
             ),
             Text("2023 Season", style: tsNextMatchTextStyle),
             SizedBox(
-              height: _deviceHeight * 0.7,
-              width: _deviceWidth * 0.95,
+              height: deviceHeight * 0.7,
+              width: deviceWidth * 0.95,
          //     color: Colors.white,
               child: Widget_MatchListComponent(),
             ),
@@ -153,7 +153,7 @@ class CMainPageState extends State<CMainPage> {
               child: Text(myData.email),
             ),
             ListTile(
-              title: Text(_myPageText),
+              title: Text(myPageText),
               onTap: () {
                 if (myData.isAlreadyLogin) {
                   // 既にログインしていたらマイページ

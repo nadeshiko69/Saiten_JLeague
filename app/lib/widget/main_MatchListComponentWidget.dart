@@ -25,8 +25,8 @@ class Widget_MatchInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double _deviceHeight = MediaQuery.of(context).size.height;
-    final double _deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceWidth = MediaQuery.of(context).size.width;
     return ListTile(
       leading: Image.asset(imagePath),
       title: Text(
@@ -51,8 +51,8 @@ class Widget_MatchInfo extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => Page_confirmScore(
-                    _deviceHeight,
-                    _deviceWidth,
+                    deviceHeight,
+                    deviceWidth,
                     matchNo,
                     matchID,
                     teamName,
@@ -68,7 +68,7 @@ class Widget_MatchListComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String _teamName = 'Nagoya';
+    String teamName = 'Nagoya';
     return ListView.builder(
       itemCount: lAllMatch.length,
       itemBuilder: (context, index) {
@@ -80,9 +80,9 @@ class Widget_MatchListComponent extends StatelessWidget {
                     Function_GetTeamLogoPathIndex(lAllMatch[index].opponent)],
                 matchNo: lAllMatch[index].matchNo,
                 matchID: lAllMatch[index].matchID,
-                teamName: _teamName,
+                teamName: teamName,
                 opponent: lAllMatch[index].opponent,
-                matchDay: DateTime.parse(lAllMatch[index].day),
+                matchDay: lAllMatch[index].day,
               ),
               Widget_HorizontalBorder(),
             ],

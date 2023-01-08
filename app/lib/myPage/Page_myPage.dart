@@ -131,7 +131,7 @@ class CMyPageView extends StatelessWidget {
                                 Function_GetTeamLogoPathIndex(teamName)]),
                             title: Text(
                                 "VS ${lAlreadyInputedMatch[index].opponent}"),
-                            subtitle: Text(lAlreadyInputedMatch[index].day),
+                            subtitle: Text(lAlreadyInputedMatch[index].day.toString()),
                             isThreeLine: true,
                             trailing: IconButton(
                               icon: const Icon(

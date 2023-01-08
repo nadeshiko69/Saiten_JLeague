@@ -98,7 +98,7 @@ class _Body extends State<Widget_inputScoreBody> {
           padding: const EdgeInsets.all(0.0),
           child: Column(
             children: [
-              Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day),
+              Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day.toString()),
               Container(
                 height: widget.deviceHeight * 0.59,
                 width: widget.deviceWidth,

@@ -36,11 +36,11 @@ Future<void> fGetNextMatch(String teamName) async{
       .collection('Match');
   final QuerySnapshot snapshot = await userCollection.get();
 
-  final matchData = await snapshot.docs.map((DocumentSnapshot document){
+  final matchData = snapshot.docs.map((DocumentSnapshot document){
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
     final String matchID = document.id;
-    final String day = data['kickoff'].toDate().toString();
+    final DateTime day = data['kickoff'].toDate();
     final int matchNo = data['section'];
     String opponent;
     if(data["home"] == fConverseTeamName(teamName)) {
@@ -51,12 +51,14 @@ Future<void> fGetNextMatch(String teamName) async{
     }
     return CMatchData(matchID,opponent, day, matchNo);
   }).toList();
-
+  // Main画面のリスト
   lAllMatch = matchData;
   lAllMatch.sort((a, b) => a.matchNo.compareTo(b.matchNo));
 
+  // Next Matchの決定
+//  matchData.sort((a, b) => a.matchNo.compareTo(b.matchNo));
   for (var v in lAllMatch) {
-    DateTime databaseTime = DateTime.parse(v.day);
+    DateTime databaseTime = v.day;
     if (todayDate.difference(databaseTime).inDays == 0 &&
         todayDate.day == databaseTime.day) {
       // 今日試合がある場合

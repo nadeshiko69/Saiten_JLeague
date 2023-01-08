@@ -39,7 +39,7 @@ class Widget_UpperLogoButton extends StatelessWidget {
                         nextMatchData.matchID,
                         teamName,
                         nextMatchData.opponent,
-                        DateTime.parse(nextMatchData.day))
+                        nextMatchData.day)
                 ));
               },
               child: Container(

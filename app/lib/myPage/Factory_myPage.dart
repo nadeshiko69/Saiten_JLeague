@@ -32,7 +32,7 @@ Future<List<CMatchData>> fGetMyInputedMatchData(String teamName) async {
             await matchDataSnapshot["home"] == fConverseTeamName(teamName)
                 ? matchDataSnapshot["away"]
                 : matchDataSnapshot["home"],
-            outputDateFormat.format(matchDataSnapshot["kickoff"].toDate()).toString(),
+            matchDataSnapshot["kickoff"],
             await matchDataSnapshot["section"]);
         if (!lMatchIDTemp.contains(doc["MatchID"])) {
           lAlreadyInputedMatchData.add(matchData);
