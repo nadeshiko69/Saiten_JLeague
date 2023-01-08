@@ -69,7 +69,6 @@ class Widget_MatchListComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String _teamName = 'Nagoya';
-
     return ListView.builder(
       itemCount: lAllMatch.length,
       itemBuilder: (context, index) {
