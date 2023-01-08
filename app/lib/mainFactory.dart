@@ -13,10 +13,10 @@ Func : 実行した年月日をyyyy-MM-ddとして取得
 * */
 String fGetTodayDate() {
   initializeDateFormatting("ja_JP");
-  DateTime _now = DateTime.now();
+  DateTime now = DateTime.now();
   DateFormat outputFormat = DateFormat('yyyy-MM-dd HHmm', "ja_JP");
-  String _todayDate = outputFormat.format(_now); // 今日の年月日を取得
-  return _todayDate;
+  String todayDate = outputFormat.format(now); // 今日の年月日を取得
+  return todayDate;
 }
 
 
@@ -27,14 +27,14 @@ Func : 実行した年月日以降直近で実施される試合のスケジュ�
 * */
 void fGetNextMatch(String teamName) async{
 
-  DateTime _todayDate = DateTime.parse(fGetTodayDate());
-  bool _decidedNextMatch = false;
+  DateTime todayDate = DateTime.parse(fGetTodayDate());
+  bool decidedNextMatch = false;
 
-  final _userCollection = FirebaseFirestore.instance
+  final userCollection = FirebaseFirestore.instance
       .collection('Data2022')
       .doc(teamName)
       .collection('Match');
-  final QuerySnapshot snapshot = await _userCollection.get();
+  final QuerySnapshot snapshot = await userCollection.get();
 
   final matchData = snapshot.docs.map((DocumentSnapshot document){
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
@@ -57,25 +57,25 @@ void fGetNextMatch(String teamName) async{
 
   for (var v in lAllMatch) {
     DateTime databaseTime = DateTime.parse(v.day);
-    if (_todayDate.difference(databaseTime).inDays == 0 &&
-        _todayDate.day == databaseTime.day) {
+    if (todayDate.difference(databaseTime).inDays == 0 &&
+        todayDate.day == databaseTime.day) {
       // 今日試合がある場合
       nextMatchData.opponent = v.opponent;
       nextMatchData.matchNo  = v.matchNo;
       nextMatchData.matchID  = v.matchID;
       nextMatchData.day      = v.day;
       nextMatchData.nextOrToday = "TODAY'S MATCH";
-      _decidedNextMatch = true;
+      decidedNextMatch = true;
     }
-    else if (databaseTime.isAfter(_todayDate)) {
+    else if (databaseTime.isAfter(todayDate)) {
       // 今日以降の日付だった場合
-      if (!_decidedNextMatch) {
+      if (!decidedNextMatch) {
         nextMatchData.opponent = v.opponent;
         nextMatchData.matchNo  = v.matchNo;
         nextMatchData.matchID  = v.matchID;
         nextMatchData.day      = v.day;
         nextMatchData.nextOrToday = "NEXT MATCH";
-        _decidedNextMatch = true;
+        decidedNextMatch = true;
       } else {
         // AllMatch出力する方が良さそうなので、今後も必要なさそうなら削除
         lMatchFromToday.add(v);

@@ -166,7 +166,6 @@ Future<CPlayerData> fGetMemberInfoForMemberID(
       .doc(memberID)
       .get();
   String name = docSnapshot.get("name");
-  // String pos  = docSnapshot.get("position");
   int num = docSnapshot.get("number");
   CPlayerData returnData = CPlayerData(memberID, name, num);
 

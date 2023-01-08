@@ -29,7 +29,7 @@ class _confirmScoreState extends State<Page_confirmScore> {
   @override
   Widget build(BuildContext context) {
     // 表示する Widget の一覧
-    List<Widget> _pageList = [
+    List<Widget> pageList = [
       Widget_confirmScoreBody(
           widget.deviceHeight,
           widget.deviceWidth,
@@ -52,7 +52,7 @@ class _confirmScoreState extends State<Page_confirmScore> {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
-          "Match " + widget.matchNo.toString(),
+          "Match ${widget.matchNo}",
           style: const TextStyle(
             fontSize: 20,
             color: Colors.black,
@@ -60,7 +60,7 @@ class _confirmScoreState extends State<Page_confirmScore> {
         ),
         backgroundColor: Colors.white54,
       ),
-      body: _pageList[_selectedIndex],
+      body: pageList[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(

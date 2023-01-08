@@ -45,11 +45,11 @@ class _Body extends State<Widget_inputScoreBody> {
     // candidateに0.5~10.0の値を入れる
     for (int i = 0; i < 20; i++) {
       _candidatePoints.add(DropdownMenuItem(
+        value: (i / 2 + 0.5),
         child: Text(
           (i / 2 + 0.5).toString(),
           style: const TextStyle(fontSize: 10.0),
         ),
-        value: (i / 2 + 0.5),
       ));
     }
   }
@@ -99,7 +99,6 @@ class _Body extends State<Widget_inputScoreBody> {
           padding: const EdgeInsets.all(0.0),
           child: Column(
             children: [
-              //
               Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day),
               Container(
                 height: widget.deviceHeight * 0.59,

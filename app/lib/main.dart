@@ -132,10 +132,11 @@ class CMainPageState extends State<CMainPage> {
             SizedBox(
               height: 20,
             ),
-            Container(
+            Text("2023 Season", style: tsNextMatchTextStyle),
+            SizedBox(
               height: _deviceHeight * 0.7,
               width: _deviceWidth * 0.95,
-              color: Colors.white,
+         //     color: Colors.white,
               child: Widget_MatchListComponent(),
             ),
           ],

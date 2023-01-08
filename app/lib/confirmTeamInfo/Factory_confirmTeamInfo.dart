@@ -60,7 +60,6 @@ Future<CPlayerDataWithScore> fGetMemberInfoForMemberID(
       .doc(memberID)
       .get();
   String name = docSnapshot.get("name");
-  // String pos  = docSnapshot.get("position");
   int num = docSnapshot.get("number");
   double score = -1.0;
   CPlayerDataWithScore returnData = CPlayerDataWithScore(

@@ -38,9 +38,11 @@ class Widget_MatchInfo extends StatelessWidget {
         children: [
           Text("Match " + matchNo.toString(),
               style: const TextStyle(
-                  color: Colors.black, fontWeight: FontWeight.bold)),
-          Text(DateFormat('yyyy年M月d日').format(matchDay),
-              style: const TextStyle(color: Colors.black)),
+                  color: Colors.black, fontWeight: FontWeight.bold), textAlign: TextAlign.left,),
+          Text(DateFormat('yyyy/M/d').format(matchDay),
+              style: const TextStyle(color: Colors.black),
+          textAlign: TextAlign.left,
+          ),
         ],
       ),
       onTap: () {

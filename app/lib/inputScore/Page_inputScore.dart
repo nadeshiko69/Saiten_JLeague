@@ -62,7 +62,7 @@ class _inputScoreState extends State<Page_inputScore> {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
-          "Match " + widget.matchNo.toString(),
+          "Match ${widget.matchNo}",
           style: const TextStyle(
             fontSize: 20,
             color: Colors.black,
