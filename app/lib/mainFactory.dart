@@ -53,41 +53,49 @@ Future<void> fGetNextMatch(String teamName) async{
   }).toList();
   // Main画面のリスト
   lAllMatch = matchData;
-  lAllMatch.sort((a, b) => a.matchNo.compareTo(b.matchNo));
+
 
   // Next Matchの決定
-//  matchData.sort((a, b) => a.matchNo.compareTo(b.matchNo));
+  lAllMatch.sort((a, b) => a.day.compareTo(b.day));
   for (var v in lAllMatch) {
     DateTime databaseTime = v.day;
-    if (todayDate.difference(databaseTime).inDays == 0 &&
-        todayDate.day == databaseTime.day) {
-      // 今日試合がある場合
-      nextMatchData.opponent = v.opponent;
-      nextMatchData.matchNo  = v.matchNo;
-      nextMatchData.matchID  = v.matchID;
-      nextMatchData.day      = v.day;
-      nextMatchData.nextOrToday = "TODAY'S MATCH";
-      decidedNextMatch = true;
-    }
-    else if (databaseTime.isAfter(todayDate)) {
-      // 今日以降の日付だった場合
-      if (!decidedNextMatch) {
+    if(todayDate.difference(databaseTime).inDays == 0 && todayDate.day == databaseTime.day){
+        // 試合当日
         nextMatchData.opponent = v.opponent;
         nextMatchData.matchNo  = v.matchNo;
         nextMatchData.matchID  = v.matchID;
         nextMatchData.day      = v.day;
+        nextMatchData.nextOrToday = "TODAY'S MATCH";
+        decidedNextMatch = true;
+        break;
+    }
+    else if (!databaseTime.isAfter(todayDate)) {
+      // 採点受付中 = 確認対象日が前、かつ二日以内
+      if(todayDate.difference(databaseTime).inDays < 2){
+        nextMatchData.opponent = v.opponent;
+        nextMatchData.matchNo  = v.matchNo;
+        nextMatchData.matchID  = v.matchID;
+        nextMatchData.day      = v.day;
+        nextMatchData.nextOrToday = "ACCEPTING INPUT";
+        decidedNextMatch = true;
+      }
+      else { /* No Action */ }
+    }
+    else{
+      if (!decidedNextMatch) {
+        // Next Matchを出力 = 確認対象日が後
+        nextMatchData.opponent = v.opponent;
+        nextMatchData.matchNo = v.matchNo;
+        nextMatchData.matchID = v.matchID;
+        nextMatchData.day = v.day;
         nextMatchData.nextOrToday = "NEXT MATCH";
         decidedNextMatch = true;
-      } else {
-        // AllMatch出力する方が良さそうなので、今後も必要なさそうなら削除
-        lMatchFromToday.add(v);
+        break;
       }
-    }
-    else {
-      // 今日より前の日付だった場合
-      // No Action
+      else{ /* No Action */ }
     }
   }
+  lAllMatch.sort((a, b) => a.matchNo.compareTo(b.matchNo));
 }
 
 /*

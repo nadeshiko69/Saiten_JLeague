@@ -32,11 +32,6 @@ class _inputScoreState extends State<Page_inputScore> {
   @override
   Widget build(BuildContext context) {
     // 試合日の翌日と今を比較　→　試合から一日以上経っていたら結果出力
-    bool dispInput = (widget.matchDay
-            .add(const Duration(days: 1))
-            .difference(DateTime.now())
-            .inDays) >
-        0;
 
     // 表示する Widget の一覧
     List<Widget> _pageList = [
@@ -60,7 +55,6 @@ class _inputScoreState extends State<Page_inputScore> {
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: Text(
           "Match ${widget.matchNo}",
           style: const TextStyle(
@@ -72,9 +66,7 @@ class _inputScoreState extends State<Page_inputScore> {
         actions: <Widget>[
           IconButton(
             color: Colors.black,
-            onPressed: !dispInput
-                ? null
-                : () => {
+            onPressed: () => {
                       setState(() {
                         if (myData.isAlreadyLogin) {
                           fSubmit(widget.teamName, widget.matchID);
@@ -97,7 +89,6 @@ class _inputScoreState extends State<Page_inputScore> {
           )
         ],
         elevation: 0,
-        leading: const Icon(Icons.navigate_before),
       ),
       body: Container(
         child: _pageList[_selectedIndex],

@@ -100,7 +100,7 @@ class _Body extends State<Widget_inputScoreBody> {
             children: [
               Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day.toString()),
               Container(
-                height: widget.deviceHeight * 0.59,
+                height: widget.deviceHeight * 0.55,
                 width: widget.deviceWidth,
                 color: kColorBorder, // FOR DEBUG
                 child: ListView.builder(

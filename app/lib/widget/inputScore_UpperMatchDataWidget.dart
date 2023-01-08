@@ -111,6 +111,12 @@ class Widget_UpperMatchData extends StatelessWidget {
                     style: TextStyle(color: kColorRedText),
                   ),
                 ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "採点受付期間：${outputDateFormat.format(DateTime.parse(day).add(const Duration(hours: 2)))} 〜　${outputDateFormat.format(DateTime.parse(day).add(const Duration(days: 2)))}"
+                  ),
+                ),
               ],
             ),
           ),
