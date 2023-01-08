@@ -104,6 +104,13 @@ class Widget_UpperMatchData extends StatelessWidget {
                     style: TextStyle(color: kColorBlackText.withOpacity(0.5)),
                   ),
                 ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    "※　採点を入力せず提出した場合は反映されません。",
+                    style: TextStyle(color: kColorRedText),
+                  ),
+                ),
               ],
             ),
           ),

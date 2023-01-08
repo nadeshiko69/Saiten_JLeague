@@ -13,6 +13,7 @@ const kColorWidget = Colors.white54;
 const kColorText = Color(0xFF9E9E9E);
 const kColorBlackText = Color(0xFF212121);
 const kColorWhiteText = Color(0xFFE0E0E0);
+const kColorRedText = Color(0xFFF44336);
 const kColorGold = Color(0xFFC1B695);
 const kColorBorder = Color(0xFFE0E0E0);
 
