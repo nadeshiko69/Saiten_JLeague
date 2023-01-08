@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:judge/mainData.dart';
+import 'package:judge/myPage/Page_myPage.dart';
+import 'package:judge/widget/myPage_RegisterAuthInfoWidget.dart';
 
 import '../main.dart';
 
@@ -50,6 +52,7 @@ class _MyAuthPageState extends State<MyAuthPage> {
               ),
               const SizedBox(height: 8),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: kColorWidget),
                 onPressed: () async {
                   try {
                     // メール/パスワードでログイン
@@ -75,9 +78,23 @@ class _MyAuthPageState extends State<MyAuthPage> {
                     });
                   }
                 },
-                child: const Text("ログイン"),
+                child: const Text("ログイン", style: TextStyle(
+                  color: kColorBlackText,
+                ),),
               ),
               const SizedBox(height: 8),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: kColorWidget),
+                onPressed: () async {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CRegisterPageView()));
+                },
+                child: const Text("登録はこちら", style: TextStyle(
+                  color: kColorBlackText,
+                ),),
+              ),
               Text(infoText),
             ],
           ),

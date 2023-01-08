@@ -9,12 +9,12 @@ const Data20XX = 'Data2022'; // FOR TEST
 
 
 
-const kColorPrimary = Color(0xFF2E8376);
+const kColorWidget = Colors.white54;
 const kColorText = Color(0xFF9E9E9E);
-const kColorTextDark = Color(0xFF212121);
-const kColorFlightText = Color(0xFFE0E0E0);
-const kColorFlightIcon = Color(0xFFC1B695);
-const kColorTicketBorder = Color(0xFFE0E0E0);
+const kColorBlackText = Color(0xFF212121);
+const kColorWhiteText = Color(0xFFE0E0E0);
+const kColorGold = Color(0xFFC1B695);
+const kColorBorder = Color(0xFFE0E0E0);
 
 DateFormat outputDateFormat = DateFormat('yyyy/MM/dd HH:mm');
 

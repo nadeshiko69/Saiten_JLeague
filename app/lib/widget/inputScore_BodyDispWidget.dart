@@ -102,7 +102,7 @@ class _Body extends State<Widget_inputScoreBody> {
               Container(
                 height: widget.deviceHeight * 0.59,
                 width: widget.deviceWidth,
-                color: kColorTicketBorder, // FOR DEBUG
+                color: kColorBorder, // FOR DEBUG
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,

@@ -3,12 +3,37 @@ import 'package:judge/imageFilePath.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
 import 'package:judge/myPage/Factory_myPage.dart';
-import 'package:judge/myPage/login.dart';
+import 'package:judge/widget/myPage_LoginWidget.dart';
+import 'package:judge/widget/myPage_RegisterAuthInfoWidget.dart';
 
 // Auth機能 https://www.flutter-study.dev/firebase/authentication
 String teamName = "Nagoya";
 
 // 登録画面
+class CRegisterPageView extends StatelessWidget {
+  const CRegisterPageView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "My Page",
+          style: TextStyle(
+            fontSize: 20,
+            color: kColorBlackText,
+          ),
+        ),
+        backgroundColor: kColorWidget,
+        iconTheme: const IconThemeData(color: kColorBlackText),
+      ),
+      body: Widget_RegisterAuthInfo(),
+    );
+  }
+}
+
+
+// ログイン画面
 class CAuthPageView extends StatelessWidget {
   const CAuthPageView({Key? key}) : super(key: key);
 
@@ -16,7 +41,15 @@ class CAuthPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Page"),
+        title: const Text(
+          "My Page",
+          style: TextStyle(
+            fontSize: 20,
+            color: kColorBlackText,
+          ),
+        ),
+        backgroundColor: kColorWidget,
+        iconTheme: const IconThemeData(color: kColorBlackText),
       ),
       body: const MyAuthPage(),
     );
@@ -29,8 +62,8 @@ class CMyPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double _deviceHeight = MediaQuery.of(context).size.height;
-    final double _deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceWidth = MediaQuery.of(context).size.width;
     return FutureBuilder(
         future: fGetMyInputedMatchData(teamName),
         builder:
@@ -65,11 +98,11 @@ class CMyPageView extends StatelessWidget {
                 "My Page",
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.black,
+                  color: kColorBlackText,
                 ),
               ),
-              backgroundColor: Colors.white54,
-              iconTheme: IconThemeData(color: Colors.black),
+              backgroundColor: kColorWidget,
+              iconTheme: const IconThemeData(color: kColorBlackText),
               // TODO : ログアウト機能要らなそうなので一旦コメントアウト
               // actions: [
               //   IconButton(
@@ -87,8 +120,8 @@ class CMyPageView extends StatelessWidget {
                   style: TextStyle(fontSize: 20),
                 ),
                 SizedBox(
-                  height: _deviceHeight * 0.7,
-                  width: _deviceWidth * 0.95,
+                  height: deviceHeight * 0.7,
+                  width: deviceWidth * 0.95,
                   child: ListView.builder(
                       itemCount: lAlreadyInputedMatch.length,
                       itemBuilder: (context, index) {
@@ -101,7 +134,8 @@ class CMyPageView extends StatelessWidget {
                             subtitle: Text(lAlreadyInputedMatch[index].day),
                             isThreeLine: true,
                             trailing: IconButton(
-                              icon: const Icon(Icons.align_horizontal_right_rounded),
+                              icon: const Icon(
+                                  Icons.align_horizontal_right_rounded),
                               onPressed: () {},
                             ),
                           ),

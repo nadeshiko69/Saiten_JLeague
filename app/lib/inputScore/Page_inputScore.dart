@@ -68,7 +68,7 @@ class _inputScoreState extends State<Page_inputScore> {
             color: Colors.black,
           ),
         ),
-        backgroundColor: kColorPrimary,
+        backgroundColor: kColorWidget,
         actions: <Widget>[
           IconButton(
             color: Colors.black,

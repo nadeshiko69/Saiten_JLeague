@@ -92,7 +92,7 @@ class CMainPageState extends State<CMainPage> {
             color: Colors.black,
           ),
         ),
-        backgroundColor: Colors.white54,
+        backgroundColor: kColorWidget,
         iconTheme: IconThemeData(color: Colors.black),
         actions: [
           IconButton(
