@@ -33,8 +33,7 @@ var tsSubmitIcon = const TextStyle(
 );
 
 void fSubmit(String teamName, String matchID) async {
-  String? userID = FirebaseAuth.instance.currentUser?.uid; // FOR DEBUG
-
+  String? userID = FirebaseAuth.instance.currentUser?.uid;
   // 既に採点情報が格納されているか確認して、あれば新規追加ではなく更新
   final QuerySnapshot snapshot = await FirebaseFirestore.instance
       .collection(Data20XX)
@@ -46,8 +45,10 @@ void fSubmit(String teamName, String matchID) async {
 
   // まだ一度も送信していない(snapshotのサイズが0)場合、新規追加
   if (snapshot.size == 0) {
+    print("aaa");
     int index = 0;
     for (CPlayerData member in lStartingList!) {
+      print(member.name);
       // スタメンの採点情報
       await FirebaseFirestore.instance
           .collection(Data20XX)
@@ -57,7 +58,7 @@ void fSubmit(String teamName, String matchID) async {
           .set({
         'MemberID': member.mid,
         'MatchID': matchID,
-        'userID': userID, // TODO:後で直す。UserIDをfirebase authからDB格納できるようになってから
+        'userID': userID,
         'score': lSelectedPointList![index]
       }); // データ
       index++;
@@ -73,7 +74,7 @@ void fSubmit(String teamName, String matchID) async {
           .set({
         'MemberID': member.mid,
         'MatchID': matchID,
-        'userID': userID, // TODO:後で直す。UserIDをfirebase authからDB格納できるようになってから
+        'userID': userID,
         'score': lSelectedPointList![index]
       }); // データ
       index++;
@@ -83,7 +84,6 @@ void fSubmit(String teamName, String matchID) async {
   // 既に送信済なら情報をさいしんに更新する
   // TODO: 実装汚すぎるので後でいい感じにまとめる
   else {
-    print("unko");
     int index = 0;
     for (CPlayerData member in lStartingList!) {
       await FirebaseFirestore.instance
@@ -105,7 +105,7 @@ void fSubmit(String teamName, String matchID) async {
                       .set({
                     'MemberID': member.mid,
                     'MatchID': matchID,
-                    'userID': userID, // TODO:後で直す。UserIDをfirebase authからDB格納できるようになってから
+                    'userID': userID,
                     'score': lSelectedPointList![index]
                   });
                 })

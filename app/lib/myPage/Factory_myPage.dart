@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:judge/inputScore/Factory_inputScore.dart';
 import 'package:judge/mainData.dart';
+import 'package:judge/mainFactory.dart';
 
 // Name : fGetMyInputedMatchID()
 // Arg  : teamName : 対象チーム
@@ -25,9 +25,11 @@ Future<List<CMatchData>> fGetMyInputedMatchData(String teamName) async {
             .collection("Match")
             .doc(doc["MatchID"])
             .get();
+        print(matchDataSnapshot["home"]);
+        print(teamName);
         CMatchData matchData = CMatchData(
             doc["MatchID"],
-            await matchDataSnapshot["home"] != teamName
+            await matchDataSnapshot["home"] == fConverseTeamName(teamName)
                 ? matchDataSnapshot["away"]
                 : matchDataSnapshot["home"],
             outputDateFormat.format(matchDataSnapshot["kickoff"].toDate()).toString(),
