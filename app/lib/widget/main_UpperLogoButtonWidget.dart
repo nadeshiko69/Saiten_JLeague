@@ -95,7 +95,10 @@ class Widget_UpperLogoButton extends StatelessWidget {
         );
       }
       default:{
-        return Container();
+        return SizedBox(
+          height: _deviceHeight * 0.15,
+          width: _deviceWidth * 0.4,
+        );
       }
     }
   }

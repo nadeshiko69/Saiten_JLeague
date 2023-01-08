@@ -25,7 +25,7 @@ Name : GetNextMatch()
 Arg  : String teamName : firebaseに登録してあるチーム名
 Func : 実行した年月日以降直近で実施される試合のスケジュールを取得
 * */
-void fGetNextMatch(String teamName) async{
+Future<void> fGetNextMatch(String teamName) async{
 
   DateTime todayDate = DateTime.parse(fGetTodayDate());
   bool decidedNextMatch = false;
@@ -36,7 +36,7 @@ void fGetNextMatch(String teamName) async{
       .collection('Match');
   final QuerySnapshot snapshot = await userCollection.get();
 
-  final matchData = snapshot.docs.map((DocumentSnapshot document){
+  final matchData = await snapshot.docs.map((DocumentSnapshot document){
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
     final String matchID = document.id;

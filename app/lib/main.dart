@@ -65,11 +65,10 @@ class CMainPageState extends State<CMainPage> {
   @override
   void initState() {
     super.initState();
-    Future(() {
+    Future(() async {
     _teamName = 'Nagoya';
-    setState(() {
-      fGetNextMatch(_teamName);
-    });// 表示用のListを作成
+    await fGetNextMatch(_teamName);
+    setState(() { });// 表示用のListを作成
     });
   }
 
@@ -116,7 +115,7 @@ class CMainPageState extends State<CMainPage> {
             ),
             InkWell(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly, // childrenを左右対称に配置
                 children: [
                   Widget_UpperLogoButton(
                     teamName: _teamName,

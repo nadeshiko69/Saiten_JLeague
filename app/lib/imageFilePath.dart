@@ -119,7 +119,7 @@ int Function_GetTeamLogoPathIndex(String teamNameJpn) {
         ret = YOKOHAMAC;
         break;
       case 'opponent':
-        ret = 0;
+        ret = -1;
         break;
       default:
         break;
