@@ -1,3 +1,6 @@
+import 'dart:core';
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:judge/inputScore/Factory_inputScore.dart';
 import 'package:judge/mainData.dart';
@@ -66,7 +69,9 @@ class _inputScoreState extends State<Page_inputScore> {
         actions: <Widget>[
           IconButton(
             color: Colors.black,
-            onPressed: () => {
+            onPressed: (widget.matchDay.add(const Duration(hours: 2)).isAfter(DateTime.now())) // input可能期間じゃなければ採点ボタンを非活性にする
+            ? null
+            : () => {
                       setState(() {
                         if (myData.isAlreadyLogin) {
                           fSubmit(widget.teamName, widget.matchID);

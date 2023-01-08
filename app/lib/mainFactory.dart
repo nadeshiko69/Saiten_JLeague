@@ -7,27 +7,13 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:judge/mainData.dart';
 
 /*
-Name : GetTodayDate()
-Arg  : None
-Func : 実行した年月日をyyyy-MM-ddとして取得
-* */
-String fGetTodayDate() {
-  initializeDateFormatting("ja_JP");
-  DateTime now = DateTime.now();
-  DateFormat outputFormat = DateFormat('yyyy-MM-dd HHmm', "ja_JP");
-  String todayDate = outputFormat.format(now); // 今日の年月日を取得
-  return todayDate;
-}
-
-
-/*
 Name : GetNextMatch()
 Arg  : String teamName : firebaseに登録してあるチーム名
 Func : 実行した年月日以降直近で実施される試合のスケジュールを取得
 * */
 Future<void> fGetNextMatch(String teamName) async{
 
-  DateTime todayDate = DateTime.parse(fGetTodayDate());
+  DateTime todayDate = DateTime.now();
   bool decidedNextMatch = false;
 
   final userCollection = FirebaseFirestore.instance
@@ -58,42 +44,80 @@ Future<void> fGetNextMatch(String teamName) async{
   // Next Matchの決定
   lAllMatch.sort((a, b) => a.day.compareTo(b.day));
   for (var v in lAllMatch) {
-    DateTime databaseTime = v.day;
-    if(todayDate.difference(databaseTime).inDays == 0 && todayDate.day == databaseTime.day){
-        // 試合当日
-        nextMatchData.opponent = v.opponent;
-        nextMatchData.matchNo  = v.matchNo;
-        nextMatchData.matchID  = v.matchID;
-        nextMatchData.day      = v.day;
-        nextMatchData.nextOrToday = "TODAY'S MATCH";
-        decidedNextMatch = true;
-        break;
-    }
-    else if (!databaseTime.isAfter(todayDate)) {
-      // 採点受付中 = 確認対象日が前、かつ二日以内
-      if(todayDate.difference(databaseTime).inDays < 2){
+    print(v.day);
+    DateTime kickoffTime = v.day; // 試合開始時間
+    DateTime timeupTime = kickoffTime.add(const Duration(hours: 2)); // 試合終了時間
+    if(todayDate.isAfter(timeupTime)){ // 試合が行われた後
+      if(todayDate.difference(kickoffTime).inDays < 2){ // 2日以内なら採点受付
         nextMatchData.opponent = v.opponent;
         nextMatchData.matchNo  = v.matchNo;
         nextMatchData.matchID  = v.matchID;
         nextMatchData.day      = v.day;
         nextMatchData.nextOrToday = "ACCEPTING INPUT";
         decidedNextMatch = true;
-      }
-      else { /* No Action */ }
-    }
-    else{
-      if (!decidedNextMatch) {
-        // Next Matchを出力 = 確認対象日が後
-        nextMatchData.opponent = v.opponent;
-        nextMatchData.matchNo = v.matchNo;
-        nextMatchData.matchID = v.matchID;
-        nextMatchData.day = v.day;
-        nextMatchData.nextOrToday = "NEXT MATCH";
-        decidedNextMatch = true;
         break;
       }
-      else{ /* No Action */ }
+      else { // それより前ならすでに結果発表済み
+        /* No Action */
+      }
     }
+    else { // 試合前
+      if(todayDate.difference(kickoffTime).inDays == 0 && todayDate.day == kickoffTime.day){ // 試合開催日
+            nextMatchData.opponent = v.opponent;
+            nextMatchData.matchNo  = v.matchNo;
+            nextMatchData.matchID  = v.matchID;
+            nextMatchData.day      = v.day;
+            nextMatchData.nextOrToday = "TODAY'S MATCH";
+            decidedNextMatch = true;
+            break;
+      }
+      else{ // 試合前日より前
+            // Next Matchを出力 = 確認対象日が後
+            nextMatchData.opponent = v.opponent;
+            nextMatchData.matchNo = v.matchNo;
+            nextMatchData.matchID = v.matchID;
+            nextMatchData.day = v.day;
+            nextMatchData.nextOrToday = "NEXT MATCH";
+            decidedNextMatch = true;
+            break;
+      }
+    }
+
+    // if(todayDate.difference(databaseTime).inDays == 0 && todayDate.day == databaseTime.day){
+    //     // 試合当日
+    //     nextMatchData.opponent = v.opponent;
+    //     nextMatchData.matchNo  = v.matchNo;
+    //     nextMatchData.matchID  = v.matchID;
+    //     nextMatchData.day      = v.day;
+    //     nextMatchData.nextOrToday = "TODAY'S MATCH";
+    //     decidedNextMatch = true;
+    //     break;
+    // }
+    // else if (!databaseTime.isAfter(todayDate)) {
+    //   // 採点受付中 = 確認対象日が前、かつ二日以内
+    //   if(todayDate.difference(databaseTime).inDays < 2){
+    //     nextMatchData.opponent = v.opponent;
+    //     nextMatchData.matchNo  = v.matchNo;
+    //     nextMatchData.matchID  = v.matchID;
+    //     nextMatchData.day      = v.day;
+    //     nextMatchData.nextOrToday = "ACCEPTING INPUT";
+    //     decidedNextMatch = true;
+    //   }
+    //   else { /* No Action */ }
+    // }
+    // else{
+    //   if (!decidedNextMatch) {
+    //     // Next Matchを出力 = 確認対象日が後
+    //     nextMatchData.opponent = v.opponent;
+    //     nextMatchData.matchNo = v.matchNo;
+    //     nextMatchData.matchID = v.matchID;
+    //     nextMatchData.day = v.day;
+    //     nextMatchData.nextOrToday = "NEXT MATCH";
+    //     decidedNextMatch = true;
+    //     break;
+    //   }
+    //   else{ /* No Action */ }
+    // }
   }
   lAllMatch.sort((a, b) => a.matchNo.compareTo(b.matchNo));
 }
