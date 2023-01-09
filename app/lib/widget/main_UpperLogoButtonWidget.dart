@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:judge/confirmTeamInfo/Page_confirmTeamInfo.dart';
 import 'package:judge/imageFilePath.dart';
 import 'package:judge/inputScore/Page_inputScore.dart';
 import 'package:judge/mainData.dart';
@@ -14,8 +15,8 @@ class Widget_UpperLogoButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double _deviceHeight = MediaQuery.of(context).size.height;
-    final double _deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceWidth = MediaQuery.of(context).size.width;
 
     int viewLogoIndex = 0;
     switch(routingFor){
@@ -33,8 +34,8 @@ class Widget_UpperLogoButton extends StatelessWidget {
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) =>
                     Page_inputScore(
-                        _deviceHeight,
-                        _deviceWidth,
+                        deviceHeight,
+                        deviceWidth,
                         nextMatchData.matchNo,
                         nextMatchData.matchID,
                         teamName,
@@ -43,8 +44,8 @@ class Widget_UpperLogoButton extends StatelessWidget {
                 ));
               },
               child: Container(
-                height: _deviceHeight * 0.15,
-                width: _deviceWidth * 0.4,
+                height: deviceHeight * 0.15,
+                width: deviceWidth * 0.4,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
@@ -70,10 +71,22 @@ class Widget_UpperLogoButton extends StatelessWidget {
           children: [
             Text("MY TEAM", style: tsNextMatchTextStyle,),
             InkWell(
-              onTap: (){},
+              onTap: (){
+                // Page_confirmTeamInfo
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    Page_confirmTeamInfo(
+                        deviceHeight,
+                        deviceWidth,
+                        nextMatchData.matchNo,
+                        nextMatchData.matchID,
+                        teamName,
+                        nextMatchData.opponent,
+                        nextMatchData.day)
+                ));
+              },
               child: Container(
-                height: _deviceHeight * 0.15,
-                width: _deviceWidth * 0.4,
+                height: deviceHeight * 0.15,
+                width: deviceWidth * 0.4,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
@@ -96,8 +109,8 @@ class Widget_UpperLogoButton extends StatelessWidget {
       }
       default:{
         return SizedBox(
-          height: _deviceHeight * 0.15,
-          width: _deviceWidth * 0.4,
+          height: deviceHeight * 0.15,
+          width: deviceWidth * 0.4,
         );
       }
     }

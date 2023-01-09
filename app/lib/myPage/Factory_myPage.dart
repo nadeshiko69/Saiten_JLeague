@@ -33,7 +33,8 @@ Future<List<CMatchData>> fGetMyInputedMatchData(String teamName) async {
                 ? matchDataSnapshot["away"]
                 : matchDataSnapshot["home"],
             matchDataSnapshot["kickoff"],
-            await matchDataSnapshot["section"]);
+            await matchDataSnapshot["section"],
+            await matchDataSnapshot["stadium"]);
         if (!lMatchIDTemp.contains(doc["MatchID"])) {
           lAlreadyInputedMatchData.add(matchData);
           lMatchIDTemp.add(doc["MatchID"]);

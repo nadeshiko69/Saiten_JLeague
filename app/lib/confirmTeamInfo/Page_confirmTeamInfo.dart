@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:judge/widget/confirmScore_BodyDispWidget.dart';
 
-class Page_confirmScore extends StatefulWidget {
-  Page_confirmScore(this.deviceHeight, this.deviceWidth, this.matchNo,
+class Page_confirmTeamInfo extends StatefulWidget {
+  Page_confirmTeamInfo(this.deviceHeight, this.deviceWidth, this.matchNo,
       this.matchID, this.teamName, this.opponent, this.matchDay,
       {Key? key})
       : super(key: key);
@@ -15,10 +15,11 @@ class Page_confirmScore extends StatefulWidget {
   DateTime matchDay;
 
   @override
-  State<Page_confirmScore> createState() => _confirmScoreState();
+  State<Page_confirmTeamInfo> createState() => _confirmTeamInfoState();
 }
 
-class _confirmScoreState extends State<Page_confirmScore> {
+class _confirmTeamInfoState extends State<Page_confirmTeamInfo> {
+
   int _selectedIndex = 0;
   void _onTapItem(int index) {
     setState(() {
@@ -47,7 +48,6 @@ class _confirmScoreState extends State<Page_confirmScore> {
           false,
           widget.matchDay,),
     ];
-
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),

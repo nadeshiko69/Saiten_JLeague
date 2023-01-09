@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:judge/confirmScore/Factory_confirmScore.dart';
 import '../mainData.dart';
+import 'confirmScore_UpperMatchDataView.dart';
 
 // Scaffold内のBodyを定義Footerでスタメンとベンチ切り替え
 class Widget_confirmScoreBody extends StatefulWidget {
@@ -34,7 +35,6 @@ class _Body extends State<Widget_confirmScoreBody> {
           );
         }
         if (snapshot.error != null) {
-          print(snapshot.error);
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -47,38 +47,11 @@ class _Body extends State<Widget_confirmScoreBody> {
         } else {
           lSubListWithScore = lMemberData;
         }
-
-        return Padding(
+        return SingleChildScrollView(
           padding: const EdgeInsets.all(0.0),
           child: Column(
             children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                height: widget.deviceHeight * 0.1,
-                width: widget.deviceWidth * 0.95,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.grey, //色
-                      spreadRadius: 2,
-                      blurRadius: 2,
-                      offset: Offset(1, 1),
-                    ),
-                  ],
-                ),
-                child: Center(
-                    child: Text(
-                  'vs${lAllMatch[widget.matchNo - 1].opponent}',
-                  style: tsOpponentNameTextStyle,
-                )),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
+              Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day.toString(), lAllMatch[widget.matchNo - 1].stadium),
               Container(
                 height: widget.deviceHeight * 0.6,
                 width: widget.deviceWidth,
