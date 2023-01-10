@@ -47,35 +47,46 @@ class _Body extends State<Widget_confirmScoreBody> {
         } else {
           lSubListWithScore = lMemberData;
         }
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(0.0),
-          child: Column(
-            children: [
-              Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day.toString(), lAllMatch[widget.matchNo - 1].stadium),
-              Container(
-                height: widget.deviceHeight * 0.6,
-                width: widget.deviceWidth,
-                color: Colors.white, // FOR DEBUG
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: lMemberData?.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      child: Card(
-                        child: ListTile(
-                            title: Text(lMemberData![index].name),
-                            subtitle:
-                                Text(lMemberData[index].number.toString()),
-                            trailing: Text(lMemberData[index].score.toString())),// Firebaseから値を取得してList化してTextで出力
-                      ),
-                    );
-                  },
+
+        // 採点の集計結果がなければリストを表示しない
+        if(lStartingListWithScore![0].score == -1) {
+            return const Center(child: Text("採点の集計完了までしばらくお待ちください・・・"));
+        }
+        else {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(0.0),
+            child: Column(
+              children: [
+                Widget_UpperMatchData(
+                    widget.teamName, lAllMatch[widget.matchNo - 1].opponent,
+                    lAllMatch[widget.matchNo - 1].day.toString(),
+                    lAllMatch[widget.matchNo - 1].stadium),
+                Container(
+                  height: widget.deviceHeight * 0.6,
+                  width: widget.deviceWidth,
+                  color: Colors.white, // FOR DEBUG
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: lMemberData?.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        child: Card(
+                          child: ListTile(
+                              title: Text(lMemberData![index].name),
+                              subtitle:
+                              Text(lMemberData[index].number.toString()),
+                              trailing: Text(lMemberData[index].score
+                                  .toString())), // Firebaseから値を取得してList化してTextで出力
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
+              ],
+            ),
+          );
+        }
       },
     );
   }

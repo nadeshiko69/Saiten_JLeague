@@ -32,7 +32,7 @@ class Widget_UpperMatchData extends StatelessWidget {
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly, // childrenを左右対称に配置
                   children: [
                     _TeamName(jpnName:fConverseTeamName(homeTeamName) , engName: homeTeamName),
                     _VersusIcon(),

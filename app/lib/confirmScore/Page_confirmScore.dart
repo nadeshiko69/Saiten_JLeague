@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:judge/mainData.dart';
 import 'package:judge/widget/confirmScore_BodyDispWidget.dart';
 
 class Page_confirmScore extends StatefulWidget {
