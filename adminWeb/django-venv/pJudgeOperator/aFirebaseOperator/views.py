@@ -112,8 +112,8 @@ def fCalcAveragePoints(engName, points):
         print(player["name"])
         if len(points_eachMember) != 0:
             ave_point = sum(points_eachMember) / len(points_eachMember) # 平均値
-            sdev = stdev([3.55,10]) # 標準偏差
-            var = variance([3.55,10]) # 分散
+            sdev = stdev(points_eachMember) # 標準偏差
+            var = variance(points_eachMember) # 分散
             # com = Counter(points_eachMember).most_common(1) # 最頻値 = 2つ以上の値がが同率で最貧だった場合Failになるので一旦なし
             
             db = Player.objects.get(pid=player["id"])
