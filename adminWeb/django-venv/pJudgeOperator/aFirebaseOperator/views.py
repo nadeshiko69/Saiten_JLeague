@@ -70,14 +70,17 @@ def fGetNemberData(request, engName):
         elif "submit" in request.POST:
             if Match.objects.filter(team = jpnName, kickoff = today).exists() or DEBUG_MODE == True:  # 送信を押した日に試合があればidを取得して送付
                 mid = Match.objects.get(team = jpnName, kickoff = today).mid
-                if False: # スタメン/ ベンチの登録
-                    startingMember = request.POST.getlist("starting_number")
-                    subMember = request.POST.getlist("substitute_number")
+                startingMember = request.POST.getlist("starting_number")
+                subMember = request.POST.getlist("substitute_number")
+                if len(startingMember) == 11 and len(subMember) <= 7: # スタメン/ ベンチの登録
                     firebaseOperator.of.fWriteMemberDataToFirebase(engName, mid, startingMember, subMember)
-                else :  # 計算データの登録
+                    print("Register done.")
+                elif len(startingMember) == 0 and len(subMember) == 0 :  # 計算データの登録
                     players = Player.objects.all()
                     firebaseOperator.of.fWritePointsToFirebase(engName, mid, players)
-                print("Register done.")
+                    print("Register done.")
+                else:
+                    print("Register Func is not exec because checkbox_input is invalid.")
             else:
                 # TODO : 試合日以外に入力できないようにセーフティ入れる
                 print("Register failed")
