@@ -97,8 +97,24 @@ class operateFirebase():
             self.npPoints = np.append(self.npPoints, appendData)
         return self.npPoints.reshape(int(self.npPoints.size/2),2)
         
-    def fWritePointsToFirebase():
-        pass
+    def fWritePointsToFirebase(self, engName, mid, members):
+        print("mid = {}".format(mid))
+        base_ref = self.db.collection('Data2022').document(engName).collection('Match').document(mid).collection('Member')
+        for member in members:
+            print("Name[{}] / pid[{}] / point[{}] / var[{}] / sdev[{}]".format(member.name, member.pid, member.point, member.var, member.sdev))
+            doc_ref = base_ref.document(member.pid)
+            if doc_ref.get().exists:
+                try:
+                    doc_ref.update({
+                        'score'  : member.point,
+                        'var'    : member.var,
+                        'sdev'   : member.sdev,
+                        })
+                    print(" Score register done.")
+                except:
+                    print("Score register Failed.")
+            else:
+                print("No Register.")
 # FOR DEBUG
 
 # of = operateFirebase()

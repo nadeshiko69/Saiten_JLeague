@@ -17,6 +17,9 @@
                     <th>スタメン</th>
                     <th>サブ</th>
                     <th>採点</th>
+                    <th>分散</th>
+                    <th>標準偏差</th>
+                    <th>最頻値</th>
                 </tr>
                 {% for member in players %}
                 <tr>
@@ -27,7 +30,9 @@
                     <td align="center"><label><input type="checkbox" name="starting_number" value={{member.pid}}></label></td>
                     <td align="center"><label><input type="checkbox" name="substitute_number" value={{member.pid}}></label></td>
                     <td align="center">{{member.point}}</td>
-                    
+                    <td align="center">{{member.var}}</td>
+                    <td align="center">{{member.sdev}}</td>
+                    <td align="center">{{member.com}}</td>
                 </tr>
                 {% endfor %}
             </table>

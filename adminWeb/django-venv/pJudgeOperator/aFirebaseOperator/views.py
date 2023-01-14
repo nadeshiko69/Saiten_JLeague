@@ -1,10 +1,9 @@
 from email.policy import default
 from http.client import HTTPResponse
-import math
-import numbers
-from django.shortcuts import render, redirect
+from collections import Counter
+from statistics import stdev, variance
+from django.shortcuts import render
 
-import sys
 from function.operateFirebase import operateFirebase
 
 from .models import Team, Player, Match
@@ -12,6 +11,7 @@ import datetime
 import numpy as np
 
 DEBUG_MODE = True
+MATCH_ID = ""
 
 
 # FirebaseのInitialize_Appを複数回起動しないようにクラス化
@@ -29,8 +29,8 @@ def fGetNemberData(request, engName):
     # 再取得ボタンが押されたらこっち
     if request.method=="POST":
         # 必要な情報の確保
-        today = datetime.datetime.today() # 入力日
-        # today = datetime.datetime(2022,7,10) # For Debug
+        # today = datetime.datetime.today() # 入力日
+        today = datetime.datetime(2023,2,23) # For Debug
         jpnName = Team.objects.get(engName=engName).jpnName # 入力対象のチーム名
         if "run_script" in request.POST:
             # 選手情報をDjangoのDBに格納
@@ -70,9 +70,14 @@ def fGetNemberData(request, engName):
         elif "submit" in request.POST:
             if Match.objects.filter(team = jpnName, kickoff = today).exists() or DEBUG_MODE == True:  # 送信を押した日に試合があればidを取得して送付
                 mid = Match.objects.get(team = jpnName, kickoff = today).mid
-                startingMember = request.POST.getlist("starting_number")
-                subMember = request.POST.getlist("substitute_number")
-                firebaseOperator.of.fWriteMemberDataToFirebase(engName, mid, startingMember, subMember)
+                if False: # スタメン/ ベンチの登録
+                    startingMember = request.POST.getlist("starting_number")
+                    subMember = request.POST.getlist("substitute_number")
+                    firebaseOperator.of.fWriteMemberDataToFirebase(engName, mid, startingMember, subMember)
+                else :  # 計算データの登録
+                    players = Player.objects.all()
+                    firebaseOperator.of.fWritePointsToFirebase(engName, mid, players)
+                print("Register done.")
             else:
                 # TODO : 試合日以外に入力できないようにセーフティ入れる
                 print("Register failed")
@@ -83,7 +88,7 @@ def fGetNemberData(request, engName):
         elif "calc" in request.POST:
             matches = Match.objects.filter(team = jpnName, kickoff__range=[today - datetime.timedelta(days=3),today]).order_by('kickoff') # 3日前から今日の間に開催された試合の情報を抽出
             points = firebaseOperator.of.fReadPointsFromFirebase(engName,matches[0].mid) # 採点結果を読み込み
-            ave_points = fCalcAveragePoints(engName, points) # みんなの採点結果の平均を計算
+            fCalcAveragePoints(engName, points) # みんなの採点結果の平均を計算
             pass
             
             
@@ -104,11 +109,21 @@ def fCalcAveragePoints(engName, points):
     for player in players:
         points_eachMember = points[np.any(points==player["id"], axis=1)][:,1] # 採点の値のみ抽出
         points_eachMember = [float(s) for s in points_eachMember] # 取得するときにstrで取ってきてるのでfloatに変換。後で修正する
+        print(points_eachMember)
+        print(player["name"])
         if len(points_eachMember) != 0:
             ave_point = sum(points_eachMember) / len(points_eachMember) # 平均値
+            sdev = stdev([3.55,10]) # 標準偏差
+            var = variance([3.55,10]) # 分散
+            # com = Counter(points_eachMember).most_common(1) # 最頻値 = 2つ以上の値がが同率で最貧だった場合Failになるので一旦なし
+            
             db = Player.objects.get(pid=player["id"])
             db.point = ave_point
+            db.sdev = sdev
+            db.var = var
+            # db.com = com
             db.save()
+
             
 def ReloadPoints(self, engName):
     players = firebaseOperator.of.fReadMemberDataFromFirebase(engName)
