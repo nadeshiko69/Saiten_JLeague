@@ -10,8 +10,7 @@ from .models import Team, Player, Match
 import datetime
 import numpy as np
 
-DEBUG_MODE = True
-MATCH_ID = ""
+DEBUG_MODE = False
 
 
 # FirebaseのInitialize_Appを複数回起動しないようにクラス化
@@ -29,8 +28,8 @@ def fGetNemberData(request, engName):
     # 再取得ボタンが押されたらこっち
     if request.method=="POST":
         # 必要な情報の確保
-        # today = datetime.datetime.today() # 入力日
-        today = datetime.datetime(2023,2,23) # For Debug
+        today = datetime.datetime.today() - datetime.timedelta(days=3) # 入力日
+        # today = datetime.datetime(2023,2,26) - datetime.timedelta(days=3) # For Debug
         jpnName = Team.objects.get(engName=engName).jpnName # 入力対象のチーム名
         if "run_script" in request.POST:
             # 選手情報をDjangoのDBに格納
