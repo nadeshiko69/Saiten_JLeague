@@ -1,3 +1,6 @@
+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
+
+
 ●起動
 pJudgeOperatorのディレクトリをVScodeで開いてDebug→Run
 ブラウザで http://127.0.0.1:8000/
