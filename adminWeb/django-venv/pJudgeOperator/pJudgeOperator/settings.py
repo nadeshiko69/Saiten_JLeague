@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&7dk1(j*4krlmz5u#h5^ywyiy4qi8dkb%i0@c0shq^3f)$8&(@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '.pythonanywhere.com', 'sakuTech.pythonanywhere.com']
 
 
 # Application definition
@@ -122,3 +122,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# FOR PythonAnywhare ############################################
+CSRF_COOKIE_SECURE = True # Cookieの誤送信防止
+SESSION_COOKIE_SECURE = True # セッションクッキーの誤送信防止
+
+from django.core.management.utils import get_random_secret_key
+SECRET_KEY = get_random_secret_key()  
+#################################################################
+
+try:
+    from .local_settings import *
+except:
+    pass
