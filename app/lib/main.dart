@@ -5,14 +5,13 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_stripe/flutter_stripe.dart'
-    hide Card; // こっちのCardクラスをhideしないとデフォルトのCardが使用できない
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
 import 'package:flutter/material.dart';
-import 'package:judge/myPage/myPageViewer.dart';
-
-import 'matchDataView/matchDataView.dart';
+import 'package:judge/myPage/Page_myPage.dart';
+import 'package:judge/widget/main_UpperLogoButtonWidget.dart';
+import 'package:judge/widget/main_MatchListComponentWidget.dart';
 
 void main() async {
   // For Stripe
@@ -66,22 +65,24 @@ class CMainPageState extends State<CMainPage> {
   @override
   void initState() {
     super.initState();
+    Future(() async {
     _teamName = 'Nagoya';
-    fGetNextMatch(_teamName); // 表示用のListを作成
+    await fGetNextMatch(_teamName);
+    setState(() { });// 表示用のListを作成
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     // 端末の縦横サイズを取得
-    final double _deviceHeight = MediaQuery.of(context).size.height;
-    final double _deviceWidth = MediaQuery.of(context).size.width;
-    final String _myPageText;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final String myPageText;
     if (myData.isAlreadyLogin) {
-      _myPageText = 'MyPage';
+      myPageText = 'MyPage';
     } else {
-      _myPageText = 'Log in';
+      myPageText = 'Log in';
     }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -91,7 +92,7 @@ class CMainPageState extends State<CMainPage> {
             color: Colors.black,
           ),
         ),
-        backgroundColor: Colors.white54,
+        backgroundColor: kColorWidget,
         iconTheme: IconThemeData(color: Colors.black),
         actions: [
           IconButton(
@@ -106,96 +107,38 @@ class CMainPageState extends State<CMainPage> {
               ))
         ],
       ),
-      body: Container(
-        color: Colors.black,
-        child: Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: Center(
-            child: Column(
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CMatchDetailView(
-                              _deviceHeight,
-                              _deviceWidth,
-                              lNextMatch[0].matchNo,
-                              lNextMatch[0].matchID,
-                              _teamName,
-                              lNextMatch[0].opponent,
-                              DateTime.parse(lNextMatch[0].day)),
-                        ));
-                  },
-                  child: Container(
-                    height: _deviceHeight * 0.15,
-                    width: _deviceWidth * 0.95,
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            lNextMatch[0].nextOrToday.toString(),
-                            style: tsNextMatchTextStyle,
-                          ),
-                          Text(
-                            lNextMatch[0].day,
-                            style: tsScheduleTextStyle,
-                          ),
-                          Text(
-                            'vs' + lNextMatch[0].opponent,
-                            style: tsOpponentNameTextStyle,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  height: _deviceHeight * 0.7,
-                  width: _deviceWidth * 0.95,
-                  color: Colors.black, // FOR DEBUG
-                  child: ListView.builder(
-                    itemCount: lAllMatch.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () async {
-                          // タップしたときの処理
-                          //print(lAllMatch[index].opponent);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CMatchDetailView(
-                                    _deviceHeight,
-                                    _deviceWidth,
-                                    lAllMatch[index].matchNo,
-                                    lAllMatch[index].matchID,
-                                    _teamName,
-                                    lAllMatch[index].opponent,
-                                    DateTime.parse(lAllMatch[index].day)),
-                              ));
-                        },
-                        child: Card(
-                          child: ListTile(
-                            title: Text("MATCH " +
-                                lAllMatch[index].matchNo.toString() +
-                                "  " +
-                                lAllMatch[index].opponent),
-                            subtitle: Text(lAllMatch[index].day + " "),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20,
             ),
-          ),
+            InkWell(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly, // childrenを左右対称に配置
+                children: [
+                  Widget_UpperLogoButton(
+                    teamName: _teamName,
+                    routingFor: "favTeamInfo",
+                  ),
+                  Widget_UpperLogoButton(
+                    teamName: _teamName,
+                    routingFor: "inputScore",
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text("2023 Season", style: tsNextMatchTextStyle),
+            SizedBox(
+              height: deviceHeight * 0.7,
+              width: deviceWidth * 0.95,
+         //     color: Colors.white,
+              child: Widget_MatchListComponent(),
+            ),
+          ],
         ),
       ),
       drawer: Drawer(
@@ -210,13 +153,7 @@ class CMainPageState extends State<CMainPage> {
               child: Text(myData.email),
             ),
             ListTile(
-              title: const Text('名古屋グランパス'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text(_myPageText),
+              title: Text(myPageText),
               onTap: () {
                 if (myData.isAlreadyLogin) {
                   // 既にログインしていたらマイページ
@@ -232,6 +169,63 @@ class CMainPageState extends State<CMainPage> {
                           builder: (context) => const CAuthPageView()));
                 }
               },
+            ),
+            ListTile(
+              title: const Text('名古屋グランパス'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('(準備中)北海道コンサドーレ札幌'),
+            ),
+            ListTile(
+              title: const Text('(準備中)鹿島アントラーズ'),
+            ),
+            ListTile(
+              title: const Text('(準備中)浦和レッズ'),
+            ),
+            ListTile(
+              title: const Text('(準備中)柏レイソル'),
+            ),
+            ListTile(
+              title: const Text('(準備中)FC東京'),
+            ),
+            ListTile(
+              title: const Text('(準備中)川崎フロンターレ'),
+            ),
+            ListTile(
+              title: const Text('(準備中)横浜F・マリノス'),
+            ),
+            ListTile(
+              title: const Text('(準備中)横浜FC'),
+            ),
+            ListTile(
+              title: const Text('(準備中)湘南ベルマーレ'),
+            ),
+            ListTile(
+              title: const Text('(準備中)アルビレックス新潟'),
+            ),
+            ListTile(
+              title: const Text('(準備中)京都サンガF.C.'),
+            ),
+            ListTile(
+              title: const Text('(準備中)ガンバ大阪'),
+            ),
+            ListTile(
+              title: const Text('(準備中)セレッソ大阪'),
+            ),
+            ListTile(
+              title: const Text('(準備中)ヴィッセル神戸'),
+            ),
+            ListTile(
+              title: const Text('(準備中)サンフレッチェ広島'),
+            ),
+            ListTile(
+              title: const Text('(準備中)アビスパ福岡'),
+            ),
+            ListTile(
+              title: const Text('(準備中)サガン鳥栖'),
             ),
           ],
         ),

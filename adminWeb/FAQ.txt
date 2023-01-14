@@ -1,3 +1,12 @@
+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
+
+
+●起動
+pJudgeOperatorのディレクトリをVScodeで開いてDebug→Run
+ブラウザで http://127.0.0.1:8000/
+
+
+
 
 ●立ち上げ
     ・仮想環境の作成
@@ -78,4 +87,16 @@
     views.pyを加筆：クラスを指定しall()で取得。return renderの第三引数で渡す
     frontpage.htmlを加筆：{%for%}で取得
 
-    
+
+
+
+
+●困った時
+- 久しぶりに起動したらmain()のexceptで引っかかる
+  Pip install Djangoでdjangoをインストールしたらno module named pip
+  
+  →Django-venv/lib/python3.Xの中が空かも？
+　 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+   python get-pip.py
+   python3 -m pip install django
+   でpython3.X/site-packageフォルダ内に色々入ってるとうまくいくかも 

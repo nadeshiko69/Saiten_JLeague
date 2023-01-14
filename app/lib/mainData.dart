@@ -1,6 +1,23 @@
 /// mainData.dart
 /// main.dartで使用するdata定義
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+// Firebaseのアクセス情報
+// const Data20XX = 'Data2023';
+const Data20XX = 'Data2022'; // FOR TEST
+
+
+
+const kColorWidget = Colors.white54;
+const kColorText = Color(0xFF9E9E9E);
+const kColorBlackText = Color(0xFF212121);
+const kColorWhiteText = Color(0xFFE0E0E0);
+const kColorRedText = Color(0xFFF44336);
+const kColorGold = Color(0xFFC1B695);
+const kColorBorder = Color(0xFFE0E0E0);
+
+DateFormat outputDateFormat = DateFormat('yyyy/MM/dd HH:mm');
 
 // ログイン情報
 class CMyData {
@@ -13,18 +30,18 @@ CMyData myData = CMyData('','NOT LOGIN', false);
 
 // Firebaseから全試合情報を取得
 class CMatchData {
-  CMatchData(this.matchID, this.opponent, this.day, this.matchNo);
+  CMatchData(this.matchID, this.opponent, this.day, this.matchNo, this.stadium);
   String matchID;
   String opponent;
-  String day;
+  DateTime day;
   int    matchNo;
-  String ?nextOrToday;
+  String stadium;
+  String nextOrToday = "";
 }
 List<CMatchData> lAllMatch = [];
 
 // メインページ上部NextMatchに表示する情報
-CMatchData nextMatchData = CMatchData("","opponent", "day", -1);
-List<CMatchData> lNextMatch = [nextMatchData];
+CMatchData nextMatchData = CMatchData("","opponent", DateTime(1900, 1, 1, 0, 0), -1, "");
 
 // メインページ下部に表示する今後の試合情報
 List lMatchFromToday = [];

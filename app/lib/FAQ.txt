@@ -1,9 +1,17 @@
-
+* エンブレム画像作成
+gimpでファイル→新しい画像でキャンパスサイズ1000x1000px
+下記から作成するチームのエンブレムのepsをダウンロード
+http://www.appli-cation.com/ill/category/%e3%83%ad%e3%82%b4%e3%80%80%e3%82%a2%e3%82%a4%e3%82%b3%e3%83%b3/%e3%83%9d%e3%82%a4%e3%83%b3%e3%83%88%e3%83%9e%e3%83%bc%e3%82%af/%e3%82%b5%e3%83%83%e3%82%ab%e3%83%bc/j%e3%83%aa%e3%83%bc%e3%82%b0
+gimpのレイヤーに配置して一番上の層におく
+Shift＋Sでレイヤー拡大、エンブレムを背景に合わせて拡大
+名前をつけて保存でチーム名.pngdで保存
 
 * Null Checkについて
 ?を要素の後ろにつけると、その要素が値を取得出来なかった場合もNULLとして処理を続行する
 =値が入っていなくてもエラーにならずに続行できる
 
+* RenderFlexについて
+https://zenn.dev/heyhey1028/articles/532d0a9464c562
 
 * Winで作業後MacでPullしてBuildでエラー発生
 エラーメッセージ
@@ -15,6 +23,18 @@
     flutter clean
 
     詳細は　https://dolphinetech.com/flutter/error-running-pod-install/
+    https://minpro.net/error-running-pod-install
+
+    プラグインのバージョンが古いのが原因かも
+    https://minpro.net/requested-but-did-not-find-extension-point-with-identifier-xcode
+
+    ARM64のSimulatorを除外してみる
+    https://qiita.com/littleossa/items/ff75b19e0ac6713941f8
+    →　下記Errorは発生
+    Swift Compiler Error (Xcode): Could not find module 'Stripe' for target 'arm64-apple-ios-simulator'; found: x86_64-apple-ios-simulator, at:
+
+
+
 
 * snapshotの取り扱い
 https://zenn.dev/tsuruo/articles/a3d77c4854e108
