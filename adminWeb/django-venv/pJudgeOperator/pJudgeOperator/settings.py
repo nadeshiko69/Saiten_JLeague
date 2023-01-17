@@ -129,10 +129,29 @@ CSRF_COOKIE_SECURE = True # Cookieの誤送信防止
 SESSION_COOKIE_SECURE = True # セッションクッキーの誤送信防止
 
 from django.core.management.utils import get_random_secret_key
-SECRET_KEY = get_random_secret_key()  
+SECRET_KEY = get_random_secret_key()
 #################################################################
 
 try:
     from .local_settings import *
 except:
     pass
+
+import os
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+ALLOWED_HOSTS = ['localhost', '.pythonanywhere.com']
+
+
+
+#sakuTech$judgeDB
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'sakuTech$judgeDB',
+        'USER': 'sakuTech',
+        'PASSWORD':'u726732H',
+        'HOST': 'sakuTech.mysql.pythonanywhere-services.com',
+        'PORT': '',
+    }
+}

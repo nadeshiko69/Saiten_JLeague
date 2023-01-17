@@ -3,7 +3,7 @@ from http.client import HTTPResponse
 from collections import Counter
 from statistics import stdev, variance
 from django.shortcuts import render
-
+from django.views.decorators.csrf import csrf_exempt
 from function.operateFirebase import operateFirebase
 
 from .models import Team, Player, Match
@@ -24,6 +24,7 @@ def frontpage(request):
 
 
 # メンバー入力画面の表示
+@csrf_exempt
 def fGetNemberData(request, engName):
     # 再取得ボタンが押されたらこっち
     if request.method=="POST":
@@ -50,8 +51,8 @@ def fGetNemberData(request, engName):
                 if (created == False) and player["number"] == 0:
                     db.number = 0
                 db.save()
-            
-            
+
+
             # 試合情報をDjangoのDBに格納
             matches = firebaseOperator.of.fReadMatchDataFromFirebase(engName)
 
@@ -63,8 +64,8 @@ def fGetNemberData(request, engName):
                                                 'team':jpnName,
                                                 'opponent':opponent,
                                                 'kickoff':match["kickoff"]
-                                            }) 
-                
+                                            })
+
         # 送信ボタンが押されたらこっち
         elif "submit" in request.POST:
             mid = Match.objects.get(team = jpnName, kickoff = today).mid
@@ -81,21 +82,21 @@ def fGetNemberData(request, engName):
                 print("Register done.")
             else:
                 print("Register Func is not exec because checkbox_input is invalid.")
-            
-            
+
+
         # 計算ボタンが押されたらこっち
         elif "calc" in request.POST:
             matches = Match.objects.filter(team = jpnName, kickoff__range=[today - datetime.timedelta(days=3),today]).order_by('kickoff') # 3日前から今日の間に開催された試合の情報を抽出
             points = firebaseOperator.of.fReadPointsFromFirebase(engName,matches[0].mid) # 採点結果を読み込み
             fCalcAveragePoints(engName, points) # みんなの採点結果の平均を計算
             pass
-            
-            
+
+
         # 最初にアクセスされるのはこっち
         else:
             pass
 
-    # DBから選手情報を取得して表示    
+    # DBから選手情報を取得して表示
     data = Player.objects.all()
     data.filter(number=0).delete() # 退団選手は背番号0としているので非表示
     data = data.order_by('number')
@@ -115,7 +116,7 @@ def fCalcAveragePoints(engName, points):
             sdev = stdev(points_eachMember) # 標準偏差
             var = variance(points_eachMember) # 分散
             # com = Counter(points_eachMember).most_common(1) # 最頻値 = 2つ以上の値がが同率で最貧だった場合Failになるので一旦なし
-            
+
             db = Player.objects.get(pid=player["id"])
             db.point = ave_point
             db.sdev = sdev
@@ -123,7 +124,7 @@ def fCalcAveragePoints(engName, points):
             # db.com = com
             db.save()
 
-            
+
 def ReloadPoints(self, engName):
     players = firebaseOperator.of.fReadMemberDataFromFirebase(engName)
     for player in players:

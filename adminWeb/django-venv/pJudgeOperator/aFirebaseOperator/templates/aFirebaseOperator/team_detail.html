@@ -1,9 +1,8 @@
 {% extends "aFirebaseOperator/base.html" %}
-{% block content %} 
+{% block content %}
     <h2 class="subtitle"> {{team.engName}} </h2>
-
-    <form action="." method="post">
         {% csrf_token %}<!-- セキュリティ用タグ、form追加時は書く -->
+    <form action="." method="post">
         <div class="field">
             <div class="control">
                 <button type="submit" name="run_script">メンバー情報を再取得</button>
