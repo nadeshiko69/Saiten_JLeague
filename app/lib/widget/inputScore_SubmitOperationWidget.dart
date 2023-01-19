@@ -18,6 +18,22 @@ class Widget_CompleteSubmit extends StatelessWidget {
   }
 }
 
+class Widget_SubmitTimeOver extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoAlertDialog(
+      title: const Text("提出に失敗しました"),
+      content: const Text("提出可能期間を確認してください。"),
+      actions: <Widget>[
+        CupertinoDialogAction(
+          child: const Text("OK"),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ],
+    );
+  }
+}
+
 class Widget_GoLoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

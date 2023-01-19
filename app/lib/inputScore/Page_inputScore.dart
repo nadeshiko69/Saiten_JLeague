@@ -69,9 +69,11 @@ class _inputScoreState extends State<Page_inputScore> {
         actions: <Widget>[
           IconButton(
             color: Colors.black,
-            onPressed: (widget.matchDay.add(const Duration(hours: 2)).isAfter(DateTime.now())) // input可能期間じゃなければ採点ボタンを非活性にする
-            ? null
-            : () => {
+            onPressed: (widget.matchDay
+                    .add(const Duration(hours: 2))
+                    .isAfter(DateTime.now())) // input可能期間じゃなければ採点ボタンを非活性にする
+                ? null
+                : () => {
                       setState(() {
                         if (myData.isAlreadyLogin) {
                           fSubmit(widget.teamName, widget.matchID);
@@ -81,10 +83,16 @@ class _inputScoreState extends State<Page_inputScore> {
                         showDialog(
                           context: context,
                           builder: (context) {
-                            if (myData.isAlreadyLogin) {
-                              return Widget_CompleteSubmit();
+                            if (myData.isAlreadyLogin) { // ログイン済
+                              if (widget.matchDay
+                                  .add(const Duration(hours: 2)) // かつ提出期間内（試合後二日以内）
+                                  .isAfter(DateTime.now())) {
+                                return Widget_CompleteSubmit(); // firebaseに送信
+                              } else {
+                                return Widget_SubmitTimeOver(); // 期間外だと警告
+                              }
                             } else {
-                              return Widget_GoLoginPage();
+                              return Widget_GoLoginPage(); // ログインページに遷移
                             }
                           },
                         );
