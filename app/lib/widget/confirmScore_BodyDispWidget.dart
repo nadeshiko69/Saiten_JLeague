@@ -21,13 +21,27 @@ class Widget_confirmScoreBody extends StatefulWidget {
 }
 
 class _Body extends State<Widget_confirmScoreBody> {
+  DateTime accessTime = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
+    if(widget.matchDay.add(const Duration(days: 2))
+        .isAfter(accessTime)) {
+      return Center(
+        child: Column(
+          children: const [
+            Text("まだ情報の登録が出来ていません..."),
+            Text("採点の集計終了は試合終了の二日後です。"),
+          ],
+        ),
+      );
+    }
     return FutureBuilder(
       future: fGetMatchMemberWithScore(
           widget.teamName, widget.matchID, widget.matchNo, widget.isStarting),
       builder:
-          (BuildContext context, AsyncSnapshot<List<CPlayerDataWithScore>> snapshot) {
+          (BuildContext context,
+          AsyncSnapshot<List<CPlayerDataWithScore>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // 通信中
           return const Center(
@@ -49,8 +63,8 @@ class _Body extends State<Widget_confirmScoreBody> {
         }
 
         // 採点の集計結果がなければリストを表示しない
-        if(lStartingListWithScore![0].score == -1) {
-            return const Center(child: Text("採点の集計完了までしばらくお待ちください・・・"));
+        if (lStartingListWithScore![0].score == -1) {
+          return const Center(child: Text("採点の集計完了までしばらくお待ちください・・・"));
         }
         else {
           return SingleChildScrollView(
