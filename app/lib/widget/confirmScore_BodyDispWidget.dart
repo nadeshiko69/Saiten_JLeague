@@ -90,8 +90,14 @@ class _Body extends State<Widget_confirmScoreBody> {
                               title: Text(lMemberData![index].name),
                               subtitle:
                               Text(lMemberData[index].number.toString()),
-                              trailing: Text(lMemberData[index].score
-                                  .toString())), // Firebaseから値を取得してList化してTextで出力
+                              trailing: Column(
+                                children: [
+                                  Text("Ave : ${lMemberData[index].score.toStringAsFixed(2)}"),
+                                  Text("Var : ${lMemberData[index].variance.toStringAsFixed(2)}"),
+                                  Text("SD : ${lMemberData[index].sdev.toStringAsFixed(2)}"),
+
+                                ],
+                              )), // Firebaseから値を取得してList化してTextで出力
                         ),
                       );
                     },

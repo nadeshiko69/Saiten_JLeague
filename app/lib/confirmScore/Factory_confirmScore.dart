@@ -4,11 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:judge/mainData.dart';
 
 class CPlayerDataWithScore {
-  CPlayerDataWithScore(this.mid, this.name, this.number, this.score);
+  CPlayerDataWithScore(this.mid, this.name, this.number, this.score, this.variance, this.sdev);
   String mid;
   String name;
   int    number;
   double score;
+  double variance;
+  double sdev;
 }
 
 List<CPlayerDataWithScore>? lStartingListWithScore = [];
@@ -37,6 +39,8 @@ Future<List<CPlayerDataWithScore>> fGetMatchMemberWithScore(
       if (doc["starting"].toString() == isStarting.toString()) {
         await fGetMemberInfoForMemberID(teamName, doc.id).then((result) {
           result.score = doc["score"].toDouble();
+          result.variance = doc["var"].toDouble();
+          result.sdev = doc["sdev"].toDouble();
           lMemberData.add(result);
         });
       }
@@ -64,8 +68,10 @@ Future<CPlayerDataWithScore> fGetMemberInfoForMemberID(
   // String pos  = docSnapshot.get("position");
   int num = docSnapshot.get("number");
   double score = -1.0;
+  double variance = -1.0;
+  double sdev = -1.0;
   CPlayerDataWithScore returnData = CPlayerDataWithScore(
-      memberID, name, num, score);
+      memberID, name, num, score, variance, sdev);
 
   return returnData;
 }
