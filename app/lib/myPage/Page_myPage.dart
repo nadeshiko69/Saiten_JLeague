@@ -65,7 +65,7 @@ class CMyPageView extends StatelessWidget {
     final double deviceHeight = MediaQuery.of(context).size.height;
     final double deviceWidth = MediaQuery.of(context).size.width;
     // TODO マイページ作る　//////////////////
-    if(false){
+    if(true){
       return Scaffold(
         appBar: AppBar(
           title: const Text(
