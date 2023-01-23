@@ -14,7 +14,8 @@ dependencies:
   firebase_auth: ^4.2.2
   cloud_firestore: ^4.3.1
   # AdMob
-  # google_mobile_ads: ^2.3.0
+#  google_mobile_ads: ^9.14.0
+  admob_flutter: ^3.0.0
   # Stripe
   flutter_stripe: ^7.0.0
   # other

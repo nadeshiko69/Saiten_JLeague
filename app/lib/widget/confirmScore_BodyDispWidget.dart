@@ -25,14 +25,18 @@ class _Body extends State<Widget_confirmScoreBody> {
 
   @override
   Widget build(BuildContext context) {
+    final double deviceHeight = MediaQuery.of(context).size.height;
     if(widget.matchDay.add(const Duration(days: 2))
         .isAfter(accessTime)) {
       return Center(
-        child: Column(
-          children: const [
-            Text("まだ情報の登録が出来ていません..."),
-            Text("採点の集計終了は試合終了の二日後です。"),
-          ],
+        child: SizedBox(
+          height: deviceHeight * 0.7,
+          child: Column(
+            children: const [
+              Text("まだ情報の登録が出来ていません..."),
+              Text("採点の集計終了は試合終了の二日後です。"),
+            ],
+          ),
         ),
       );
     }
@@ -76,7 +80,7 @@ class _Body extends State<Widget_confirmScoreBody> {
                     lAllMatch[widget.matchNo - 1].day.toString(),
                     lAllMatch[widget.matchNo - 1].stadium),
                 Container(
-                  height: widget.deviceHeight * 0.6,
+                  height: widget.deviceHeight * 0.5,
                   width: widget.deviceWidth,
                   color: Colors.white, // FOR DEBUG
                   child: ListView.builder(

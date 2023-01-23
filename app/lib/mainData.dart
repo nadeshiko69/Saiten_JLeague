@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 // Firebaseのアクセス情報
-const Data20XX = 'Data2023';
+const Data20XX = 'Data2022';
 // const Data20XX = 'Data2022'; // FOR TEST
 
 

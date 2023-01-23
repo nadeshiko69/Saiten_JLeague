@@ -10,8 +10,10 @@ import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
 import 'package:flutter/material.dart';
 import 'package:judge/myPage/Page_myPage.dart';
+import 'package:judge/services/admob.dart';
 import 'package:judge/widget/main_UpperLogoButtonWidget.dart';
 import 'package:judge/widget/main_MatchListComponentWidget.dart';
+import 'package:admob_flutter/admob_flutter.dart';
 
 void main() async {
   // For Stripe
@@ -19,6 +21,10 @@ void main() async {
   final publishableKey = dotenv.get('STRIPE_KEY');
   Stripe.publishableKey = publishableKey;
   await Stripe.instance.applySettings();
+
+  // For AdMob
+  WidgetsFlutterBinding.ensureInitialized();
+  Admob.initialize();
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -137,10 +143,18 @@ class CMainPageState extends State<CMainPage> {
             ),
             Text("2023 Season", style: tsNextMatchTextStyle),
             SizedBox(
-              height: deviceHeight * 0.7,
+              height: deviceHeight * 0.55,
               width: deviceWidth * 0.95,
          //     color: Colors.white,
               child: Widget_MatchListComponent(),
+            ),
+            AdmobBanner(
+              adUnitId: AdMobService().getBannerAdUnitId(),
+              adSize: AdmobBannerSize(
+                width: MediaQuery.of(context).size.width.toInt(),
+                height: AdMobService().getHeight(context).toInt(),
+                name: 'SMART_BANNER',
+              ),
             ),
           ],
         ),

@@ -56,6 +56,7 @@ class _Body extends State<Widget_inputScoreBody> {
 
   @override
   Widget build(BuildContext context) {
+    final double deviceHeight = MediaQuery.of(context).size.height;
     return FutureBuilder (
       future: fGetMatchMember(
           widget.teamName, widget.matchID, widget.matchNo, widget.isStarting),
@@ -85,63 +86,68 @@ class _Body extends State<Widget_inputScoreBody> {
         // まだメンバー登録していない時にアクセスされた場合のWarningを表示
         if(lMemberData!.isEmpty){
             return Center(
-              child: Column(
-                children: [
-                  Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day.toString()),
-                  const Text("まだメンバー情報の登録が出来ていません..."),
-                  const Text("時間を置いて再接続してください。"),
-                  const Text("解決しない場合、お手数ですが管理者へご連絡ください。"),
-                ],
+              child: SizedBox(
+                height: deviceHeight * 0.7,
+                child: Column(
+                  children: [
+                    Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day.toString()),
+                    const Text("まだメンバー情報の登録が出来ていません..."),
+                    const Text("時間を置いて再接続してください。"),
+                    const Text("解決しない場合、お手数ですが管理者へご連絡ください。"),
+                  ],
+                ),
               ),
             );
         }
         return SingleChildScrollView(
-          padding: const EdgeInsets.all(0.0),
-          child: Column(
-            children: [
-              Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day.toString()),
-              Container(
-                height: widget.deviceHeight * 0.6,
-                width: widget.deviceWidth,
-                color: kColorBorder, // FOR DEBUG
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: lMemberData.length,
-                  itemBuilder: (context, index) {
-                    final int selectedPointsIndex;
-                    if (widget.isStarting == true) {
-                      selectedPointsIndex = index;
-                    } else {
-                      selectedPointsIndex = index + 11;
-                    }
-                    return InkWell(
-                      child: Card(
-                        child: ListTile(
-                                title: Text(lMemberData[index].name),
-                                subtitle:
-                                    Text(lMemberData[index].number.toString()),
-                                trailing: DropdownButton(
-                                  isExpanded: false,
-                                  items: _candidatePoints,
-                                  value: _selectedPoints[selectedPointsIndex],
-                                  onChanged: (double? value) {
-                                    setState(() {
-                                      _selectedPoints[selectedPointsIndex] =
-                                          value!;
-                                      lSelectedPointList =
-                                          _selectedPoints; // 送信用リストを更新
-                                    });
-                                  },
-                                ),
-                              )
-                            // 採点集計結果を表示
-                      ),
-                    );
-                  },
+          child: SizedBox(
+            height: deviceHeight * 0.7,
+            child: Column(
+              children: [
+                Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day.toString()),
+                Container(
+                  height: widget.deviceHeight * 0.6,
+                  width: widget.deviceWidth,
+                  color: kColorBorder, // FOR DEBUG
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: lMemberData.length,
+                    itemBuilder: (context, index) {
+                      final int selectedPointsIndex;
+                      if (widget.isStarting == true) {
+                        selectedPointsIndex = index;
+                      } else {
+                        selectedPointsIndex = index + 11;
+                      }
+                      return InkWell(
+                        child: Card(
+                          child: ListTile(
+                                  title: Text(lMemberData[index].name),
+                                  subtitle:
+                                      Text(lMemberData[index].number.toString()),
+                                  trailing: DropdownButton(
+                                    isExpanded: false,
+                                    items: _candidatePoints,
+                                    value: _selectedPoints[selectedPointsIndex],
+                                    onChanged: (double? value) {
+                                      setState(() {
+                                        _selectedPoints[selectedPointsIndex] =
+                                            value!;
+                                        lSelectedPointList =
+                                            _selectedPoints; // 送信用リストを更新
+                                      });
+                                    },
+                                  ),
+                                )
+                              // 採点集計結果を表示
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

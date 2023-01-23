@@ -1,9 +1,11 @@
 import 'dart:core';
 import 'dart:core';
 
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:judge/inputScore/Factory_inputScore.dart';
 import 'package:judge/mainData.dart';
+import 'package:judge/services/admob.dart';
 import 'package:judge/widget/inputScore_BodyDispWidget.dart';
 import 'package:judge/widget/inputScore_SubmitOperationWidget.dart';
 
@@ -103,7 +105,21 @@ class _inputScoreState extends State<Page_inputScore> {
         ],
         elevation: 0,
       ),
-      body: _pageList[_selectedIndex],
+      body: SizedBox(
+
+          child: Column(
+            children: [
+              _pageList[_selectedIndex],
+              AdmobBanner(
+                adUnitId: AdMobService().getBannerAdUnitId(),
+                adSize: AdmobBannerSize(
+                  width: MediaQuery.of(context).size.width.toInt(),
+                  height: AdMobService().getHeight(context).toInt(),
+                  name: 'SMART_BANNER',
+                ),
+              ),
+            ],
+          )),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(

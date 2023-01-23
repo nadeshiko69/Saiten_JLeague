@@ -1,5 +1,7 @@
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:judge/mainData.dart';
+import 'package:judge/services/admob.dart';
 import 'package:judge/widget/confirmScore_BodyDispWidget.dart';
 
 class Page_confirmScore extends StatefulWidget {
@@ -61,7 +63,19 @@ class _confirmScoreState extends State<Page_confirmScore> {
         ),
         backgroundColor: Colors.white54,
       ),
-      body: pageList[_selectedIndex],
+      body: Column(
+        children: [
+          pageList[_selectedIndex],
+          AdmobBanner(
+            adUnitId: AdMobService().getBannerAdUnitId(),
+            adSize: AdmobBannerSize(
+              width: MediaQuery.of(context).size.width.toInt(),
+              height: AdMobService().getHeight(context).toInt(),
+              name: 'SMART_BANNER',
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(

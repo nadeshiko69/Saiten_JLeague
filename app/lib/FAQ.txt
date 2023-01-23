@@ -56,3 +56,14 @@ https://zenn.dev/tsuruo/articles/a3d77c4854e108
     File -> project structure -> ProjectSDK
     が、No SDKになっているので、SDKを設定する
     https://halzoblog.com/adb-error/
+
+
+
+* AdMob
+https://yaba-blog.com/flutter-admob/
+iOS
+アプリID           ca-app-pub-1142801310983686~6593994201
+広告ユニットID      ca-app-pub-1142801310983686/8125464077
+Android
+アプリID           ca-app-pub-1142801310983686~1341667520
+広告ユニットID      ca-app-pub-1142801310983686/7630075409
