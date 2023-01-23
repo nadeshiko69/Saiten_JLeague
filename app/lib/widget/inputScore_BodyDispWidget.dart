@@ -86,10 +86,11 @@ class _Body extends State<Widget_inputScoreBody> {
         if(lMemberData!.isEmpty){
             return Center(
               child: Column(
-                children: const [
-                  Text("まだメンバー情報の登録が出来ていません..."),
-                  Text("時間を置いて再接続してください。"),
-                  Text("解決しない場合、お手数ですが管理者へご連絡ください。"),
+                children: [
+                  Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day.toString()),
+                  const Text("まだメンバー情報の登録が出来ていません..."),
+                  const Text("時間を置いて再接続してください。"),
+                  const Text("解決しない場合、お手数ですが管理者へご連絡ください。"),
                 ],
               ),
             );
