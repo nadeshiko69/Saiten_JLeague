@@ -64,6 +64,29 @@ class CMyPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final double deviceHeight = MediaQuery.of(context).size.height;
     final double deviceWidth = MediaQuery.of(context).size.width;
+    // TODO マイページ作る　//////////////////
+    if(false){
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            "My Page",
+            style: TextStyle(
+              fontSize: 20,
+              color: kColorBlackText,
+            ),
+          ),
+          backgroundColor: kColorWidget,
+          iconTheme: const IconThemeData(color: kColorBlackText),
+        ),
+        body: Column(
+          children: const [
+            Text("準備中です..."),
+            Text("過去に提出した採点の情報がこちらで閲覧できるようになります。"),
+          ],
+        ),
+      );
+    }
+    ///////////////////////////////////////
     return FutureBuilder(
         future: fGetMyInputedMatchData(teamName),
         builder:

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 // Firebaseのアクセス情報
-const Data20XX = 'Data2022';
+const Data20XX = 'Data2023';
 // const Data20XX = 'Data2022'; // FOR TEST
 
 
@@ -38,7 +38,7 @@ class CMatchData {
   String stadium;
   String nextOrToday = "";
 }
-List<CMatchData> lAllMatch = [];
+List<CMatchData> lAllMatch = []..length = 0;
 
 // メインページ上部NextMatchに表示する情報
 CMatchData nextMatchData = CMatchData("","opponent", DateTime(1900, 1, 1, 0, 0), -1, "");

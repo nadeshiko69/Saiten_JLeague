@@ -117,13 +117,17 @@ class CMainPageState extends State<CMainPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly, // childrenを左右対称に配置
                 children: [
-                  Widget_UpperLogoButton(
+                  Expanded(
+                  child: Widget_UpperLogoButton(
                     teamName: _teamName,
                     routingFor: "favTeamInfo",
                   ),
-                  Widget_UpperLogoButton(
+                  ),
+                  Expanded(
+                  child: Widget_UpperLogoButton(
                     teamName: _teamName,
                     routingFor: "inputScore",
+                  ),
                   ),
                 ],
               ),

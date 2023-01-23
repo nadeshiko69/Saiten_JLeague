@@ -25,8 +25,11 @@ Future<List<CMatchData>> fGetMyInputedMatchData(String teamName) async {
             .collection("Match")
             .doc(doc["MatchID"])
             .get();
-        print(matchDataSnapshot["home"]);
-        print(teamName);
+        print(matchDataSnapshot["away"]);
+        print(matchDataSnapshot["kickoff"]);
+        print(matchDataSnapshot["section"]);
+        print(matchDataSnapshot["stadium"]);
+        print(lMatchIDTemp.contains(doc["MatchID"]));
         CMatchData matchData = CMatchData(
             doc["MatchID"],
             await matchDataSnapshot["home"] == fConverseTeamName(teamName)

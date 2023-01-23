@@ -20,6 +20,7 @@ const int FUKUOKA = 14;
 const int NIGATA = 15;
 const int GOSAKA = 16;
 const int YOKOHAMAC = 17;
+const int JLEAGUELOGO = 18;
 
 List<String> lTeamLogoPath = [
 /* NAGOYA     */   "lib/_images/nagoya.png",
@@ -40,10 +41,11 @@ List<String> lTeamLogoPath = [
 /* NIGATA     */   "lib/_images/nigata.png",
 /* GOSAKA     */   "lib/_images/gosaka.png",
 /* YOKOHAMAFC */   "lib/_images/yokohamafc.png",
+/* J League   */   "lib/_images/nagoya.png",
 ];
 
 int Function_GetTeamLogoPathIndex(String teamNameJpn) {
-  int ret = -1;
+  int ret = 18;
   try {
     switch (teamNameJpn) {
       case '名古屋':
@@ -119,7 +121,7 @@ int Function_GetTeamLogoPathIndex(String teamNameJpn) {
         ret = YOKOHAMAC;
         break;
       case 'opponent':
-        ret = -1;
+        ret = 18;
         break;
       default:
         break;
