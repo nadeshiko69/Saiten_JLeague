@@ -3,6 +3,7 @@ import 'package:judge/imageFilePath.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/mainFactory.dart';
 import 'package:judge/myPage/Factory_myPage.dart';
+import 'package:judge/widget/myPage_DeleteAccount.dart';
 import 'package:judge/widget/myPage_LoginWidget.dart';
 import 'package:judge/widget/myPage_RegisterAuthInfoWidget.dart';
 
@@ -79,9 +80,21 @@ class CMyPageView extends StatelessWidget {
           iconTheme: const IconThemeData(color: kColorBlackText),
         ),
         body: Column(
-          children: const [
+          children: [
             Text("準備中です..."),
             Text("過去に提出した採点の情報がこちらで閲覧できるようになります。"),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: kColorWidget),
+              onPressed: () async {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DeleteUserPage()));
+              },
+              child: const Text("アカウント削除はこちら", style: TextStyle(
+                color: kColorBlackText,
+              ),),
+            ),
           ],
         ),
       );

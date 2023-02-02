@@ -67,3 +67,7 @@ iOS
 Android
 アプリID           ca-app-pub-1142801310983686~1341667520
 広告ユニットID      ca-app-pub-1142801310983686/7630075409
+
+<Google> To get test ads on this device, set: GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @[ kGADSimulatorID ];
+<Google> <Google:HTML> You are currently using version 7.69.0 of the SDK, which is deprecated. Please consider updating your SDK to the most recent SDK version (9.14.0) to get the latest features and bug fixes. The latest SDK can be downloaded from https://goo.gl/UoiJ8F. More information about the SDK deprecation schedule is available at https://developers.google.com/admob/ios/deprecation.
+<Google> <Google:HTML> 50 required SKAdNetwork identifier(s) missing from Info.plist. See [Enable SKAdNetwork to track conversions] (https://googlemobileadssdk.page.link/enable-skadnetwork).

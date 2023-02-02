@@ -51,7 +51,7 @@ class CMyApp extends StatelessWidget {
 }
 
 class CMainPage extends StatefulWidget {
-  const CMainPage(
+  CMainPage(
       {Key? key,
       required this.userID,
       required this.email,

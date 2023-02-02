@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:judge/mainData.dart';
 import 'package:judge/myPage/Page_myPage.dart';
-import 'package:judge/widget/myPage_RegisterAuthInfoWidget.dart';
 
 import '../main.dart';
 
