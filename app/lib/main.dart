@@ -194,57 +194,57 @@ class CMainPageState extends State<CMainPage> {
                 Navigator.pop(context);
               },
             ),
-            ListTile(
-              title: const Text('(準備中)北海道コンサドーレ札幌'),
-            ),
-            ListTile(
-              title: const Text('(準備中)鹿島アントラーズ'),
-            ),
-            ListTile(
-              title: const Text('(準備中)浦和レッズ'),
-            ),
-            ListTile(
-              title: const Text('(準備中)柏レイソル'),
-            ),
-            ListTile(
-              title: const Text('(準備中)FC東京'),
-            ),
-            ListTile(
-              title: const Text('(準備中)川崎フロンターレ'),
-            ),
-            ListTile(
-              title: const Text('(準備中)横浜F・マリノス'),
-            ),
-            ListTile(
-              title: const Text('(準備中)横浜FC'),
-            ),
-            ListTile(
-              title: const Text('(準備中)湘南ベルマーレ'),
-            ),
-            ListTile(
-              title: const Text('(準備中)アルビレックス新潟'),
-            ),
-            ListTile(
-              title: const Text('(準備中)京都サンガF.C.'),
-            ),
-            ListTile(
-              title: const Text('(準備中)ガンバ大阪'),
-            ),
-            ListTile(
-              title: const Text('(準備中)セレッソ大阪'),
-            ),
-            ListTile(
-              title: const Text('(準備中)ヴィッセル神戸'),
-            ),
-            ListTile(
-              title: const Text('(準備中)サンフレッチェ広島'),
-            ),
-            ListTile(
-              title: const Text('(準備中)アビスパ福岡'),
-            ),
-            ListTile(
-              title: const Text('(準備中)サガン鳥栖'),
-            ),
+            // ListTile(
+            //   title: const Text('北海道コンサドーレ札幌'),
+            // ),
+            // ListTile(
+            //   title: const Text('鹿島アントラーズ'),
+            // ),
+            // ListTile(
+            //   title: const Text('浦和レッズ'),
+            // ),
+            // ListTile(
+            //   title: const Text('柏レイソル'),
+            // ),
+            // ListTile(
+            //   title: const Text('FC東京'),
+            // ),
+            // ListTile(
+            //   title: const Text('川崎フロンターレ'),
+            // ),
+            // ListTile(
+            //   title: const Text('横浜F・マリノス'),
+            // ),
+            // ListTile(
+            //   title: const Text('横浜FC'),
+            // ),
+            // ListTile(
+            //   title: const Text('(準備中)湘南ベルマーレ'),
+            // ),
+            // ListTile(
+            //   title: const Text('(準備中)アルビレックス新潟'),
+            // ),
+            // ListTile(
+            //   title: const Text('(準備中)京都サンガF.C.'),
+            // ),
+            // ListTile(
+            //   title: const Text('(準備中)ガンバ大阪'),
+            // ),
+            // ListTile(
+            //   title: const Text('(準備中)セレッソ大阪'),
+            // ),
+            // ListTile(
+            //   title: const Text('(準備中)ヴィッセル神戸'),
+            // ),
+            // ListTile(
+            //   title: const Text('(準備中)サンフレッチェ広島'),
+            // ),
+            // ListTile(
+            //   title: const Text('(準備中)アビスパ福岡'),
+            // ),
+            // ListTile(
+            //   title: const Text('(準備中)サガン鳥栖'),
+            // ),
           ],
         ),
       ),

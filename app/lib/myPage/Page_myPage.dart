@@ -138,7 +138,7 @@ class CMyPageView extends StatelessWidget {
                 backgroundColor: kColorWidget,
                 iconTheme: const IconThemeData(color: kColorBlackText),
               ),
-              body: const Text("まだ採点済の試合がありません。"),
+              body: const Center(child: Text("まだ採点済の試合がありません。")),
             );
           }
 
