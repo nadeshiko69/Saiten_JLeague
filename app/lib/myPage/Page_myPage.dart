@@ -126,12 +126,19 @@ class CMyPageView extends StatelessWidget {
 
           // まだメンバー登録していない時にアクセスされた場合のWarningを表示
           if (lAlreadyInputedMatch!.isEmpty) {
-            return Center(
-              child: Column(
-                children: const [
-                  Text("採点済の試合がありません。。。"),
-                ],
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text(
+                  "My Page",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: kColorBlackText,
+                  ),
+                ),
+                backgroundColor: kColorWidget,
+                iconTheme: const IconThemeData(color: kColorBlackText),
               ),
+              body: const Text("まだ採点済の試合がありません。"),
             );
           }
 

@@ -18,7 +18,6 @@ Future<List<CMatchData>> fGetMyInputedMatchData(String teamName) async {
       .get()
       .then((QuerySnapshot querySnapshot) async {
     for (var doc in querySnapshot.docs) {
-      print(doc);
       if (doc["userID"] == myData.userID) {
         DocumentSnapshot matchDataSnapshot = await FirebaseFirestore.instance
             .collection(Data20XX)
@@ -26,11 +25,6 @@ Future<List<CMatchData>> fGetMyInputedMatchData(String teamName) async {
             .collection("Match")
             .doc(doc["MatchID"])
             .get();
-        print(doc["MatchID"]);
-        print(matchDataSnapshot["away"]);
-        print(matchDataSnapshot["kickoff"]);
-        print(matchDataSnapshot["section"]);
-        print(matchDataSnapshot["stadium"]);
         CMatchData matchData = CMatchData(
             doc["MatchID"],
             matchDataSnapshot["home"] == fConverseTeamName(teamName)
@@ -39,7 +33,6 @@ Future<List<CMatchData>> fGetMyInputedMatchData(String teamName) async {
             matchDataSnapshot["kickoff"].toDate(),
             matchDataSnapshot["section"],
             matchDataSnapshot["stadium"]);
-        print("a");
         if (!lMatchIDTemp.contains(doc["MatchID"])) {
           lAlreadyInputedMatchData.add(matchData);
           lMatchIDTemp.add(doc["MatchID"]);

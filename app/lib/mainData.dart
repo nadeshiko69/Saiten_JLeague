@@ -40,6 +40,14 @@ class CMatchData {
 }
 List<CMatchData> lAllMatch = []..length = 0;
 
+class CPersonalData {
+  CPersonalData(this.name, this.number, this.position, this.averageScore);
+  String name;
+  int number;
+  String position;
+  double averageScore;
+}
+
 // メインページ上部NextMatchに表示する情報
 CMatchData nextMatchData = CMatchData("","opponent", DateTime(1900, 1, 1, 0, 0), -1, "");
 
