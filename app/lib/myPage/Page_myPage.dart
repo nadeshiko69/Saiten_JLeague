@@ -66,7 +66,7 @@ class CMyPageView extends StatelessWidget {
     final double deviceHeight = MediaQuery.of(context).size.height;
     final double deviceWidth = MediaQuery.of(context).size.width;
     // TODO マイページ作る　//////////////////
-    if(true){
+    if(false){
       return Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -81,8 +81,15 @@ class CMyPageView extends StatelessWidget {
         ),
         body: Column(
           children: [
-            Text("準備中です..."),
-            Text("過去に提出した採点の情報がこちらで閲覧できるようになります。"),
+            Expanded(
+              child:
+                Column(
+                  children: [
+                    Text("準備中です..."),
+                    Text("過去に提出した採点の情報がこちらで閲覧できるようになります。"),
+                  ],
+                ),
+            ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: kColorWidget),
               onPressed: () async {
@@ -91,7 +98,7 @@ class CMyPageView extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => DeleteUserPage()));
               },
-              child: const Text("アカウント削除はこちら", style: TextStyle(
+              child: const Text("アカウント削除", style: TextStyle(
                 color: kColorBlackText,
               ),),
             ),
