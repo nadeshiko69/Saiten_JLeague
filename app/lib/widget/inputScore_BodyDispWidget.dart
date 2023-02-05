@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:judge/inputScore/Factory_inputScore.dart';
+import 'package:judge/services/admob.dart';
 import 'package:judge/widget/inputScore_UpperMatchDataWidget.dart';
 import '../mainData.dart';
 
@@ -100,54 +101,51 @@ class _Body extends State<Widget_inputScoreBody> {
             );
         }
         return SingleChildScrollView(
-          child: SizedBox(
-            height: deviceHeight * 0.7,
-            child: Column(
-              children: [
-                Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day.toString()),
-                Container(
-                  height: widget.deviceHeight * 0.6,
-                  width: widget.deviceWidth,
-                  color: kColorBorder, // FOR DEBUG
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: lMemberData.length,
-                    itemBuilder: (context, index) {
-                      final int selectedPointsIndex;
-                      if (widget.isStarting == true) {
-                        selectedPointsIndex = index;
-                      } else {
-                        selectedPointsIndex = index + 11;
-                      }
-                      return InkWell(
-                        child: Card(
-                          child: ListTile(
-                                  title: Text(lMemberData[index].name),
-                                  subtitle:
-                                      Text(lMemberData[index].number.toString()),
-                                  trailing: DropdownButton(
-                                    isExpanded: false,
-                                    items: _candidatePoints,
-                                    value: _selectedPoints[selectedPointsIndex],
-                                    onChanged: (double? value) {
-                                      setState(() {
-                                        _selectedPoints[selectedPointsIndex] =
-                                            value!;
-                                        lSelectedPointList =
-                                            _selectedPoints; // 送信用リストを更新
-                                      });
-                                    },
-                                  ),
-                                )
-                              // 採点集計結果を表示
-                        ),
-                      );
-                    },
-                  ),
+          child: Column(
+            children: [
+              Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day.toString()),
+              Container(
+                height: widget.deviceHeight * 0.6,
+                width: widget.deviceWidth,
+                color: kColorBorder, // FOR DEBUG
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: lMemberData.length,
+                  itemBuilder: (context, index) {
+                    final int selectedPointsIndex;
+                    if (widget.isStarting == true) {
+                      selectedPointsIndex = index;
+                    } else {
+                      selectedPointsIndex = index + 11;
+                    }
+                    return InkWell(
+                      child: Card(
+                        child: ListTile(
+                                title: Text(lMemberData[index].name),
+                                subtitle:
+                                    Text(lMemberData[index].number.toString()),
+                                trailing: DropdownButton(
+                                  isExpanded: false,
+                                  items: _candidatePoints,
+                                  value: _selectedPoints[selectedPointsIndex],
+                                  onChanged: (double? value) {
+                                    setState(() {
+                                      _selectedPoints[selectedPointsIndex] =
+                                          value!;
+                                      lSelectedPointList =
+                                          _selectedPoints; // 送信用リストを更新
+                                    });
+                                  },
+                                ),
+                              )
+                            // 採点集計結果を表示
+                      ),
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },

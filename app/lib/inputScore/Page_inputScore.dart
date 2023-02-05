@@ -8,6 +8,7 @@ import 'package:judge/mainData.dart';
 import 'package:judge/services/admob.dart';
 import 'package:judge/widget/inputScore_BodyDispWidget.dart';
 import 'package:judge/widget/inputScore_SubmitOperationWidget.dart';
+import 'package:judge/services/admob.dart';
 
 class Page_inputScore extends StatefulWidget {
   Page_inputScore(this.deviceHeight, this.deviceWidth, this.matchNo,
@@ -27,12 +28,20 @@ class Page_inputScore extends StatefulWidget {
 }
 
 class _inputScoreState extends State<Page_inputScore> {
+
+  AdmobBannerSize? bannerSize;
+  late AdmobInterstitial interstitialAd;
+  late AdmobReward rewardAd;
+
   int _selectedIndex = 0;
   void _onTapItem(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +85,7 @@ class _inputScoreState extends State<Page_inputScore> {
                     .isAfter(DateTime.now())) // input可能期間じゃなければ採点ボタンを非活性にする
                 ? null
                 : () => {
+
                       setState(() {
                         if (myData.isAlreadyLogin) {
                           fSubmit(widget.teamName, widget.matchID);
@@ -109,7 +119,7 @@ class _inputScoreState extends State<Page_inputScore> {
 
           child: Column(
             children: [
-              _pageList[_selectedIndex],
+              Expanded(child: _pageList[_selectedIndex]),
               AdmobBanner(
                 adUnitId: AdMobService().getBannerAdUnitId(),
                 adSize: AdmobBannerSize(

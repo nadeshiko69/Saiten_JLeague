@@ -26,7 +26,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Admob.initialize();
 
-  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const CMyApp());
 }

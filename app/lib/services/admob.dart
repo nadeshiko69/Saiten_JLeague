@@ -3,13 +3,21 @@ import 'package:flutter/material.dart';
 
 class AdMobService {
   String getBannerAdUnitId() {
-    // iOSとAndroidで広告ユニットIDを分岐させる
     if (Platform.isAndroid) {
       // Androidの広告ユニットID
       return 'ca-app-pub-1142801310983686/7630075409';
     } else if (Platform.isIOS) {
       // iOSの広告ユニットID
       return 'ca-app-pub-1142801310983686/8125464077';
+    }
+    return "";
+  }
+
+  String getRewardBasedVideoAdUnitId() {
+    if (Platform.isIOS) {
+      return 'ca-app-pub-1142801310983686/5283811761';
+    } else if (Platform.isAndroid) {
+      return 'ca-app-pub-1142801310983686/8488559602';
     }
     return "";
   }
