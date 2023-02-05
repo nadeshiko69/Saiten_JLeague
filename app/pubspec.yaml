@@ -25,6 +25,7 @@ dependencies:
   badges: ^2.0.1
   flutter_dotenv: ^5.0.2
   flutter_svg: ^1.1.5
+  flutter_launcher_icons: ^0.11.0
 
 dev_dependencies:
   flutter_test:
@@ -39,3 +40,8 @@ flutter:
   assets:
     - lib/_images/
     - lib/.env # For Stripe
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "lib/_images/_Icon.png"

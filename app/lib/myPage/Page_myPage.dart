@@ -138,7 +138,23 @@ class CMyPageView extends StatelessWidget {
                 backgroundColor: kColorWidget,
                 iconTheme: const IconThemeData(color: kColorBlackText),
               ),
-              body: const Center(child: Text("まだ採点済の試合がありません。")),
+              body: Column(
+                children: [
+                  const Expanded(child: Center(child: Text("まだ採点済の試合がありません。"))),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: kColorWidget),
+                    onPressed: () async {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DeleteUserPage()));
+                    },
+                    child: const Text("アカウント削除", style: TextStyle(
+                      color: kColorBlackText,
+                    ),),
+                  ),
+                ],
+              ),
             );
           }
 
@@ -191,6 +207,18 @@ class CMyPageView extends StatelessWidget {
                           ),
                         );
                       }),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: kColorWidget),
+                  onPressed: () async {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DeleteUserPage()));
+                  },
+                  child: const Text("アカウント削除", style: TextStyle(
+                    color: kColorBlackText,
+                  ),),
                 ),
               ],
             ),
