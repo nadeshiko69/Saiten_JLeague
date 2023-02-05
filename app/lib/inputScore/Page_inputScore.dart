@@ -51,7 +51,7 @@ class _inputScoreState extends State<Page_inputScore> {
       adUnitId: AdMobService().getRewardBasedVideoAdUnitId(),
       listener: (AdmobAdEvent event, Map<String, dynamic>? args) {
         if (event == AdmobAdEvent.closed) rewardAd.load();
-        handleEvent(event, args, 'Reward');
+        // handleEvent(event, args, 'Reward'); //FOR DEBUG
       },
     );
     rewardAd.load();
