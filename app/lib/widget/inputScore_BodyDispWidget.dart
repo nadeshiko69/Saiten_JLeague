@@ -1,3 +1,4 @@
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:judge/inputScore/Factory_inputScore.dart';
 import 'package:judge/services/admob.dart';
@@ -58,97 +59,116 @@ class _Body extends State<Widget_inputScoreBody> {
   @override
   Widget build(BuildContext context) {
     final double deviceHeight = MediaQuery.of(context).size.height;
-    return FutureBuilder (
-      future: fGetMatchMember(
-          widget.teamName, widget.matchID, widget.matchNo, widget.isStarting),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<CPlayerData>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          // 通信中
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        if (snapshot.error != null) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+    return Column(
+      children: [
+        Expanded(
+          child: FutureBuilder (
+            future: fGetMatchMember(
+                widget.teamName, widget.matchID, widget.matchNo, widget.isStarting),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<CPlayerData>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                // 通信中
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.error != null) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
 
-        List<CPlayerData>? lMemberData = snapshot.data; // 描画用
+              List<CPlayerData>? lMemberData = snapshot.data; // 描画用
+              // Firebase 送信用
+              if (widget.isStarting) {
+                lStartingList = lMemberData;
+              } else {
+                lSubList = lMemberData;
+              }
 
-        // Firebase 送信用
-        if (widget.isStarting) {
-          lStartingList = lMemberData;
-        } else {
-          lSubList = lMemberData;
-        }
-
-        // まだメンバー登録していない時にアクセスされた場合のWarningを表示
-        if(lMemberData!.isEmpty){
-            return Center(
-              child: SizedBox(
-                height: deviceHeight * 0.7,
-                child: Column(
-                  children: [
-                    Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day.toString()),
-                    const Text("まだメンバー情報の登録が出来ていません..."),
-                    const Text("時間を置いて再接続してください。"),
-                    const Text("解決しない場合、お手数ですが管理者へご連絡ください。"),
-                  ],
-                ),
-              ),
-            );
-        }
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day.toString()),
-              Container(
-                height: widget.deviceHeight * 0.6,
-                width: widget.deviceWidth,
-                color: kColorBorder, // FOR DEBUG
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: lMemberData.length,
-                  itemBuilder: (context, index) {
-                    final int selectedPointsIndex;
-                    if (widget.isStarting == true) {
-                      selectedPointsIndex = index;
-                    } else {
-                      selectedPointsIndex = index + 11;
-                    }
-                    return InkWell(
-                      child: Card(
-                        child: ListTile(
-                                title: Text(lMemberData[index].name),
-                                subtitle:
-                                    Text(lMemberData[index].number.toString()),
-                                trailing: DropdownButton(
-                                  isExpanded: false,
-                                  items: _candidatePoints,
-                                  value: _selectedPoints[selectedPointsIndex],
-                                  onChanged: (double? value) {
-                                    setState(() {
-                                      _selectedPoints[selectedPointsIndex] =
-                                          value!;
-                                      lSelectedPointList =
-                                          _selectedPoints; // 送信用リストを更新
-                                    });
-                                  },
-                                ),
-                              )
-                            // 採点集計結果を表示
+              // まだメンバー登録していない時にアクセスされた場合のWarningを表示
+              if(lMemberData!.isEmpty){
+                  return Center(
+                    child: SizedBox(
+                      height: deviceHeight * 0.75,
+                      child: Column(
+                        children: [
+                          Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day.toString()),
+                          const Text("まだメンバー情報の登録が出来ていません..."),
+                          const Text("時間を置いて再接続してください。"),
+                          const Text("解決しない場合、お手数ですが管理者へご連絡ください。"),
+                        ],
                       ),
-                    );
-                  },
-                ),
-              ),
-            ],
+                    ),
+                  );
+              }
+              return Column(
+                children: [
+                  Widget_UpperMatchData(widget.teamName, lAllMatch[widget.matchNo - 1].opponent, lAllMatch[widget.matchNo - 1].day.toString()),
+                  Expanded(
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: lMemberData.length,
+                      itemBuilder: (context, index) {
+                        final int selectedPointsIndex;
+                        if (widget.isStarting == true) {
+                          selectedPointsIndex = index;
+                        } else {
+                          selectedPointsIndex = index + 11; // 広告被り対策で配置したからのリスト分を追加で1足す
+                        }
+                        return Column(
+                          children: [
+                            InkWell(
+                              child: Card(
+                                child: ListTile(
+                                        title: Text(lMemberData[index].name),
+                                        subtitle:
+                                            Text(lMemberData[index].number.toString()),
+                                        trailing: DropdownButton(
+                                          isExpanded: false,
+                                          items: _candidatePoints,
+                                          value: _selectedPoints[selectedPointsIndex],
+                                          onChanged: (double? value) {
+                                            setState(() {
+                                              _selectedPoints[selectedPointsIndex] =
+                                                  value!;
+                                              lSelectedPointList =
+                                                  _selectedPoints; // 送信用リストを更新
+                                            });
+                                          },
+                                        ),
+                                      )
+                                    // 採点集計結果を表示
+                              ),
+                            ),
+                            (index == 6 || index == 10)
+                                ? Container(
+                              color: Colors.white,
+                              height: 64.0,
+                              width: double.infinity,
+                              child:       AdmobBanner(
+                                adUnitId: AdMobService().getBannerAdUnitId(),
+                                adSize: AdmobBannerSize(
+                                  width: MediaQuery.of(context).size.width.toInt(),
+                                  height: AdMobService().getHeight(context).toInt(),
+                                  name: 'SMART_BANNER',
+                                ),
+                              ),
+                            )
+                                : const SizedBox(),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
-        );
-      },
+        ),
+      ],
     );
   }
 }

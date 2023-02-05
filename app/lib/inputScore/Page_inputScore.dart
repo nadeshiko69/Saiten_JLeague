@@ -42,9 +42,6 @@ class _inputScoreState extends State<Page_inputScore> {
 
   void initState() {
     super.initState();
-
-    // You should execute `Admob.requestTrackingAuthorization()` here before showing any ad.
-
     bannerSize = AdmobBannerSize.BANNER;
 
     rewardAd = AdmobReward(
@@ -110,7 +107,9 @@ class _inputScoreState extends State<Page_inputScore> {
 
   @override
   Widget build(BuildContext context) {
-    // 試合日の翌日と今を比較　→　試合から一日以上経っていたら結果出力
+    // 端末の縦横サイズを取得
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceWidth = MediaQuery.of(context).size.width;
 
     // 表示する Widget の一覧
     List<Widget> _pageList = [
@@ -190,20 +189,14 @@ class _inputScoreState extends State<Page_inputScore> {
         ],
         elevation: 0,
       ),
-      body: SizedBox(
-          child: Column(
+      body: Column(
         children: [
-          Expanded(child: _pageList[_selectedIndex]),
-          AdmobBanner(
-            adUnitId: AdMobService().getBannerAdUnitId(),
-            adSize: AdmobBannerSize(
-              width: MediaQuery.of(context).size.width.toInt(),
-              height: AdMobService().getHeight(context).toInt(),
-              name: 'SMART_BANNER',
-            ),
-          ),
+      SizedBox(
+          height: deviceHeight * 0.75,
+          width: deviceWidth,
+          child: _pageList[_selectedIndex]),
         ],
-      )),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
