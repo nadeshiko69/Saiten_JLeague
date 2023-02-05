@@ -28,7 +28,7 @@ class Page_inputScore extends StatefulWidget {
 }
 
 class _inputScoreState extends State<Page_inputScore> {
-
+  GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
   AdmobBannerSize? bannerSize;
   late AdmobInterstitial interstitialAd;
   late AdmobReward rewardAd;
@@ -40,8 +40,73 @@ class _inputScoreState extends State<Page_inputScore> {
     });
   }
 
+  void initState() {
+    super.initState();
 
+    // You should execute `Admob.requestTrackingAuthorization()` here before showing any ad.
 
+    bannerSize = AdmobBannerSize.BANNER;
+
+    rewardAd = AdmobReward(
+      adUnitId: AdMobService().getRewardBasedVideoAdUnitId()!,
+      listener: (AdmobAdEvent event, Map<String, dynamic>? args) {
+        if (event == AdmobAdEvent.closed) rewardAd.load();
+        handleEvent(event, args, 'Reward');
+      },
+    );
+    rewardAd.load();
+  }
+
+  void handleEvent(
+      AdmobAdEvent event, Map<String, dynamic>? args, String adType) {
+    switch (event) {
+      case AdmobAdEvent.loaded:
+        showSnackBar('New Admob $adType Ad loaded!');
+        break;
+      case AdmobAdEvent.opened:
+        showSnackBar('Admob $adType Ad opened!');
+        break;
+      case AdmobAdEvent.closed:
+        showSnackBar('Admob $adType Ad closed!');
+        break;
+      case AdmobAdEvent.failedToLoad:
+        showSnackBar('Admob $adType failed to load. :(');
+        break;
+      case AdmobAdEvent.rewarded:
+        showDialog(
+          context: scaffoldState.currentContext!,
+          builder: (BuildContext context) {
+            return WillPopScope(
+              onWillPop: () async {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                return true;
+              },
+              child: AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const Text('Reward callback fired. Thanks Andrew!'),
+                    Text('Type: ${args!['type']}'),
+                    Text('Amount: ${args['amount']}'),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+        break;
+      default:
+    }
+  }
+
+  void showSnackBar(String content) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(content),
+        duration: const Duration(milliseconds: 1500),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,31 +149,41 @@ class _inputScoreState extends State<Page_inputScore> {
                     .add(const Duration(hours: 2))
                     .isAfter(DateTime.now())) // input可能期間じゃなければ採点ボタンを非活性にする
                 ? null
-                : () => {
-
-                      setState(() {
-                        if (myData.isAlreadyLogin) {
-                          fSubmit(widget.teamName, widget.matchID);
-                        } else {/* No Action */}
-
-                        // ログインしていなかった場合警告を出す
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            if (myData.isAlreadyLogin) { // ログイン済
-                              if (widget.matchDay
-                                  .add(const Duration(hours: 2)) // かつ提出期間内（試合後二日以内）
-                                  .isAfter(DateTime.now())) {
-                                return Widget_CompleteSubmit(); // firebaseに送信
-                              } else {
-                                return Widget_SubmitTimeOver(); // 期間外だと警告
-                              }
+                : () async => {
+                      if (await rewardAd.isLoaded)
+                        {
+                         rewardAd.show(),
+                          setState(() {
+                            if (myData.isAlreadyLogin) {
+                              fSubmit(widget.teamName, widget.matchID);
                             } else {
-                              return Widget_GoLoginPage(); // ログインページに遷移
+                              /* No Action */
                             }
-                          },
-                        );
-                      }),
+
+                            // ログインしていなかった場合警告を出す
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                if (myData.isAlreadyLogin) {
+                                  // ログイン済
+                                  if (DateTime.now() // かつ提出期間内（試合後二日以内）
+                                      .isAfter(widget.matchDay
+                                      .add(const Duration(
+                                      hours: 2)) )) {
+                                    return Widget_CompleteSubmit(); // firebaseに送信
+                                  } else {
+                                    return Widget_SubmitTimeOver(); // 期間外だと警告
+                                  }
+                                } else {
+                                  return Widget_GoLoginPage(); // ログインページに遷移
+                                }
+                              },
+                            );
+                          }),
+                        }
+                      else{
+          showSnackBar('Reward ad is still loading...'),
+                      }
                     },
             icon: const Icon(Icons.arrow_circle_right),
           )
@@ -116,20 +191,19 @@ class _inputScoreState extends State<Page_inputScore> {
         elevation: 0,
       ),
       body: SizedBox(
-
           child: Column(
-            children: [
-              Expanded(child: _pageList[_selectedIndex]),
-              AdmobBanner(
-                adUnitId: AdMobService().getBannerAdUnitId(),
-                adSize: AdmobBannerSize(
-                  width: MediaQuery.of(context).size.width.toInt(),
-                  height: AdMobService().getHeight(context).toInt(),
-                  name: 'SMART_BANNER',
-                ),
-              ),
-            ],
-          )),
+        children: [
+          Expanded(child: _pageList[_selectedIndex]),
+          AdmobBanner(
+            adUnitId: AdMobService().getBannerAdUnitId(),
+            adSize: AdmobBannerSize(
+              width: MediaQuery.of(context).size.width.toInt(),
+              height: AdMobService().getHeight(context).toInt(),
+              name: 'SMART_BANNER',
+            ),
+          ),
+        ],
+      )),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
