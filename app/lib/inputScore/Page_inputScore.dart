@@ -48,7 +48,7 @@ class _inputScoreState extends State<Page_inputScore> {
     bannerSize = AdmobBannerSize.BANNER;
 
     rewardAd = AdmobReward(
-      adUnitId: AdMobService().getRewardBasedVideoAdUnitId()!,
+      adUnitId: AdMobService().getRewardBasedVideoAdUnitId(),
       listener: (AdmobAdEvent event, Map<String, dynamic>? args) {
         if (event == AdmobAdEvent.closed) rewardAd.load();
         handleEvent(event, args, 'Reward');
