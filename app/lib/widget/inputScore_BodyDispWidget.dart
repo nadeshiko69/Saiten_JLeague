@@ -80,6 +80,7 @@ class _Body extends State<Widget_inputScoreBody> {
               }
 
               List<CPlayerData>? lMemberData = snapshot.data; // 描画用
+              lMemberData?.sort((a, b) => a.number.compareTo(b.number)); // 背番号順にソート
               // Firebase 送信用
               if (widget.isStarting) {
                 lStartingList = lMemberData;

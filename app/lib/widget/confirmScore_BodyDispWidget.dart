@@ -88,6 +88,7 @@ class _Body extends State<Widget_confirmScoreBody> {
                     shrinkWrap: true,
                     itemCount: lMemberData?.length,
                     itemBuilder: (context, index) {
+                      lMemberData?.sort((a, b) => a.number.compareTo(b.number));
                       return InkWell(
                         child: Card(
                           child: ListTile(
