@@ -45,7 +45,6 @@ void fSubmit(String teamName, String matchID) async {
 
   // まだ一度も送信していない(snapshotのサイズが0)場合、新規追加
   if (snapshot.size == 0) {
-    print("aaa");
     int index = 0;
     for (CPlayerData member in lStartingList!) {
       print(member.name);

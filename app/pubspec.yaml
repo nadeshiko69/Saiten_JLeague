@@ -2,7 +2,7 @@ name: judge
 description: judge J-League player.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.3+1
+version: 1.0.4+1
 
 environment:
   sdk: ">=2.15.0-35.0.dev <3.0.0"

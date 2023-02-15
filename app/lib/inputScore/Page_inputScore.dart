@@ -149,9 +149,9 @@ class _inputScoreState extends State<Page_inputScore> {
                     .isAfter(DateTime.now())) // input可能期間じゃなければ採点ボタンを非活性にする
                 ? null
                 : () async => {
-                      if (await rewardAd.isLoaded)
-                        {
-                         rewardAd.show(),
+                      // if (await rewardAd.isLoaded)
+                      //   {
+                      //    rewardAd.show(),
                           setState(() {
                             if (myData.isAlreadyLogin) {
                               fSubmit(widget.teamName, widget.matchID);
@@ -179,10 +179,10 @@ class _inputScoreState extends State<Page_inputScore> {
                               },
                             );
                           }),
-                        }
-                      else{
-          showSnackBar('Reward ad is still loading...'),
-                      }
+                        // }
+          //             else{
+          // showSnackBar('Reward ad is still loading...'),
+          //             }
                     },
             icon: const Icon(Icons.arrow_circle_right),
           )

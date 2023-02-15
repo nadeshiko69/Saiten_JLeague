@@ -67,17 +67,6 @@ class _Body extends State<Widget_inputScoreBody> {
                 widget.teamName, widget.matchID, widget.matchNo, widget.isStarting),
             builder:
                 (BuildContext context, AsyncSnapshot<List<CPlayerData>> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                // 通信中
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              if (snapshot.error != null) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
 
               List<CPlayerData>? lMemberData = snapshot.data; // 描画用
               lMemberData?.sort((a, b) => a.number.compareTo(b.number)); // 背番号順にソート
