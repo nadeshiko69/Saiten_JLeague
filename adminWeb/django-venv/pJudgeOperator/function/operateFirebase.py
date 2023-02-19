@@ -4,6 +4,7 @@ import firebase_admin
 from firebase_admin import credentials
 from pyparsing import LRUMemo
 import numpy as np
+import function.CONFIG
 
 class operateFirebase():
     def __init__(self):
@@ -23,7 +24,7 @@ class operateFirebase():
         # コレクションにアクセス
         # collectionに追加するときはadd
         # documentに追加するときはset
-        base_ref = self.db.collection('Data2022').document(engName).collection('Match').document(mid).collection('Member')
+        base_ref = self.db.collection(function.CONFIG.data20xx).document(engName).collection('Match').document(mid).collection('Member')
         for member in startingMember:
             doc_ref = base_ref.document(member)
             try:
@@ -50,7 +51,7 @@ class operateFirebase():
     def fReadMemberDataFromFirebase(self, teamName):
         self.lMemberList.clear()
         
-        doc_ref = self.db.collection('Data2022').document(teamName).collection('Member')
+        doc_ref = self.db.collection(function.CONFIG.data20xx).document(teamName).collection('Member')
         docs = doc_ref.stream()
         for doc in docs:
             personalData = {
@@ -67,7 +68,7 @@ class operateFirebase():
     def fReadMatchDataFromFirebase(self, teamName):
         self.lMatchList.clear()
         
-        doc_ref = self.db.collection('Data2022').document(teamName).collection('Match')
+        doc_ref = self.db.collection(function.CONFIG.data20xx).document(teamName).collection('Match')
         docs = doc_ref.stream()        
         for doc in docs:
             matchData = {
@@ -87,7 +88,7 @@ class operateFirebase():
     # 採点結果をfirebaseから読み込む
     def fReadPointsFromFirebase(self, teamName, matchID):
         self.npPoints = np.empty(0)
-        doc_ref = self.db.collection('Data2022').document('Scores').collection(teamName).where('MatchID', '==', matchID)
+        doc_ref = self.db.collection(function.CONFIG.data20xx).document('Scores').collection(teamName).where('MatchID', '==', matchID)
         docs = doc_ref.stream()
         for doc in docs:
             appendData = [
@@ -99,7 +100,7 @@ class operateFirebase():
         
     def fWritePointsToFirebase(self, engName, mid, members):
         print("mid = {}".format(mid))
-        base_ref = self.db.collection('Data2022').document(engName).collection('Match').document(mid).collection('Member')
+        base_ref = self.db.collection(function.CONFIG.data20xx).document(engName).collection('Match').document(mid).collection('Member')
         for member in members:
             print("Name[{}] / pid[{}] / point[{}] / var[{}] / sdev[{}]".format(member.name, member.pid, member.point, member.var, member.sdev))
             doc_ref = base_ref.document(member.pid)

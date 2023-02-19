@@ -9,8 +9,10 @@ from function.operateFirebase import operateFirebase
 from .models import Team, Player, Match
 import datetime
 import numpy as np
+import function.CONFIG
 
-DEBUG_MODE = False
+
+DEBUG_MODE = False # 消しても良さそう、要検証
 
 
 # FirebaseのInitialize_Appを複数回起動しないようにクラス化
@@ -25,12 +27,15 @@ def frontpage(request):
 
 # メンバー入力画面の表示
 def fGetNemberData(request, engName):
-    # 再取得ボタンが押されたらこっち
     if request.method=="POST":
         # 必要な情報の確保
-        today = datetime.datetime.today() # 入力日
-        # today = datetime.datetime(2023,2,26) - datetime.timedelta(days=3) # For Debug
+        # today = datetime.datetime.today() # 入力日
+        month = int(request.POST.get("month"))
+        day = int(request.POST.get("day"))
+        print(month, day)
+        today = datetime.datetime(function.CONFIG.year,month,day) #- datetime.timedelta(days=3)
         jpnName = Team.objects.get(engName=engName).jpnName # 入力対象のチーム名
+        # 再取得ボタンが押されたらこっち
         if "run_script" in request.POST:
             # 選手情報をDjangoのDBに格納
             players = firebaseOperator.of.fReadMemberDataFromFirebase(engName)
@@ -70,6 +75,8 @@ def fGetNemberData(request, engName):
             mid = Match.objects.get(team = jpnName, kickoff = today).mid
             startingMember = request.POST.getlist("starting_number")
             subMember = request.POST.getlist("substitute_number")
+            print(startingMember)
+            print(subMember)
             if len(startingMember) == 11 and len(subMember) <= 7: # スタメン/ ベンチの登録
                 if Match.objects.filter(team = jpnName, kickoff = today).exists() or DEBUG_MODE == True:  # 送信を押した日に試合があればidを取得して送付
                     firebaseOperator.of.fWriteMemberDataToFirebase(engName, mid, startingMember, subMember)
