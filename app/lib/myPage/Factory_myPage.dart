@@ -8,7 +8,8 @@ import 'package:judge/mainFactory.dart';
 // * */
 Future<List<CMatchData>> fGetMyInputedMatchData(String teamName) async {
   List<CMatchData> lAlreadyInputedMatchData = [];
-  List<String> lMatchIDTemp = []; // matchIDを記憶しておいて、lAlreadyInputedMatchDataに被りが発生しないように調整する用。うまく検索使えれば要らなそう。
+  List<String> lMatchIDTemp =
+      []; // matchIDを記憶しておいて、lAlreadyInputedMatchDataに被りが発生しないように調整する用。うまく検索使えれば要らなそう。
 
   // 採点情報DBからユーザが採点を提出した試合のMatchIDを取得
   await FirebaseFirestore.instance
@@ -26,13 +27,17 @@ Future<List<CMatchData>> fGetMyInputedMatchData(String teamName) async {
             .doc(doc["MatchID"])
             .get();
         CMatchData matchData = CMatchData(
-            doc["MatchID"],
-            matchDataSnapshot["home"] == fConverseTeamName(teamName)
-                ? matchDataSnapshot["away"]
-                : matchDataSnapshot["home"],
-            matchDataSnapshot["kickoff"].toDate(),
-            matchDataSnapshot["section"],
-            matchDataSnapshot["stadium"]);
+          doc["MatchID"],
+          matchDataSnapshot["home"] == fConverseTeamName(teamName)
+              ? matchDataSnapshot["away"]
+              : matchDataSnapshot["home"],
+          matchDataSnapshot["kickoff"].toDate(),
+          matchDataSnapshot["section"],
+          matchDataSnapshot["stadium"],
+          matchDataSnapshot["home"] == fConverseTeamName(teamName)
+              ? true
+              : false,
+        );
         if (!lMatchIDTemp.contains(doc["MatchID"])) {
           lAlreadyInputedMatchData.add(matchData);
           lMatchIDTemp.add(doc["MatchID"]);

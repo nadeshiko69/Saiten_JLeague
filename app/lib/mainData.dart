@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 // Firebaseのアクセス情報
-const Data20XX = 'Data2023';
-// const Data20XX = 'Data2022'; // FOR TEST
+// const Data20XX = 'Data2023';
+const Data20XX = 'Data2022'; // FOR TEST
 
 
 
@@ -30,13 +30,14 @@ CMyData myData = CMyData('','NOT LOGIN', false);
 
 // Firebaseから全試合情報を取得
 class CMatchData {
-  CMatchData(this.matchID, this.opponent, this.day, this.matchNo, this.stadium);
+  CMatchData(this.matchID, this.opponent, this.day, this.matchNo, this.stadium, this.isHomeGame);
   String matchID;
   String opponent;
   DateTime day;
   int    matchNo;
   String stadium;
   String nextOrToday = "";
+  bool isHomeGame;
 }
 List<CMatchData> lAllMatch = []..length = 0;
 
@@ -49,7 +50,7 @@ class CPersonalData {
 }
 
 // メインページ上部NextMatchに表示する情報
-CMatchData nextMatchData = CMatchData("","opponent", DateTime(1900, 1, 1, 0, 0), -1, "");
+CMatchData nextMatchData = CMatchData("","opponent", DateTime(1900, 1, 1, 0, 0), -1, "", true);
 
 // メインページ下部に表示する今後の試合情報
 List lMatchFromToday = [];

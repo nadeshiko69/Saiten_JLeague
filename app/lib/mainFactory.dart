@@ -29,13 +29,16 @@ Future<void> fGetNextMatch(String teamName) async{
     final int matchNo = data['section'];
     final String stadium = data["stadium"];
     String opponent;
+    bool isHomeGame;
     if(data["home"] == fConverseTeamName(teamName)) {
       opponent = data['away'];
+      isHomeGame = true;
     }
     else {
       opponent = data['home'];
+      isHomeGame = false;
     }
-    return CMatchData(matchID,opponent, day, matchNo, stadium);
+    return CMatchData(matchID,opponent, day, matchNo, stadium, isHomeGame);
   }).toList();
   // Main画面のリスト
   lAllMatch = matchData;
@@ -137,4 +140,18 @@ String fConverseTeamName_ToEngName(String teamName){
     default : ret = "Abnormal case"; break;
   }
   return ret;
+}
+
+String fGetWeekday(DateTime date){
+  int weekday = date.weekday;
+  switch(weekday){
+    case 1: return "月";
+    case 2: return "火";
+    case 3: return "水";
+    case 4: return "木";
+    case 5: return "金";
+    case 6: return "土";
+    case 7: return "日";
+    default: return "";
+  }
 }

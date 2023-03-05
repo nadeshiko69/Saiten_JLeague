@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:judge/confirmScore/Page_confirmScore.dart';
 import 'package:judge/imageFilePath.dart';
 import 'package:judge/mainData.dart';
+import 'package:judge/mainFactory.dart';
 import 'package:judge/widget/_generalWidget.dart';
 
 class Widget_MatchInfo extends StatelessWidget {
@@ -12,6 +13,7 @@ class Widget_MatchInfo extends StatelessWidget {
   final String teamName;
   final String opponent;
   final DateTime matchDay;
+  final bool isHomeGame;
 
   const Widget_MatchInfo({
     Key? key,
@@ -21,16 +23,23 @@ class Widget_MatchInfo extends StatelessWidget {
     required this.teamName,
     required this.opponent,
     required this.matchDay,
+    required this.isHomeGame
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final double deviceHeight = MediaQuery.of(context).size.height;
     final double deviceWidth = MediaQuery.of(context).size.width;
+    String homeoraway;
+    if (isHomeGame) {
+      homeoraway = "(H)";
+    } else {
+      homeoraway = "(A)";
+    }
     return ListTile(
       leading: Image.asset(imagePath),
       title: Text(
-        opponent,
+        "$homeoraway$opponent",
         style:
             const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
       ),
@@ -39,7 +48,7 @@ class Widget_MatchInfo extends StatelessWidget {
           Text("Match $matchNo",
               style: const TextStyle(
                   color: Colors.black, fontWeight: FontWeight.bold), textAlign: TextAlign.left,),
-          Text(DateFormat('yyyy/M/d').format(matchDay),
+          Text("${DateFormat('yyyy/M/d').format(matchDay)}(${fGetWeekday(matchDay)})",
               style: const TextStyle(color: Colors.black),
           textAlign: TextAlign.left,
           ),
@@ -83,6 +92,7 @@ class Widget_MatchListComponent extends StatelessWidget {
                 teamName: teamName,
                 opponent: lAllMatch[index].opponent,
                 matchDay: lAllMatch[index].day,
+                isHomeGame: lAllMatch[index].isHomeGame,
               ),
               Widget_HorizontalBorder(),
             ],

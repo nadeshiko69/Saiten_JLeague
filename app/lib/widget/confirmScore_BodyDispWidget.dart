@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:judge/confirmScore/Factory_confirmScore.dart';
 import '../mainData.dart';
 import 'confirmScore_UpperMatchDataView.dart';
@@ -26,25 +27,35 @@ class _Body extends State<Widget_confirmScoreBody> {
   @override
   Widget build(BuildContext context) {
     final double deviceHeight = MediaQuery.of(context).size.height;
-    if(widget.matchDay.add(const Duration(days: 2))
-        .isAfter(accessTime)) {
-      return Center(
-        child: SizedBox(
-          height: deviceHeight * 0.7,
-          child: Column(
-            children: const [
-              Text("まだ情報の登録が出来ていません..."),
-              Text("採点の集計終了は試合終了の二日後です。"),
-            ],
-          ),
+    if (widget.matchDay.add(const Duration(days: 2)).isAfter(accessTime)) {
+      DateTime plannedDay = widget.matchDay.add(const Duration(days: 3));
+      String plannedDayText = DateFormat('yyyy/M/d').format(plannedDay).toString();
+      return SingleChildScrollView(
+        padding: const EdgeInsets.all(0.0),
+        child: Column(
+          children: [
+            Widget_UpperMatchData(
+                widget.teamName,
+                lAllMatch[widget.matchNo - 1].opponent,
+                lAllMatch[widget.matchNo - 1].day.toString(),
+                lAllMatch[widget.matchNo - 1].stadium),
+            SizedBox(
+              height: deviceHeight * 0.5,
+              child: Column(
+                children: [
+                  const Text("まだ情報の登録が出来ていません..."),
+                  Text("集計結果は$plannedDayText 0:00に公開予定です。"),
+                ],
+              ),
+            ),
+          ],
         ),
       );
     }
     return FutureBuilder(
       future: fGetMatchMemberWithScore(
           widget.teamName, widget.matchID, widget.matchNo, widget.isStarting),
-      builder:
-          (BuildContext context,
+      builder: (BuildContext context,
           AsyncSnapshot<List<CPlayerDataWithScore>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // 通信中
@@ -69,14 +80,14 @@ class _Body extends State<Widget_confirmScoreBody> {
         // 採点の集計結果がなければリストを表示しない
         if (lStartingListWithScore![0].score == -1) {
           return const Center(child: Text("採点の集計完了までしばらくお待ちください・・・"));
-        }
-        else {
+        } else {
           return SingleChildScrollView(
             padding: const EdgeInsets.all(0.0),
             child: Column(
               children: [
                 Widget_UpperMatchData(
-                    widget.teamName, lAllMatch[widget.matchNo - 1].opponent,
+                    widget.teamName,
+                    lAllMatch[widget.matchNo - 1].opponent,
                     lAllMatch[widget.matchNo - 1].day.toString(),
                     lAllMatch[widget.matchNo - 1].stadium),
                 Container(
@@ -94,13 +105,15 @@ class _Body extends State<Widget_confirmScoreBody> {
                           child: ListTile(
                               title: Text(lMemberData![index].name),
                               subtitle:
-                              Text(lMemberData[index].number.toString()),
+                                  Text(lMemberData[index].number.toString()),
                               trailing: Column(
                                 children: [
-                                  Text("Ave : ${lMemberData[index].score.toStringAsFixed(2)}"),
-                                  Text("Var : ${lMemberData[index].variance.toStringAsFixed(2)}"),
-                                  Text("SD : ${lMemberData[index].sdev.toStringAsFixed(2)}"),
-
+                                  Text(
+                                      "Ave : ${lMemberData[index].score.toStringAsFixed(2)}"),
+                                  Text(
+                                      "Var : ${lMemberData[index].variance.toStringAsFixed(2)}"),
+                                  Text(
+                                      "SD : ${lMemberData[index].sdev.toStringAsFixed(2)}"),
                                 ],
                               )), // Firebaseから値を取得してList化してTextで出力
                         ),
