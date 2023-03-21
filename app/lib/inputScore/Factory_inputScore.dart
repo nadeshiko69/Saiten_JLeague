@@ -3,19 +3,19 @@ Name : fSubmit()
 Arg  : void
 Func : 採点結果をfirebaseに格納
 * */
-import 'dart:ui';
+import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:judge/mainData.dart';
 
-
 class CPlayerData {
   CPlayerData(this.mid, this.name, this.number);
   String mid;
   String name;
-  int    number;
+  int number;
 }
 
 // Submitで送信する用のリストたち
@@ -47,7 +47,6 @@ void fSubmit(String teamName, String matchID) async {
   if (snapshot.size == 0) {
     int index = 0;
     for (CPlayerData member in lStartingList!) {
-      print(member.name);
       // スタメンの採点情報
       await FirebaseFirestore.instance
           .collection(Data20XX)
@@ -115,10 +114,6 @@ void fSubmit(String teamName, String matchID) async {
   }
 }
 
-
-
-
-
 // Name : fGetMatchMember()
 // Arg  : teamName, matchNo : 対象チーム、節
 //      : isStarting : スタメン or ベンチ / trueならスタメン, falseならベンチ
@@ -145,12 +140,9 @@ Future<List<CPlayerData>> fGetMatchMember(
         });
       }
     }
-  }
-  );
+  });
   return lMemberData;
 }
-
-
 
 /*
 Name : fGetMemberInfoForMemberID()
@@ -170,4 +162,41 @@ Future<CPlayerData> fGetMemberInfoForMemberID(
   CPlayerData returnData = CPlayerData(memberID, name, num);
 
   return returnData;
+}
+
+/*
+Name : fGetMVPandScore()
+Arg  : void
+Func : 入力情報からTwitter共有で使うMVPの情報を取得
+* */
+String? fGetMyMVP() {
+  String ret = "私が選ぶ 名古屋グランパス 今節のMVPは、";
+  List<String> MVP = [];
+  double MVPscore = -1;
+  List<double> scores = List.of(lSelectedPointList!);
+  List<CPlayerData> players = List.of(lStartingList!);
+  if (lSubList!.isEmpty) {
+    return null;
+  }
+  else {
+    players.addAll(lSubList!); // サブも結合
+  }
+  // print(scores);
+  // print(players);
+
+  // 採点の最高値を取得
+  MVPscore = scores.reduce((a, b) => max(a, b));
+
+  // 最高値を獲得した選手を取得
+  while(scores.contains(MVPscore)){
+    int index = scores.indexOf(MVPscore);
+    MVP.add("${players[index].name}選手");
+    scores.removeAt(index);
+    players.removeAt(index);
+  }
+
+  ret = """$ret${MVP.join(", ")}で、評価点は$MVPscore！
+  採点入力はこちら(ios版) : https://onl.bz/6DmiLxn\n""";
+
+  return ret;
 }

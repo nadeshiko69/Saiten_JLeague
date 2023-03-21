@@ -54,11 +54,16 @@ class _Body extends State<Widget_inputScoreBody> {
         ),
       ));
     }
+
+    for(int i=0; i < 18; i++){
+      _selectedPoints[i] = 6.0;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final double deviceHeight = MediaQuery.of(context).size.height;
+    lSelectedPointList = _selectedPoints; // 提出用リストを初期化
     return Column(
       children: [
         Expanded(
@@ -76,6 +81,8 @@ class _Body extends State<Widget_inputScoreBody> {
               } else {
                 lSubList = lMemberData;
               }
+              // print(_selectedPoints);
+              // print(lSelectedPointList);
 
               // まだメンバー登録していない時にアクセスされた場合のWarningを表示
               if(lMemberData!.isEmpty){

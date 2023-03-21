@@ -152,37 +152,41 @@ class _inputScoreState extends State<Page_inputScore> {
                       // if (await rewardAd.isLoaded)
                       //   {
                       //    rewardAd.show(),
-                          setState(() {
-                            if (myData.isAlreadyLogin) {
-                              fSubmit(widget.teamName, widget.matchID);
-                            } else {
-                              /* No Action */
-                            }
+                      setState(() {
+                        if (myData.isAlreadyLogin) {
+                          fSubmit(widget.teamName, widget.matchID);
+                        } else {
+                          /* No Action */
+                        }
 
-                            // ログインしていなかった場合警告を出す
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                if (myData.isAlreadyLogin) {
-                                  // ログイン済
-                                  if (DateTime.now() // かつ提出期間内（試合後二日以内）
-                                      .isAfter(widget.matchDay
-                                      .add(const Duration(
-                                      hours: 2)) )) {
-                                    return Widget_CompleteSubmit(); // firebaseに送信
-                                  } else {
-                                    return Widget_SubmitTimeOver(); // 期間外だと警告
-                                  }
-                                } else {
-                                  return Widget_GoLoginPage(); // ログインページに遷移
+                        // ログインしていなかった場合警告を出す
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            if (myData.isAlreadyLogin) {
+                              // ログイン済
+                              if (DateTime.now() // かつ提出期間内（試合後二日以内）
+                                  .isAfter(widget.matchDay
+                                      .add(const Duration(hours: 2)))) {
+                                if(lSubList!.isEmpty) {
+                                  return Widget_PromptSubScore(); // サブの採点を要求
                                 }
-                              },
-                            );
-                          }),
-                        // }
-          //             else{
-          // showSnackBar('Reward ad is still loading...'),
-          //             }
+                                else {
+                                  return Widget_CompleteSubmit(); // firebaseに送信
+                                }
+                                } else {
+                                return Widget_SubmitTimeOver(); // 期間外だと警告
+                              }
+                            } else {
+                              return Widget_GoLoginPage(); // ログインページに遷移
+                            }
+                          },
+                        );
+                      }),
+                      // }
+                      //             else{
+                      // showSnackBar('Reward ad is still loading...'),
+                      //             }
                     },
             icon: const Icon(Icons.arrow_circle_right),
           )
@@ -191,10 +195,10 @@ class _inputScoreState extends State<Page_inputScore> {
       ),
       body: Column(
         children: [
-      SizedBox(
-          height: deviceHeight * 0.75,
-          width: deviceWidth,
-          child: _pageList[_selectedIndex]),
+          SizedBox(
+              height: deviceHeight * 0.75,
+              width: deviceWidth,
+              child: _pageList[_selectedIndex]),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
