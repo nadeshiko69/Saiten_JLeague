@@ -53,7 +53,6 @@ class Widget_TwitterShare extends StatelessWidget {
     return CupertinoDialogAction(
       child: const Text("Twitterで共有"),
       onPressed: () async {
-        //  var image = await globalkey.currentState?.fConvertWidgetToImage(); // 画像を生成
         final Map<String, dynamic> tweetQuery = {
           "text": text,
           "url": url,

@@ -196,7 +196,10 @@ String? fGetMyMVP() {
   }
 
   ret = """$ret${MVP.join(", ")}で、評価点は$MVPscore！
-  採点入力はこちら(ios版) : https://onl.bz/6DmiLxn\n""";
+  
+  採点入力はこちら(ios版) : https://onl.bz/6DmiLxn\n
+  #Jリーグ採点アプリJudge
+  """;
 
   return ret;
 }

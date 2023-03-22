@@ -17,7 +17,7 @@ class Widget_CompleteSubmit extends StatelessWidget {
         ),
         Widget_TwitterShare(
           text: fGetMyMVP()!,
-          hashtags: const ["Jリーグ採点アプリJudge"],
+          hashtags: const [],
           via: "Judge_appInfo",
         ),
       ],
@@ -31,22 +31,6 @@ class Widget_SubmitTimeOver extends StatelessWidget {
     return CupertinoAlertDialog(
       title: const Text("提出に失敗しました"),
       content: const Text("提出可能期間を確認してください。"),
-      actions: <Widget>[
-        CupertinoDialogAction(
-          child: const Text("OK"),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ],
-    );
-  }
-}
-
-class Widget_PromptInputingSubMember extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoAlertDialog(
-      title: const Text("サブメンバーの採点が済んでいません"),
-      content: const Text("画面下部のSubstituteを選択して採点入力後、再度送信してください。"),
       actions: <Widget>[
         CupertinoDialogAction(
           child: const Text("OK"),
