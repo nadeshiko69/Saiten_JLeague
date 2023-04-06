@@ -70,3 +70,7 @@ Android
 
 ※ Archiveのバージョンを上げる
 pubspec.yamlのバージョンをあげて、pub get →　flutter build ios
+
+* Android Build
+gradleのバージョンに注意
+https://stackoverflow.com/questions/74042113/stripe-flutter-error-no-suitable-constructor-found-for-readablemaphashmapo
